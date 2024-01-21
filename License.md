@@ -1,6 +1,10 @@
-MIT License
+# DrNet Toolkit
 
-Copyright (c) 2024 DrNetTipsAndTricks
+Copyright "DrNet Tips & Tricks" and Contributors.
+
+All rights reserved.
+
+## MIT License
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
