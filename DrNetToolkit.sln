@@ -3,7 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34511.98
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DrNetToolkit.HighPerformance", "src\DrNetToolkit.HighPerformance\DrNetToolkit.HighPerformance.csproj", "{01EA4076-D04B-4710-8535-995FB365C98A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DrNetToolkit.HighPerformance", "src\DrNetToolkit.HighPerformance\DrNetToolkit.HighPerformance.csproj", "{01EA4076-D04B-4710-8535-995FB365C98A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{AC8A3FBB-94FF-4A16-AFDC-67D4098D41E6}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		.gitattributes = .gitattributes
+		.gitignore = .gitignore
+		Copyright.md = Copyright.md
+		Directory.Build.props = Directory.Build.props
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

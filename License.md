@@ -4,6 +4,8 @@ Copyright "DrNet Tips & Tricks" and Contributors.
 
 All rights reserved.
 
+Do Not Translate or Localize.
+
 ## MIT License
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -23,3 +25,8 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+## Third-party software notices and information
+
+This project incorporates components from the projects listed below. The original copyright notices and the licenses under which the "DrNet Tips & Tricks" received such components are set forth below. The "DrNet Tips & Tricks" reserves all rights not expressly granted herein, whether by implication, estoppel or otherwise.
+
