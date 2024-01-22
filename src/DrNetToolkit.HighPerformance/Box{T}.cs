@@ -60,6 +60,10 @@ public sealed class Box<T>
     /// <exception cref="InvalidOperationException">Always thrown when this constructor is used (eg. from reflection).</exception>
     private Box() => throw new InvalidOperationException("The CommunityToolkit.HighPerformance.Box<T> constructor should never be used.");
 
+#pragma warning disable IDE1006 // Naming Styles
+    internal readonly T value; // used for fast unboxing
+#pragma warning restore IDE1006 // Naming Styles
+
     /// <summary>
     /// Returns a <see cref="Box{T}"/> reference from the input <see cref="object"/> instance.
     /// </summary>
@@ -114,7 +118,8 @@ public sealed class Box<T>
     /// </summary>
     /// <param name="box">The input <see cref="Box{T}"/> instance.</param>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static implicit operator T(Box<T> box) => (T)(object)box;
+    public static implicit operator T(Box<T> box) => box.value;
+
 
     /// <summary>
     /// Implicitly creates a new <see cref="Box{T}"/> instance from a given <typeparamref name="T"/> value.
@@ -147,20 +152,21 @@ public sealed class Box<T>
         // an object reference is used instead, the call would be forwarded
         // to those same methods anyway, since the method table for an object
         // representing a T instance is the one of type T anyway.
-        this.GetReference().ToString()!;
+        this.value.ToString()!;
 
     /// <inheritdoc/>
-    public override bool Equals(object? obj) => Equals(this, obj);
+    public override bool Equals(object? obj) => this.value.Equals(obj);
 
     /// <inheritdoc/>
-    public override int GetHashCode() => this.GetReference().GetHashCode();
+    public override int GetHashCode() => this.value.GetHashCode();
 
     /// <summary>
     /// Throws an <see cref="InvalidCastException"/> when a cast from an invalid <see cref="object"/> is attempted.
     /// </summary>
     /// 
     [MethodImpl(MethodImplOptions.NoInlining)]
-    private static void ThrowInvalidCastExceptionForGetFrom() => throw new InvalidCastException($"Can't cast the input object to the type Box<{typeof(T)}>");
+    private static void ThrowInvalidCastExceptionForGetFrom() =>
+        throw new InvalidCastException($"Can't cast the input object to the type Box<{typeof(T)}>");
 }
 
 /// <summary>
@@ -195,5 +201,5 @@ public static class BoxExtensions
         // manually tracking the offset to the boxed data would be both
         // more error prone, and it would still introduce some overhead,
         // this doesn't really matter in this case anyway.
-        ref Unsafe.Unbox<T>(box);
+        ref Unsafe.AsRef(box.value);
 }
