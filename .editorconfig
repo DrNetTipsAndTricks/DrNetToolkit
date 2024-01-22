@@ -117,7 +117,7 @@ dotnet_style_coalesce_expression = true:warning
 dotnet_style_null_propagation = true:warning
 dotnet_style_prefer_is_null_check_over_reference_equality_method = true:warning
 # File header preferences
-file_header_template = <copyright file="Copyright.md" company="DrNet Tips & Tricks">\n© PROJECT-AUTHOR\n</copyright>
+file_header_template = Licensed to the "DrNet Tips & Tricks" under one or more agreements.\nThe "DrNet Tips & Tricks" licenses this file to you under the MIT license.\nSee the License.md file in the project root for more information.
 # If you use StyleCop, you'll need to disable SA1636: File header copyright text should match.
 # dotnet_diagnostic.SA1636.severity = none
 # Undocumented
