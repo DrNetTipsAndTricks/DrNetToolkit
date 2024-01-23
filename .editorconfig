@@ -278,6 +278,9 @@ dotnet_naming_style.prefix_interface_with_i_style.required_prefix = I
 # prefix_type_parameters_with_t_style - Generic Type Parameters must be PascalCase and the first character must be a 'T'
 dotnet_naming_style.prefix_type_parameters_with_t_style.capitalization = pascal_case
 dotnet_naming_style.prefix_type_parameters_with_t_style.required_prefix = T
+# protected_fields_style case_with_underscore_style - Define the camelCase style
+dotnet_naming_style.protected_fields_style.capitalization = camel_case
+dotnet_naming_style.protected_fields_style.required_prefix = _
 # disallowed_style - Anything that has this style applied is marked as disallowed
 dotnet_naming_style.disallowed_style.capitalization  = pascal_case
 dotnet_naming_style.disallowed_style.required_prefix = ____RULE_VIOLATION____
@@ -311,9 +314,17 @@ dotnet_naming_rule.public_protected_static_readonly_fields_must_be_pascal_case_r
 dotnet_naming_rule.public_protected_static_readonly_fields_must_be_pascal_case_rule.style      = pascal_case_style
 dotnet_naming_rule.public_protected_static_readonly_fields_must_be_pascal_case_rule.severity   = warning
 
+# All other protected/protected_internal fields are allowed
+# https://docs.microsoft.com/dotnet/standard/design-guidelines/field
+dotnet_naming_symbols.protected_fields_group.applicable_accessibilities              = protected, internal, protected_internal
+dotnet_naming_symbols.protected_fields_group.applicable_kinds                        = field
+dotnet_naming_rule.protected_fields_must_be_camel_case_with_underscore_rule.symbols  = protected_fields_group
+dotnet_naming_rule.protected_fields_must_be_camel_case_with_underscore_rule.style    = protected_fields_style
+dotnet_naming_rule.protected_fields_must_be_camel_case_with_underscore_rule.severity = warning
+
 # No other public/protected/protected_internal fields are allowed
 # https://docs.microsoft.com/dotnet/standard/design-guidelines/field
-dotnet_naming_symbols.other_public_protected_fields_group.applicable_accessibilities = public, protected, protected_internal
+dotnet_naming_symbols.other_public_protected_fields_group.applicable_accessibilities = public
 dotnet_naming_symbols.other_public_protected_fields_group.applicable_kinds           = field
 dotnet_naming_rule.other_public_protected_fields_disallowed_rule.symbols             = other_public_protected_fields_group
 dotnet_naming_rule.other_public_protected_fields_disallowed_rule.style               = disallowed_style
