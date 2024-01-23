@@ -1,4 +1,4 @@
-﻿// Licensed to the "DrNet Tips & Tricks" under one or more agreements.
+// Licensed to the "DrNet Tips & Tricks" under one or more agreements.
 // The "DrNet Tips & Tricks" licenses this file to you under the MIT license.
 // See the License.md file in the project root for more information.
 
@@ -61,7 +61,9 @@ public sealed class Box<T>
     private Box() => throw new InvalidOperationException("The CommunityToolkit.HighPerformance.Box<T> constructor should never be used.");
 
 #pragma warning disable IDE1006 // Naming Styles
-    internal readonly T value; // used for fast unboxing
+#pragma warning disable CS0649 // Field 'Box<T>.value' is never assigned to, and will always have its default value
+    internal readonly T _value; // used for fast unboxing
+#pragma warning restore CS0649 // Field 'Box<T>.value' is never assigned to, and will always have its default value
 #pragma warning restore IDE1006 // Naming Styles
 
     /// <summary>
@@ -104,12 +106,10 @@ public sealed class Box<T>
         if (obj.GetType() == typeof(T))
         {
             box = Unsafe.As<Box<T>>(obj)!;
-
             return true;
         }
 
         box = null;
-
         return false;
     }
 
@@ -118,8 +118,7 @@ public sealed class Box<T>
     /// </summary>
     /// <param name="box">The input <see cref="Box{T}"/> instance.</param>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static implicit operator T(Box<T> box) => box.value;
-
+    public static implicit operator T(Box<T> box) => box._value;
 
     /// <summary>
     /// Implicitly creates a new <see cref="Box{T}"/> instance from a given <typeparamref name="T"/> value.
@@ -137,33 +136,12 @@ public sealed class Box<T>
         // manually be implemented in the Box<T> type. For instance, boxing a float
         // and calling ToString() on it directly, on its boxed object or on a Box<T>
         // reference retrieved from it will produce the same result in all cases.
-        Unsafe.As<Box<T>>(value)!;
+        Unsafe.As<Box<T>>(value);
 
-    /// <inheritdoc/>
-    public override string ToString() =>
-        // Here we're overriding the base object virtual methods to ensure
-        // calls to those methods have a correct results on all runtimes.
-        // For instance, not doing so is causing issue on .NET Core 2.1 Release
-        // due to how the runtime handles the Box<T> reference to an actual
-        // boxed T value (not a concrete Box<T> instance as it would expect).
-        // To fix that, the overrides will simply call the expected methods
-        // directly on the boxed T values. These methods will be directly
-        // invoked by the JIT compiler when using a Box<T> reference. When
-        // an object reference is used instead, the call would be forwarded
-        // to those same methods anyway, since the method table for an object
-        // representing a T instance is the one of type T anyway.
-        this.value.ToString()!;
-
-    /// <inheritdoc/>
-    public override bool Equals(object? obj) => this.value.Equals(obj);
-
-    /// <inheritdoc/>
-    public override int GetHashCode() => this.value.GetHashCode();
 
     /// <summary>
     /// Throws an <see cref="InvalidCastException"/> when a cast from an invalid <see cref="object"/> is attempted.
     /// </summary>
-    /// 
     [MethodImpl(MethodImplOptions.NoInlining)]
     private static void ThrowInvalidCastExceptionForGetFrom() =>
         throw new InvalidCastException($"Can't cast the input object to the type Box<{typeof(T)}>");
@@ -175,31 +153,22 @@ public sealed class Box<T>
 public static class BoxExtensions
 {
     /// <summary>
-    /// Gets a <typeparamref name="T"/> reference from a <see cref="Box{T}"/> instance.
+    /// Gets a readonly reference to the boxed value from the boxed instance.
     /// </summary>
-    /// <typeparam name="T">The type of reference to retrieve.</typeparam>
-    /// <param name="box">The input <see cref="Box{T}"/> instance.</param>
-    /// <returns>A <typeparamref name="T"/> reference to the boxed value within <paramref name="box"/>.</returns>
+    /// <typeparam name="T">The type of boxed value.</typeparam>
+    /// <param name="box">The instance of <see cref="Box{T}"/> with a boxed value of type <typeparamref name="T"/>.</param>
+    /// <returns>A readonly reference to a boxed value of type <typeparamref name="T"/> boxed in the <paramref name="box"/> instance.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ref T GetReference<T>(this Box<T> box)
-        where T : struct =>
-        // The reason why this method is an extension and is not part of
-        // the Box<T> type itself is that Box<T> is really just a mask
-        // used over object references, but it is never actually instantiated.
-        // Because of this, the method table of the objects in the heap will
-        // be the one of type T created by the runtime, and not the one of
-        // the Box<T> type. To avoid potential issues when invoking this method
-        // on different runtimes, which might handle that scenario differently,
-        // we use an extension method, which is just syntactic sugar for a static
-        // method belonging to another class. This isn't technically necessary,
-        // but it's just an extra precaution since the syntax for users remains
-        // exactly the same anyway. Here we just call the Unsafe.Unbox<T>(object)
-        // API, which is hidden away for users of the type for simplicity.
-        // Note that this API will always actually involve a conditional
-        // branch, which is introduced by the JIT compiler to validate the
-        // object instance being unboxed. But since the alternative of
-        // manually tracking the offset to the boxed data would be both
-        // more error prone, and it would still introduce some overhead,
-        // this doesn't really matter in this case anyway.
-        ref Unsafe.AsRef(box.value);
+    public static ref readonly T ValueReference<T>(this Box<T> box) where T : struct
+        => ref Unsafe.AsRef(box._value);
+
+    /// <summary>
+    /// Gets a reference to the boxed value from the boxed instance.
+    /// </summary>
+    /// <typeparam name="T">The type of boxed value.</typeparam>
+    /// <param name="box">The instance of <see cref="Box{T}"/> with a boxed value of type <typeparamref name="T"/>.</param>
+    /// <returns>A reference to a boxed value of type <typeparamref name="T"/> boxed in the <paramref name="box"/> instance.</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static ref T DangerousValueReference<T>(this Box<T> box) where T : struct
+        => ref Unsafe.AsRef(box._value);
 }

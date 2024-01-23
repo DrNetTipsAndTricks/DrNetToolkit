@@ -18,6 +18,10 @@ indent_style = space
 indent_size = 4
 insert_final_newline = true
 trim_trailing_whitespace = true
+csharp_style_prefer_method_group_conversion = true:silent
+csharp_style_prefer_top_level_statements = true:silent
+csharp_style_prefer_primary_constructors = true:suggestion
+csharp_style_allow_blank_line_after_token_in_arrow_expression_clause_experimental = true:silent
 
 ##########################################
 # File Extension Settings
@@ -128,9 +132,9 @@ csharp_style_prefer_null_check_over_type_check = true:warning
 # https://docs.microsoft.com/dotnet/fundamentals/code-analysis/style-rules/language-rules#c-style-rules
 [*.{cs,csx,cake}]
 # 'var' preferences
-csharp_style_var_for_built_in_types = true:warning
-csharp_style_var_when_type_is_apparent = true:warning
-csharp_style_var_elsewhere = true:warning
+csharp_style_var_for_built_in_types = false:warning
+csharp_style_var_when_type_is_apparent = false:warning
+csharp_style_var_elsewhere = false:warning
 # Expression-bodied members
 csharp_style_expression_bodied_methods = true:warning
 csharp_style_expression_bodied_constructors = true:warning
@@ -214,7 +218,7 @@ csharp_new_line_between_query_expression_clauses = true
 # https://docs.microsoft.com/dotnet/fundamentals/code-analysis/style-rules/formatting-rules#indentation-options
 csharp_indent_case_contents = true
 csharp_indent_switch_labels = true
-csharp_indent_labels = no_change
+csharp_indent_labels = one_less_than_current
 csharp_indent_block_contents = true
 csharp_indent_braces = false
 csharp_indent_case_contents_when_block = false
@@ -260,6 +264,7 @@ csharp_style_namespace_declarations = file_scoped:warning
 ##########################################
 # Styles
 ##########################################
+#dotnet_diagnostic.IDE1006.severity = suggestion
 
 # camel_case_style - Define the camelCase style
 dotnet_naming_style.camel_case_style.capitalization = camel_case
@@ -413,6 +418,10 @@ dotnet_naming_symbols.parameters_group.applicable_kinds = parameter
 dotnet_naming_rule.parameters_rule.symbols              = parameters_group
 dotnet_naming_rule.parameters_rule.style                = camel_case_style
 dotnet_naming_rule.parameters_rule.severity             = warning
+
+[**/tests/**.{cs,csx,cake,vb,vbx}]
+dotnet_diagnostic.IDE1006.severity = silent
+dotnet_diagnostic.CA1707.severity = silent
 
 ##########################################
 # License
