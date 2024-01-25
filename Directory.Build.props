@@ -1,0 +1,35 @@
+<Project>
+  <!-- Define test projects and companions -->
+  <PropertyGroup Condition="$(MSBuildProjectFullPath.Contains('$([System.IO.Path]::DirectorySeparatorChar)tests$([System.IO.Path]::DirectorySeparatorChar)'))">
+    <IsTestProject Condition="$(MSBuildProjectName.EndsWith('.UnitTests')) or $(MSBuildProjectName.EndsWith('.Tests'))">true</IsTestProject>
+    <IsTestingProject Condition="'$(IsTestProject)' == 'true'">true</IsTestingProject>
+    
+    <TreatWarningsAsErrors Condition="'$(TreatWarningsAsErrors)' == '' and '$(IsTestingProject)' == 'true'">false</TreatWarningsAsErrors>
+  </PropertyGroup>
+  
+  <!-- Define benchmarks projects and companions -->
+  <PropertyGroup Condition="$(MSBuildProjectFullPath.Contains('$([System.IO.Path]::DirectorySeparatorChar)benchmarks$([System.IO.Path]::DirectorySeparatorChar)'))">
+    <IsBenchmarkProject Condition="$(MSBuildProjectName.EndsWith('.Benchmarks'))">true</IsBenchmarkProject>
+    <IsBenchmarkingProject Condition="'$(IsBenchmarkProject)' == 'true'">true</IsBenchmarkingProject>
+    
+    <TreatWarningsAsErrors Condition="'$(TreatWarningsAsErrors)' == '' and '$(IsBenchmarkingProject)' == 'true'">false</TreatWarningsAsErrors>
+  </PropertyGroup>
+
+  <!-- Language configuration -->
+  <PropertyGroup>
+    <!-- default to allowing all language features -->
+    <LangVersion>12.0</LangVersion>
+    <Nullable>enable</Nullable>
+    <!-- Enables Strict mode for Roslyn compiler -->
+    <Features>strict;nullablePublicOnly</Features>
+    <TreatWarningsAsErrors Condition="'$(TreatWarningsAsErrors)' == ''">true</TreatWarningsAsErrors>
+  </PropertyGroup>
+
+  <!-- Include PolySharp to generate polyfills for all projects (on their .NET Standard 2.x targets) -->
+  <ItemGroup>
+    <PackageReference Include="PolySharp" Version="1.*">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>build; analyzers</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+</Project>

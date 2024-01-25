@@ -18,6 +18,10 @@ indent_style = space
 indent_size = 4
 insert_final_newline = true
 trim_trailing_whitespace = true
+csharp_style_prefer_method_group_conversion = true:silent
+csharp_style_prefer_top_level_statements = true:silent
+csharp_style_prefer_primary_constructors = true:suggestion
+csharp_style_allow_blank_line_after_token_in_arrow_expression_clause_experimental = true:silent
 
 ##########################################
 # File Extension Settings
@@ -117,7 +121,7 @@ dotnet_style_coalesce_expression = true:warning
 dotnet_style_null_propagation = true:warning
 dotnet_style_prefer_is_null_check_over_reference_equality_method = true:warning
 # File header preferences
-# file_header_template = <copyright file="{fileName}" company="PROJECT-AUTHOR">\n© PROJECT-AUTHOR\n</copyright>
+file_header_template = Licensed to the "DrNet Tips & Tricks" under one or more agreements.\nThe "DrNet Tips & Tricks" licenses this file to you under the MIT license.\nSee the License.md file in the project root for more information.
 # If you use StyleCop, you'll need to disable SA1636: File header copyright text should match.
 # dotnet_diagnostic.SA1636.severity = none
 # Undocumented
@@ -128,9 +132,9 @@ csharp_style_prefer_null_check_over_type_check = true:warning
 # https://docs.microsoft.com/dotnet/fundamentals/code-analysis/style-rules/language-rules#c-style-rules
 [*.{cs,csx,cake}]
 # 'var' preferences
-csharp_style_var_for_built_in_types = true:warning
-csharp_style_var_when_type_is_apparent = true:warning
-csharp_style_var_elsewhere = true:warning
+csharp_style_var_for_built_in_types = false:warning
+csharp_style_var_when_type_is_apparent = false:warning
+csharp_style_var_elsewhere = false:warning
 # Expression-bodied members
 csharp_style_expression_bodied_methods = true:warning
 csharp_style_expression_bodied_constructors = true:warning
@@ -214,7 +218,7 @@ csharp_new_line_between_query_expression_clauses = true
 # https://docs.microsoft.com/dotnet/fundamentals/code-analysis/style-rules/formatting-rules#indentation-options
 csharp_indent_case_contents = true
 csharp_indent_switch_labels = true
-csharp_indent_labels = no_change
+csharp_indent_labels = one_less_than_current
 csharp_indent_block_contents = true
 csharp_indent_braces = false
 csharp_indent_case_contents_when_block = false
@@ -260,6 +264,7 @@ csharp_style_namespace_declarations = file_scoped:warning
 ##########################################
 # Styles
 ##########################################
+#dotnet_diagnostic.IDE1006.severity = suggestion
 
 # camel_case_style - Define the camelCase style
 dotnet_naming_style.camel_case_style.capitalization = camel_case
@@ -273,6 +278,9 @@ dotnet_naming_style.prefix_interface_with_i_style.required_prefix = I
 # prefix_type_parameters_with_t_style - Generic Type Parameters must be PascalCase and the first character must be a 'T'
 dotnet_naming_style.prefix_type_parameters_with_t_style.capitalization = pascal_case
 dotnet_naming_style.prefix_type_parameters_with_t_style.required_prefix = T
+# protected_fields_style - Protected, private and internal fields must be camelCase with underscore prefix style
+dotnet_naming_style.protected_fields_style.capitalization = camel_case
+dotnet_naming_style.protected_fields_style.required_prefix = _
 # disallowed_style - Anything that has this style applied is marked as disallowed
 dotnet_naming_style.disallowed_style.capitalization  = pascal_case
 dotnet_naming_style.disallowed_style.required_prefix = ____RULE_VIOLATION____
@@ -306,9 +314,17 @@ dotnet_naming_rule.public_protected_static_readonly_fields_must_be_pascal_case_r
 dotnet_naming_rule.public_protected_static_readonly_fields_must_be_pascal_case_rule.style      = pascal_case_style
 dotnet_naming_rule.public_protected_static_readonly_fields_must_be_pascal_case_rule.severity   = warning
 
+# All other protected/protected_internal fields are allowed
+# https://docs.microsoft.com/dotnet/standard/design-guidelines/field
+dotnet_naming_symbols.protected_fields_group.applicable_accessibilities              = protected, internal, protected_internal, private, private_protected
+dotnet_naming_symbols.protected_fields_group.applicable_kinds                        = field
+dotnet_naming_rule.protected_fields_must_be_camel_case_with_underscore_rule.symbols  = protected_fields_group
+dotnet_naming_rule.protected_fields_must_be_camel_case_with_underscore_rule.style    = protected_fields_style
+dotnet_naming_rule.protected_fields_must_be_camel_case_with_underscore_rule.severity = warning
+
 # No other public/protected/protected_internal fields are allowed
 # https://docs.microsoft.com/dotnet/standard/design-guidelines/field
-dotnet_naming_symbols.other_public_protected_fields_group.applicable_accessibilities = public, protected, protected_internal
+dotnet_naming_symbols.other_public_protected_fields_group.applicable_accessibilities = public
 dotnet_naming_symbols.other_public_protected_fields_group.applicable_kinds           = field
 dotnet_naming_rule.other_public_protected_fields_disallowed_rule.symbols             = other_public_protected_fields_group
 dotnet_naming_rule.other_public_protected_fields_disallowed_rule.style               = disallowed_style
@@ -413,6 +429,19 @@ dotnet_naming_symbols.parameters_group.applicable_kinds = parameter
 dotnet_naming_rule.parameters_rule.symbols              = parameters_group
 dotnet_naming_rule.parameters_rule.style                = camel_case_style
 dotnet_naming_rule.parameters_rule.severity             = warning
+
+##########################################
+# .NET Code Style Severities for Tests and Benchmarks
+# https://docs.microsoft.com/dotnet/fundamentals/code-analysis/configuration-options#scope
+##########################################
+
+[**/tests/**.{cs,csx,cake,vb,vbx}]
+dotnet_diagnostic.IDE1006.severity = silent
+dotnet_diagnostic.CA1707.severity = silent
+
+[**/benchmarks/**.{cs,csx,cake,vb,vbx}]
+dotnet_diagnostic.IDE1006.severity = silent
+dotnet_diagnostic.CA1707.severity = silent
 
 ##########################################
 # License

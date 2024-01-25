@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0;net6.0;net7.0;net8.0</TargetFrameworks>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Title>DrNet Toolkit - High Performance</Title>
+    <Description>
+      This package includes high performance .NET APIs:
+      - Box&lt;T&gt;: providing high-performance methods for boxed value types.
+    </Description>
+    <PackageTags>Performance;Unsafe;Boxing;Extensions;Helpers</PackageTags>
+  </PropertyGroup>
+
+  <Choose>
+    <When Condition="'$(TargetFramework)' == 'netstandard2.0'">
+
+      <!-- .NET Standard 2.0 doesn't have the Span<T>, HashCode, ValueTask and Unsafe. -->
+      <ItemGroup>
+        <!-- <PackageReference Include="Microsoft.Bcl.HashCode" Version="1.1.1" /> -->
+        <!-- <PackageReference Include="System.Memory" Version="4.5.5" /> -->
+        <!-- <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.5.4" /> -->
+        <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.0.0" />
+      </ItemGroup>
+    </When>
+  </Choose>
+
+</Project>
