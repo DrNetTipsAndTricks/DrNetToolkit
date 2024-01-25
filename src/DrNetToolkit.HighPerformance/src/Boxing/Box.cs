@@ -21,7 +21,7 @@ public static class Box
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Box<T> ToBox<T>(this T value)
         where T : struct
-        => (Box<T>)value;
+        => DangerousAsBox<T>(value);
 
     /// <summary>Casts the given boxed value to the box.</summary>
     /// <typeparam name="T">
@@ -35,7 +35,7 @@ public static class Box
     /// </exception>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     [return: NotNullIfNotNull(nameof(obj))]
-    public static Box<T>? AsBox<T>(this object? obj)
+    public static Box<T> AsBox<T>(this object obj)
         where T : struct
         => BoxBase.AsBox<T, Box<T>>(obj);
 
@@ -50,7 +50,7 @@ public static class Box
     /// </returns>
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Box<T>? TryAsBox<T>(this object? obj)
+    public static Box<T>? TryAsBox<T>(this object obj)
         where T : struct
         => BoxBase.TryAsBox<T, Box<T>>(obj);
 

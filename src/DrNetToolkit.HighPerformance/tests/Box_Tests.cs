@@ -13,10 +13,10 @@ using System.Runtime.CompilerServices;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 [TestClass]
-public class BoxOfT_Tests
+public class Box_Tests
 {
     [TestMethod]
-    public void BoxOfT_Valid()
+    public void Box_Valid()
     {
         Test(true, false);
         Test<byte>(27, 254);
@@ -37,7 +37,7 @@ public class BoxOfT_Tests
     }
 
     [TestMethod]
-    public void BoxOfT_Invalid()
+    public void Box_Invalid()
     {
         long lValue = 0x0123_4567_89AB_CDEF;
         int iValue = Unsafe.As<long, int>(ref lValue);
@@ -168,12 +168,12 @@ public class BoxOfT_Tests
         // Null
         object? obj = null;
         {
-            Assert.IsNull(BoxBase.AsBox<T, Box<T>>(obj));
-            Assert.IsNull(BoxBase.TryAsBox<T, Box<T>>(obj));
+            //Assert.IsNull(BoxBase.AsBox<T, Box<T>>(obj));
+            //Assert.IsNull(BoxBase.TryAsBox<T, Box<T>>(obj));
             Assert.IsNull(BoxBase.DangerousAsBox<T, Box<T>>(obj));
 
-            Assert.IsNull(obj.AsBox<T>());
-            Assert.IsNull(obj.TryAsBox<T>());
+            //Assert.IsNull(obj.AsBox<T>());
+            //Assert.IsNull(obj.TryAsBox<T>());
             Assert.IsNull(obj.DangerousAsBox<T>());
         }
 

@@ -27,17 +27,37 @@ public static class BoxBase
     /// </exception>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     [return: NotNullIfNotNull(nameof(obj))]
-    public static TBox? AsBox<T, TBox>(object? obj)
+    public static TBox AsBox<T, TBox>(object obj)
         where T : struct
         where TBox : BoxBase<T>
     {
-        if (obj is not null && obj.GetType() != typeof(T))
+        if (obj.GetType() != typeof(T))
         {
             ThrowInvalidCastExceptionForAsBox();
         }
 
         return Unsafe.As<TBox>(obj);
     }
+
+    /// <summary>Try casting the given boxed value to the box of specified type.</summary>
+    /// <typeparam name="T">
+    /// The type of the given boxed value. Where <typeparamref name="T"/> : <see langword="struct"/>.
+    /// </typeparam>
+    /// <typeparam name="TBox">
+    /// The type of the box to which the boxed value will be cast to. Where <typeparamref name="TBox"/> : 
+    /// <see cref="BoxBase<T>"/>.
+    /// </typeparam>
+    /// <param name="obj">The boxed value to cast.</param>
+    /// <returns>
+    /// The original boxed value, casted to the box of specified type OR <see langword="null"/> when type of the given
+    /// <paramref name="obj"/> is not <typeparamref name="T"/> and <paramref name="obj"/> can not be casted to the box
+    /// of specified type.
+    /// </returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static TBox? TryAsBox<T, TBox>(object obj)
+        where T : struct
+        where TBox : BoxBase<T>
+        => obj.GetType() == typeof(T) ? Unsafe.As<TBox>(obj) : null;
 
     /// <summary>Casts the given boxed value to the box of specified type.</summary>
     /// <typeparam name="T">
@@ -59,26 +79,6 @@ public static class BoxBase
         where T : struct
         where TBox : BoxBase<T>
         => Unsafe.As<TBox>(obj);
-
-    /// <summary>Try casting the given boxed value to the box of specified type.</summary>
-    /// <typeparam name="T">
-    /// The type of the given boxed value. Where <typeparamref name="T"/> : <see langword="struct"/>.
-    /// </typeparam>
-    /// <typeparam name="TBox">
-    /// The type of the box to which the boxed value will be cast to. Where <typeparamref name="TBox"/> : 
-    /// <see cref="BoxBase<T>"/>.
-    /// </typeparam>
-    /// <param name="obj">The boxed value to cast.</param>
-    /// <returns>
-    /// The original boxed value, casted to the box of specified type OR <see langword="null"/> when type of the given
-    /// <paramref name="obj"/> is not <typeparamref name="T"/> and <paramref name="obj"/> can not be casted to the box
-    /// of specified type.
-    /// </returns>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static TBox? TryAsBox<T, TBox>(object? obj)
-        where T : struct
-        where TBox : BoxBase<T>
-        => Unsafe.As<TBox>(obj?.GetType() == typeof(T) ? obj : null);
 
     /// <summary>
     /// Always throws an <see cref="InvalidCastException"/> when a cast from an invalid <see cref="object"/> is
