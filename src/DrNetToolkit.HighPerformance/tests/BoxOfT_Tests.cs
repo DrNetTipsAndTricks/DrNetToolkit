@@ -36,99 +36,125 @@ public class BoxOfT_Tests
         }
     }
 
-    //[TestMethod]
-    //public void BoxOfT_Invalid()
-    //{
-    //    long lValue = 0x0123_4567_89AB_CDEF;
-    //    int iValue = Unsafe.As<long, int>(ref lValue);
-    //    object? lObj = lValue;
-    //    object? iObj = iValue;
+    [TestMethod]
+    public void BoxOfT_Invalid()
+    {
+        long lValue = 0x0123_4567_89AB_CDEF;
+        int iValue = Unsafe.As<long, int>(ref lValue);
+        object? lObj = lValue;
+        object? iObj = iValue;
 
-    //    _ = Assert.ThrowsException<InvalidCastException>(() => Box<int>.CastFrom(lObj));
-    //    Assert.IsNull(Box<int>.TryCastFrom(lValue));
-    //    Box<int> box = Box<int>.DangerousCastFrom(lObj);
+        _ = Assert.ThrowsException<InvalidCastException>(() => BoxBase.AsBox<int, Box<int>>(lObj));
+        _ = Assert.ThrowsException<InvalidCastException>(() => BoxBase.AsBox<long, Box<long>>(iObj));
+        Assert.IsNull(BoxBase.TryAsBox<int, Box<int>>(lObj));
+        Assert.IsNull(BoxBase.TryAsBox<long, Box<long>>(iObj));
+        Assert.AreSame(lObj, BoxBase.DangerousAsBox<int, Box<int>>(lObj));
+        Assert.AreSame(iObj, BoxBase.DangerousAsBox<long, Box<long>>(iObj));
 
-    //    object boxObj = box;
-    //    Assert.AreSame(lObj, box);
-    //    Assert.AreSame(lObj, boxObj);
+        _ = Assert.ThrowsException<InvalidCastException>(() => BoxBase.AsBox<int, Box<int>>(lValue));
+        _ = Assert.ThrowsException<InvalidCastException>(() => BoxBase.AsBox<long, Box<long>>(iValue));
+        Assert.IsNull(BoxBase.TryAsBox<int, Box<int>>(lValue));
+        Assert.IsNull(BoxBase.TryAsBox<long, Box<long>>(iValue));
+        Assert.IsNotNull(BoxBase.DangerousAsBox<int, Box<int>>(lValue));
+        Assert.IsNotNull(BoxBase.DangerousAsBox<long, Box<long>>(iValue));
 
-    //    Assert.AreEqual(iValue, box.GetReference());
-    //    Assert.AreEqual(iValue, box.GetDangerousReference());
-    //    Assert.AreEqual(iValue, box.Value);
-    //    Assert.AreEqual(iValue, (int)box);
-    //    Assert.AreEqual(iValue, (long)box);
-    //    _ = Assert.ThrowsException<InvalidCastException>(() => (int)boxObj);
-    //    Assert.AreNotEqual(iValue, (long)boxObj);
+        _ = Assert.ThrowsException<InvalidCastException>(() => Box.AsBox<int>(lObj));
+        _ = Assert.ThrowsException<InvalidCastException>(() => Box.AsBox<long>(iObj));
+        Assert.IsNull(Box.TryAsBox<int>(lObj));
+        Assert.IsNull(Box.TryAsBox<long>(iObj));
+        Assert.AreSame(lObj, Box.DangerousAsBox<int>(lObj));
+        Assert.AreSame(iObj, Box.DangerousAsBox<long>(iObj));
 
-    //    Assert.AreNotEqual(lValue, box.GetReference());
-    //    Assert.AreNotEqual(lValue, box.GetDangerousReference());
-    //    Assert.AreNotEqual(lValue, box.Value);
-    //    Assert.AreNotEqual(lValue, (int)box);
-    //    Assert.AreNotEqual(lValue, (long)box);
-    //    Assert.AreEqual(lValue, (long)boxObj);
+        _ = Assert.ThrowsException<InvalidCastException>(() => Box.AsBox<int>(lValue));
+        _ = Assert.ThrowsException<InvalidCastException>(() => Box.AsBox<long>(iValue));
+        Assert.IsNull(Box.TryAsBox<int>(lValue));
+        Assert.IsNull(Box.TryAsBox<long>(iValue));
+        Assert.IsNotNull(Box.DangerousAsBox<int>(lValue));
+        Assert.IsNotNull(Box.DangerousAsBox<long>(iValue));
 
-    //    Assert.AreEqual(iObj, box.GetReference());
-    //    Assert.AreEqual(iObj, box.GetDangerousReference());
-    //    Assert.AreEqual(iObj, box.Value);
-    //    Assert.AreEqual(iObj, (int)box);
-    //    Assert.AreNotEqual(iObj, (long)box);
-    //    Assert.AreNotEqual(iObj, (long)boxObj);
+        // DangerousAsBox
+        Box<int> box = Box.DangerousAsBox<int>(lObj);
+        object boxObj = box;
+        Assert.AreSame(lObj, box);
+        Assert.AreSame(lObj, boxObj);
 
-    //    Assert.AreNotEqual(lObj, box.GetReference());
-    //    Assert.AreNotEqual(lObj, box.GetDangerousReference());
-    //    Assert.AreNotEqual(lObj, box.Value);
-    //    Assert.AreNotEqual(lObj, (int)box);
-    //    Assert.AreNotEqual(lObj, (long)box);
-    //    Assert.AreEqual(lObj, (long)boxObj);
+        Assert.AreEqual(iValue, box.GetReference());
+        Assert.AreEqual(iValue, box.GetDangerousReference());
+        Assert.AreEqual(iValue, box.Value);
+        Assert.AreEqual(iValue, (int)box);
+        Assert.AreEqual(iValue, (long)box);
+        _ = Assert.ThrowsException<InvalidCastException>(() => (int)boxObj);
+        Assert.AreNotEqual(iValue, (long)boxObj);
 
-    //    Assert.AreNotEqual(boxObj, box.GetReference());
-    //    Assert.AreNotEqual(boxObj, box.GetDangerousReference());
-    //    Assert.AreNotEqual(boxObj, box.Value);
-    //    Assert.AreNotEqual(boxObj, (int)box);
-    //    Assert.AreNotEqual(boxObj, (long)box);
-    //    Assert.AreEqual(boxObj, (long)boxObj);
+        Assert.AreNotEqual(lValue, box.GetReference());
+        Assert.AreNotEqual(lValue, box.GetDangerousReference());
+        Assert.AreNotEqual(lValue, box.Value);
+        Assert.AreNotEqual(lValue, (int)box);
+        Assert.AreNotEqual(lValue, (long)box);
+        Assert.AreEqual(lValue, (long)boxObj);
 
-    //    Assert.AreNotEqual(iValue.ToString(CultureInfo.InvariantCulture), box.ToString());
-    //    Assert.AreEqual(lValue.ToString(CultureInfo.InvariantCulture), box.ToString());
-    //    Assert.AreNotEqual(iValue.ToString(CultureInfo.InvariantCulture), boxObj.ToString());
-    //    Assert.AreEqual(lValue.ToString(CultureInfo.InvariantCulture), boxObj.ToString());
-    //    Assert.AreNotEqual(iObj.ToString(), box.ToString());
-    //    Assert.AreEqual(lObj.ToString(), box.ToString());
-    //    Assert.AreNotEqual(iObj.ToString(), boxObj.ToString());
-    //    Assert.AreEqual(lObj.ToString(), boxObj.ToString());
+        Assert.AreEqual(iObj, box.GetReference());
+        Assert.AreEqual(iObj, box.GetDangerousReference());
+        Assert.AreEqual(iObj, box.Value);
+        Assert.AreEqual(iObj, (int)box);
+        Assert.AreNotEqual(iObj, (long)box);
+        Assert.AreNotEqual(iObj, (long)boxObj);
 
-    //    Assert.AreNotEqual(iValue.GetHashCode(), box.GetHashCode());
-    //    Assert.AreEqual(lValue.GetHashCode(), box.GetHashCode());
-    //    Assert.AreNotEqual(iValue.GetHashCode(), boxObj.GetHashCode());
-    //    Assert.AreEqual(lValue.GetHashCode(), boxObj.GetHashCode());
-    //    Assert.AreNotEqual(iObj.GetHashCode(), box.GetHashCode());
-    //    Assert.AreEqual(lObj.GetHashCode(), box.GetHashCode());
-    //    Assert.AreNotEqual(iObj.GetHashCode(), boxObj.GetHashCode());
-    //    Assert.AreEqual(lObj.GetHashCode(), boxObj.GetHashCode());
+        Assert.AreNotEqual(lObj, box.GetReference());
+        Assert.AreNotEqual(lObj, box.GetDangerousReference());
+        Assert.AreNotEqual(lObj, box.Value);
+        Assert.AreNotEqual(lObj, (int)box);
+        Assert.AreNotEqual(lObj, (long)box);
+        Assert.AreEqual(lObj, (long)boxObj);
 
-    //    Assert.IsTrue(iValue.Equals(box));
-    //    Assert.IsFalse(lValue.Equals(box));
-    //    Assert.IsFalse(iValue.Equals(boxObj));
-    //    Assert.IsTrue(lValue.Equals(boxObj));
-    //    Assert.IsFalse(box.Equals(iValue));
-    //    Assert.IsTrue(box.Equals(lValue));
-    //    Assert.IsFalse(boxObj.Equals(iValue));
-    //    Assert.IsTrue(boxObj.Equals(lValue));
+        Assert.AreNotEqual(boxObj, box.GetReference());
+        Assert.AreNotEqual(boxObj, box.GetDangerousReference());
+        Assert.AreNotEqual(boxObj, box.Value);
+        Assert.AreNotEqual(boxObj, (int)box);
+        Assert.AreNotEqual(boxObj, (long)box);
+        Assert.AreEqual(boxObj, (long)boxObj);
 
-    //    Assert.IsFalse(iObj.Equals(box));
-    //    Assert.IsTrue(lObj.Equals(box));
-    //    Assert.IsFalse(iObj.Equals(boxObj));
-    //    Assert.IsTrue(lObj.Equals(boxObj));
-    //    Assert.IsFalse(box.Equals(iObj));
-    //    Assert.IsTrue(box.Equals(lObj));
-    //    Assert.IsFalse(boxObj.Equals(iObj));
-    //    Assert.IsTrue(boxObj.Equals(lObj));
+        Assert.AreNotEqual(iValue.ToString(CultureInfo.InvariantCulture), box.ToString());
+        Assert.AreEqual(lValue.ToString(CultureInfo.InvariantCulture), box.ToString());
+        Assert.AreNotEqual(iValue.ToString(CultureInfo.InvariantCulture), boxObj.ToString());
+        Assert.AreEqual(lValue.ToString(CultureInfo.InvariantCulture), boxObj.ToString());
+        Assert.AreNotEqual(iObj.ToString(), box.ToString());
+        Assert.AreEqual(lObj.ToString(), box.ToString());
+        Assert.AreNotEqual(iObj.ToString(), boxObj.ToString());
+        Assert.AreEqual(lObj.ToString(), boxObj.ToString());
 
-    //    // Testing that unboxing uses a fast process without unnecessary type-checking
-    //    _ = (ValueTuple)Unsafe.As<Box<int>, Box<ValueTuple>>(ref box);
-    //    _ = Unsafe.As<Box<int>, Box<ValueTuple>>(ref box).GetReference();
-    //    _ = Unsafe.As<Box<int>, Box<ValueTuple>>(ref box).GetDangerousReference();
-    //}
+        Assert.AreNotEqual(iValue.GetHashCode(), box.GetHashCode());
+        Assert.AreEqual(lValue.GetHashCode(), box.GetHashCode());
+        Assert.AreNotEqual(iValue.GetHashCode(), boxObj.GetHashCode());
+        Assert.AreEqual(lValue.GetHashCode(), boxObj.GetHashCode());
+        Assert.AreNotEqual(iObj.GetHashCode(), box.GetHashCode());
+        Assert.AreEqual(lObj.GetHashCode(), box.GetHashCode());
+        Assert.AreNotEqual(iObj.GetHashCode(), boxObj.GetHashCode());
+        Assert.AreEqual(lObj.GetHashCode(), boxObj.GetHashCode());
+
+        Assert.IsTrue(iValue.Equals(box));
+        Assert.IsFalse(lValue.Equals(box));
+        Assert.IsFalse(iValue.Equals(boxObj));
+        Assert.IsTrue(lValue.Equals(boxObj));
+        Assert.IsFalse(box.Equals(iValue));
+        Assert.IsTrue(box.Equals(lValue));
+        Assert.IsFalse(boxObj.Equals(iValue));
+        Assert.IsTrue(boxObj.Equals(lValue));
+
+        Assert.IsFalse(iObj.Equals(box));
+        Assert.IsTrue(lObj.Equals(box));
+        Assert.IsFalse(iObj.Equals(boxObj));
+        Assert.IsTrue(lObj.Equals(boxObj));
+        Assert.IsFalse(box.Equals(iObj));
+        Assert.IsTrue(box.Equals(lObj));
+        Assert.IsFalse(boxObj.Equals(iObj));
+        Assert.IsTrue(boxObj.Equals(lObj));
+
+        // Testing that unboxing uses a fast process without unnecessary type-checking
+        _ = (ValueTuple)Unsafe.As<Box<int>, Box<ValueTuple>>(ref box);
+        _ = Unsafe.As<Box<int>, Box<ValueTuple>>(ref box).GetReference();
+        _ = Unsafe.As<Box<int>, Box<ValueTuple>>(ref box).GetDangerousReference();
+    }
 
     /// <summary>
     /// Tests the <see cref="Box{T}"/> type for a given pair of values.
@@ -232,7 +258,11 @@ public class BoxOfT_Tests
             Test();
         }
 
+        // GetDangerousReference
         {
+            box = obj.AsBox<T>();
+            boxObj = box;
+
             //var valueT = value;
             box.GetDangerousReference() = test;
             value = test;
