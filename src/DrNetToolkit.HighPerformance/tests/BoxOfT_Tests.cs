@@ -16,7 +16,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 public class BoxOfT_Tests
 {
     [TestMethod]
-    public void BoxOfT_Types()
+    public void BoxOfT_Valid()
     {
         Test(true, false);
         Test<byte>(27, 254);
@@ -41,8 +41,8 @@ public class BoxOfT_Tests
     //{
     //    long lValue = 0x0123_4567_89AB_CDEF;
     //    int iValue = Unsafe.As<long, int>(ref lValue);
-    //    object lObj = lValue;
-    //    object iObj = iValue;
+    //    object? lObj = lValue;
+    //    object? iObj = iValue;
 
     //    _ = Assert.ThrowsException<InvalidCastException>(() => Box<int>.CastFrom(lObj));
     //    Assert.IsNull(Box<int>.TryCastFrom(lValue));
@@ -139,10 +139,23 @@ public class BoxOfT_Tests
     private static void Test<T>(T value, T test)
         where T : struct
     {
+        // Null
+        object? obj = null;
+        {
+            Assert.IsNull(BoxBase.AsBox<T, Box<T>>(obj));
+            Assert.IsNull(BoxBase.TryAsBox<T, Box<T>>(obj));
+            Assert.IsNull(BoxBase.DangerousAsBox<T, Box<T>>(obj));
+
+            Assert.IsNull(obj.AsBox<T>());
+            Assert.IsNull(obj.TryAsBox<T>());
+            Assert.IsNull(obj.DangerousAsBox<T>());
+        }
+
+        // Not null
+        obj = value;
+
         Box<T>? box;
         object boxObj;
-        object obj = value;
-
         {
             box = BoxBase.AsBox<T, Box<T>>(obj);
             boxObj = box;
@@ -197,11 +210,11 @@ public class BoxOfT_Tests
             Assert.AreSame(obj, boxObj);
             Test();
 
-            box = value.ToBox();
+            box = value;
             boxObj = box;
             Test();
 
-            box = value;
+            box = value.ToBox();
             boxObj = box;
             Test();
 
