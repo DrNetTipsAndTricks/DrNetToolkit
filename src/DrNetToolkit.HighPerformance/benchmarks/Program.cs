@@ -10,12 +10,17 @@ using BenchmarkDotNet.Jobs;
 using Perfolizer.Horology;
 
 IConfig config = DefaultConfig.Instance
-        .WithOption(ConfigOptions.StopOnFirstError, true)
-        .AddJob(
-            Job.ShortRun
-                .WithIterationTime(TimeInterval.FromMilliseconds(150))
-        );
+    .WithOption(ConfigOptions.StopOnFirstError, true)
+    .AddJob(
+        Job.ShortRun
+            .WithIterationTime(TimeInterval.FromMilliseconds(150))
+    );
 
-BenchmarkRunner.Run<Box_Boxing_Benchmarks>(config);
-BenchmarkRunner.Run<Box_Unboxing_Benchmarks>(config);
-BenchmarkRunner.Run<Box_SetValue_Benchmarks>(config);
+BenchmarkRunner.Run(
+    [
+        typeof(Box_Boxing_Benchmarks),
+        typeof(Box_Unboxing_Benchmarks),
+        typeof(Box_SetValue_Benchmarks),
+    ],
+    config
+);
