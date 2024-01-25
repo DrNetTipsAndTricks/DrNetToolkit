@@ -20,5 +20,6 @@ public sealed class Box<T> : BoxBase<T> where T : struct
     /// <param name="value">The value to box into the box.</param>
     /// <returns>The created boxed value, casted to the box.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static implicit operator Box<T>(T value) => value.DangerousAsBox<T>();
+    public static implicit operator Box<T>(T value)
+        => Box.DangerousAsBox<T>(value);
 }

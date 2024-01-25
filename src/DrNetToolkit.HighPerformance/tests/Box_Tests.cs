@@ -13,10 +13,10 @@ using System.Runtime.CompilerServices;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 [TestClass]
-public class BoxOfT_Tests
+public class Box_Tests
 {
     [TestMethod]
-    public void BoxOfT_Valid()
+    public void Box_Valid()
     {
         Test(true, false);
         Test<byte>(27, 254);
@@ -37,7 +37,7 @@ public class BoxOfT_Tests
     }
 
     [TestMethod]
-    public void BoxOfT_Invalid()
+    public void Box_Invalid()
     {
         long lValue = 0x0123_4567_89AB_CDEF;
         int iValue = Unsafe.As<long, int>(ref lValue);

@@ -21,7 +21,7 @@ public static class Box
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Box<T> ToBox<T>(this T value)
         where T : struct
-        => (Box<T>)value;
+        => DangerousAsBox<T>(value);
 
     /// <summary>Casts the given boxed value to the box.</summary>
     /// <typeparam name="T">

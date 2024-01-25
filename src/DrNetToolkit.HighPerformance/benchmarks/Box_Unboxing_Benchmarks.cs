@@ -8,33 +8,35 @@ using DrNetToolkit.HighPerformance.Boxing;
 
 using BenchmarkDotNet.Attributes;
 
-public class Box_Boxing_Benchmarks
+public class Box_Unboxing_Benchmarks
 {
     [Params(1, 10, 100, 1_000, 10_000)]
     public int Count { get; set; }
 
 #pragma warning disable IDE0052 // Remove unread private members
 
-    private volatile object obj = new();
-    private volatile Box<int> box = 0.ToBox();
+    private volatile int value;
 
 #pragma warning restore IDE0052 // Remove unread private members
 
+    private readonly object obj = 0;
+    private readonly Box<int> box = 0.ToBox();
+
     [Benchmark(Baseline = true)]
-    public void IntToObject()
+    public void ObjectToInt()
     {
         for (int i = 0; i < this.Count; i++)
         {
-            this.obj = i;
+            this.value = (int)this.obj;
         }
     }
 
     [Benchmark]
-    public void IntToBox()
+    public void BoxToInt()
     {
         for (int i = 0; i < this.Count; i++)
         {
-            this.box = i.ToBox();
+            this.value = this.box;
         }
     }
 }
