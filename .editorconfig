@@ -278,7 +278,7 @@ dotnet_naming_style.prefix_interface_with_i_style.required_prefix = I
 # prefix_type_parameters_with_t_style - Generic Type Parameters must be PascalCase and the first character must be a 'T'
 dotnet_naming_style.prefix_type_parameters_with_t_style.capitalization = pascal_case
 dotnet_naming_style.prefix_type_parameters_with_t_style.required_prefix = T
-# protected_fields_style case_with_underscore_style - Define the camelCase style
+# protected_fields_style - Protected, private and internal fields must be camelCase with underscore prefix style
 dotnet_naming_style.protected_fields_style.capitalization = camel_case
 dotnet_naming_style.protected_fields_style.required_prefix = _
 # disallowed_style - Anything that has this style applied is marked as disallowed
@@ -316,7 +316,7 @@ dotnet_naming_rule.public_protected_static_readonly_fields_must_be_pascal_case_r
 
 # All other protected/protected_internal fields are allowed
 # https://docs.microsoft.com/dotnet/standard/design-guidelines/field
-dotnet_naming_symbols.protected_fields_group.applicable_accessibilities              = protected, internal, protected_internal
+dotnet_naming_symbols.protected_fields_group.applicable_accessibilities              = protected, internal, protected_internal, private, private_protected
 dotnet_naming_symbols.protected_fields_group.applicable_kinds                        = field
 dotnet_naming_rule.protected_fields_must_be_camel_case_with_underscore_rule.symbols  = protected_fields_group
 dotnet_naming_rule.protected_fields_must_be_camel_case_with_underscore_rule.style    = protected_fields_style
@@ -430,7 +430,16 @@ dotnet_naming_rule.parameters_rule.symbols              = parameters_group
 dotnet_naming_rule.parameters_rule.style                = camel_case_style
 dotnet_naming_rule.parameters_rule.severity             = warning
 
+##########################################
+# .NET Code Style Severities for Tests and Benchmarks
+# https://docs.microsoft.com/dotnet/fundamentals/code-analysis/configuration-options#scope
+##########################################
+
 [**/tests/**.{cs,csx,cake,vb,vbx}]
+dotnet_diagnostic.IDE1006.severity = silent
+dotnet_diagnostic.CA1707.severity = silent
+
+[**/benchmarks/**.{cs,csx,cake,vb,vbx}]
 dotnet_diagnostic.IDE1006.severity = silent
 dotnet_diagnostic.CA1707.severity = silent
 

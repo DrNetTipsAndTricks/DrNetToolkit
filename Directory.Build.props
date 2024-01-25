@@ -2,12 +2,17 @@
   <!-- Define test projects and companions -->
   <PropertyGroup Condition="$(MSBuildProjectFullPath.Contains('$([System.IO.Path]::DirectorySeparatorChar)tests$([System.IO.Path]::DirectorySeparatorChar)'))">
     <IsTestProject Condition="$(MSBuildProjectName.EndsWith('.UnitTests')) or $(MSBuildProjectName.EndsWith('.Tests'))">true</IsTestProject>
-    <IsTrimmingTestProject Condition="$(MSBuildProjectName.EndsWith('.TrimmingTests'))">true</IsTrimmingTestProject>
-    <IsNativeAotTestProject Condition="$(MSBuildProjectName.EndsWith('.NativeAotTests'))">true</IsNativeAotTestProject>
-    <IsPublishedAppTestProject Condition="'$(IsTrimmingTestProject)' == 'true' or '$(IsNativeAotTestProject)' == 'true'">true</IsPublishedAppTestProject>
-    <IsTestSupportProject Condition="'$(IsTestProject)' != 'true' and '$(IsPublishedAppTestProject)' != 'true'">true</IsTestSupportProject>
-
-    <IsTestingProject Condition="'$(IsTestProject)' == 'true' or '$(IsTestSupportProject)' == 'true' or '$(IsPublishedAppTestProject)' == 'true'">true</IsTestingProject>
+    <IsTestingProject Condition="'$(IsTestProject)' == 'true'">true</IsTestingProject>
+    
+    <TreatWarningsAsErrors Condition="'$(TreatWarningsAsErrors)' == '' and '$(IsTestingProject)' == 'true'">false</TreatWarningsAsErrors>
+  </PropertyGroup>
+  
+  <!-- Define benchmarks projects and companions -->
+  <PropertyGroup Condition="$(MSBuildProjectFullPath.Contains('$([System.IO.Path]::DirectorySeparatorChar)benchmarks$([System.IO.Path]::DirectorySeparatorChar)'))">
+    <IsBenchmarkProject Condition="$(MSBuildProjectName.EndsWith('.Benchmarks'))">true</IsBenchmarkProject>
+    <IsBenchmarkingProject Condition="'$(IsBenchmarkProject)' == 'true'">true</IsBenchmarkingProject>
+    
+    <TreatWarningsAsErrors Condition="'$(TreatWarningsAsErrors)' == '' and '$(IsBenchmarkingProject)' == 'true'">false</TreatWarningsAsErrors>
   </PropertyGroup>
 
   <!-- Language configuration -->
@@ -17,14 +22,8 @@
     <Nullable>enable</Nullable>
     <!-- Enables Strict mode for Roslyn compiler -->
     <Features>strict;nullablePublicOnly</Features>
+    <TreatWarningsAsErrors Condition="'$(TreatWarningsAsErrors)' == ''">true</TreatWarningsAsErrors>
   </PropertyGroup>
-  <Choose>
-    <When Condition="'$(IsTestingProject)' != 'true'">
-      <PropertyGroup>
-        <TreatWarningsAsErrors Condition="'$(TreatWarningsAsErrors)' == ''">true</TreatWarningsAsErrors>
-      </PropertyGroup>
-    </When>
-  </Choose>
 
   <!-- Include PolySharp to generate polyfills for all projects (on their .NET Standard 2.x targets) -->
   <ItemGroup>

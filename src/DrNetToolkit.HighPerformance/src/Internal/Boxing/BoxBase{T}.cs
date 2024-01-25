@@ -2,10 +2,11 @@
 // The "DrNet Tips & Tricks" licenses this file to you under the MIT license.
 // See the License.md file in the project root for more information.
 
-namespace CommunityToolkit.HighPerformance;
+namespace DrNetToolkit.HighPerformance.Internal.Boxing;
 
 using System;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 
 /// <summary>
@@ -35,7 +36,7 @@ using System.Runtime.CompilerServices;
 /// retrieve a mutable reference to the boxing value. This means that a given boxed value can be mutated in-place,
 /// instead of having to allocate a new updated boxed instance.
 /// </summary>
-/// <typeparam name="T">The type of value being boxed.</typeparam>
+/// <typeparam name="T">The type of boxed value. Where <typeparamref name="T"/> : <see langword="struct"/>.</typeparam>
 /// <remarks>
 /// The <see cref="BoxBase{T}"/> class is never actually instantiated. Here we are just boxing the input
 /// <typeparamref name="T"/> value, and then reinterpreting that object reference as a <see cref="BoxBase{T}"/>
@@ -47,7 +48,8 @@ using System.Runtime.CompilerServices;
 /// boxed object or on a <see cref="BoxBase{T}"/> instance retrieved from it will produce the same result in all
 /// cases.
 /// </remarks>
-public abstract class BoxBase<T> where T : struct
+public abstract class BoxBase<T>
+    where T : struct
 {
     // Boxed value types in the CLR are represented in memory as simple objects that store the method table of the
     // corresponding T value type being boxed, and then the data of the value being boxed:
@@ -75,72 +77,8 @@ public abstract class BoxBase<T> where T : struct
     protected BoxBase() => throw new InvalidOperationException(
         $"The {nameof(BoxBase<T>)} constructor should never be used.");
 
-    /// <summary>
-    /// Casts the given boxed <typeparamref name="T"/> value to the specified <see cref="BoxBase{T}"/> box.
-    /// </summary>
-    /// <typeparam name="TBox">
-    /// The <see cref="BoxBase{T}"/> type of a box which the boxed <typeparamref name="T"/> value will be cast to.
-    /// </typeparam>
-    /// <param name="obj">The boxed <typeparamref name="T"/> value to cast.</param>
-    /// <returns>
-    /// The original boxed <typeparamref name="T"/> value, casted to the box of given <see cref="BoxBase{T}"/> type.
-    /// </returns>
-    /// <exception cref="InvalidCastException">
-    /// Thrown when a cast from an invalid <see cref="object"/> is attempted.
-    /// </exception>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    protected static TBox CastFrom<TBox>(object obj) where TBox : BoxBase<T>
-    {
-        if (obj.GetType() != typeof(T))
-        {
-            ThrowInvalidCastExceptionForGetFrom();
-        }
-
-        return Unsafe.As<TBox>(obj);
-    }
-
-    /// <summary>
-    /// Try casting the given boxed <typeparamref name="T"/> value to the specified <see cref="BoxBase{T}"/> box.
-    /// </summary>
-    /// <typeparam name="TBox">
-    /// The <see cref="BoxBase{T}"/> type of a box which the boxed <typeparamref name="T"/> value will be cast to.
-    /// </typeparam>
-    /// <param name="obj">The boxed <typeparamref name="T"/> value to cast.</param>
-    /// <returns>
-    /// <see langword="null"/> if given object is not boxed <typeparamref name="T"/> value, otherwise the original
-    /// boxed <typeparamref name="T"/> value, casted to the specified box type.
-    /// </returns>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    protected static TBox? TryCastFrom<TBox>(object obj) where TBox : BoxBase<T>
-    {
-        if (obj.GetType() != typeof(T))
-        {
-            return null;
-        }
-
-        return Unsafe.As<TBox>(obj);
-    }
-
-    /// <summary>
-    /// Casts the given boxed <typeparamref name="T"/> value to the specified <see cref="BoxBase{T}"/> box.
-    /// </summary>
-    /// <typeparam name="TBox">
-    /// The <see cref="BoxBase{T}"/> type of a box which the boxed <typeparamref name="T"/> value will be cast to.
-    /// </typeparam>
-    /// <param name="obj">The boxed <typeparamref name="T"/> value to cast.</param>
-    /// <returns>
-    /// The original boxed <typeparamref name="T"/> value, casted to the box of given <see cref="BoxBase{T}"/> type.
-    /// </returns>
-    /// <remarks>
-    /// This method doesn't check the actual type of <paramref name="obj"/>, so it is responsibility of the caller
-    /// to ensure it actually represents a boxed <typeparamref name="T"/> value and not some other instance.
-    /// </remarks>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    protected static TBox DangerousCastFrom<TBox>(object obj) where TBox : BoxBase<T>
-        => Unsafe.As<TBox>(obj);
-
 #pragma warning disable CS0649 // Field 'BoxBase<T>._value' is never assigned to, and will always have its default value
-    internal readonly T _value; // used for fast unboxing
+    private readonly T _value; // used for fast unboxing
 #pragma warning restore CS0649 // Field 'BoxBase<T>._value' is never assigned to, and will always have its default value
 
     /// <summary>
@@ -157,19 +95,26 @@ public abstract class BoxBase<T> where T : struct
     /// <summary>Gets a readonly reference to the boxed <typeparamref name="T"/> value from this box.</summary>
     /// <returns>A readonly reference to the boxed <typeparamref name="T"/> value from this box.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public ref readonly T GetReference() => ref Unsafe.AsRef(this._value);
+    public ref readonly T GetReference() => ref Unsafe.AsRef(in this._value);
 
     /// <summary>Gets a reference to the boxed <typeparamref name="T"/> value from this box.</summary>
     /// <returns>A reference to the boxed <typeparamref name="T"/> value from this box.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public ref T GetDangerousReference() => ref Unsafe.AsRef(this._value);
+    public ref T GetDangerousReference() => ref Unsafe.AsRef(in this._value);
 
     /// <summary>
-    /// Implicitly gets the <typeparamref name="T"/> value from a given <see cref="BoxBase{T}"/> instance.
+    /// Implicitly gets the <typeparamref name="T"/> value from a given <see cref="BoxBase{T}"/> boxed instance.
     /// </summary>
-    /// <param name="box">The input <see cref="BoxBase{T}"/> instance.</param>
+    /// <param name="box">The <see cref="BoxBase{T}"/> boxed instance.</param>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static implicit operator T(BoxBase<T> box) => box._value;
+
+    /// <summary>
+    /// Implicitly gets the <typeparamref name="T"/>? value from a given <see cref="BoxBase{T}"/>? boxed instance.
+    /// </summary>
+    /// <param name="box">The <see cref="BoxBase{T}"/>? boxed value.</param>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static implicit operator T?(BoxBase<T>? box) => box?._value;
 
     /// <summary>
     /// Always throws an <see cref="InvalidCastException"/> when a cast from an invalid <see cref="object"/> is
@@ -179,6 +124,7 @@ public abstract class BoxBase<T> where T : struct
     /// Always thrown when a cast from an invalid <see cref="object"/> is attempted.
     /// </exception>
     [MethodImpl(MethodImplOptions.NoInlining)]
+    [DoesNotReturn]
     private static void ThrowInvalidCastExceptionForGetFrom() =>
         throw new InvalidCastException($"Can't cast the input object to the type Box<{typeof(T)}>");
 }
