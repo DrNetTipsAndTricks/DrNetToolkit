@@ -8,6 +8,7 @@ using DrNetToolkit.HighPerformance.Internal.Boxing;
 using DrNetToolkit.HighPerformance.Boxing;
 
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Runtime.CompilerServices;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -346,6 +347,25 @@ public class Box_Tests
             Assert.IsTrue(box != test.ToBox());
 
             Assert.IsFalse(box.Equals(null));
+
+            // IComparable
+            if (value is IComparable<T>)
+            {
+                int compare = Math.Sign(Comparer<T>.Default.Compare(value, test));
+
+                Assert.AreEqual(0, box.CompareTo(value.ToBox()));
+                Assert.AreEqual(compare, Math.Sign(box.CompareTo(test.ToBox())));
+
+                Assert.IsFalse(box < value.ToBox());
+                Assert.IsFalse(box > value.ToBox());
+                Assert.AreEqual(compare < 0, box < test.ToBox());
+                Assert.AreEqual(compare > 0, box > test.ToBox());
+
+                Assert.IsTrue(box <= value.ToBox());
+                Assert.IsTrue(box >= value.ToBox());
+                Assert.AreEqual(compare <= 0, box <= test.ToBox());
+                Assert.AreEqual(compare >= 0, box >= test.ToBox());
+            }
         }
     }
 
