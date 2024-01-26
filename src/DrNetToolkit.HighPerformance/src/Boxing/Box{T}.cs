@@ -53,15 +53,17 @@ public sealed class Box<T> : BoxBase<T>, IEquatable<Box<T>>, IComparable<Box<T>>
     /// </summary>
     /// <param name="left">A boxed value to compare with <paramref name="right"/> boxed value.</param>
     /// <param name="right">A boxed value to compare with <paramref name="left"/> boxed value.</param>
-    /// <returns><see langword="true"/> if the current boxed value is not equal to the other boxed value OR not both
-    /// boxes are <see langword="null"/>; otherwise, <see langword="false"/>.</returns>
+    /// <returns>
+    /// <see langword="true"/> if the current boxed value is not equal to the other boxed value OR not both
+    /// boxes are <see langword="null"/>; otherwise, <see langword="false"/>.
+    /// </returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool operator !=(Box<T> left, Box<T> right)
         => !(left == right);
 
     /// <summary>
-    /// Compares the boxed value with another boxed value and returns an integer that indicates whether the current
-    /// boxed value precedes, follows, or occurs in the same position in the sort order as the other boxed value.
+    /// Compares this boxed value with another boxed value and returns an integer that indicates whether the this boxed
+    /// value precedes, follows, or occurs in the same position in the sort order as the other boxed value.
     /// </summary>
     /// <param name="other">A boxed value to compare with this boxed value.</param>
     /// <returns>
@@ -69,7 +71,7 @@ public sealed class Box<T> : BoxBase<T>, IEquatable<Box<T>>, IComparable<Box<T>>
     /// meanings:
     /// <list type="table">
     ///     <listheader>
-    ///         <term>Value</term>
+    ///         <term>Return Value</term>
     ///         <description>Meaning</description>
     ///     </listheader>
     ///     <item>
@@ -90,51 +92,56 @@ public sealed class Box<T> : BoxBase<T>, IEquatable<Box<T>>, IComparable<Box<T>>
         => Comparer<T>.Default.Compare(this, other);
 
     /// <summary>
-    /// Indicates whether the one boxed value is less then another boxed value.
+    /// Indicates whether the <paramref name="left"/> boxed value is less then the <paramref name="right"/> boxed
+    /// value.
     /// </summary>
-    /// <param name="left">A boxed value to compare with <paramref name="right"/> boxed value.</param>
-    /// <param name="right">A boxed value to compare with <paramref name="left"/> boxed value.</param>
+    /// <param name="left">A boxed value to compare with the <paramref name="right"/> boxed value.</param>
+    /// <param name="right">A boxed value to compare with the <paramref name="left"/> boxed value.</param>
     /// <returns>
-    /// true if <paramref name="left"/> boxed value is less than <paramref name="right"/> boxed value; false otherwise.
+    /// <see langword="true"/> if the <paramref name="left"/> boxed value is less than the <paramref name="right"/>
+    /// boxed value; <see langword="false"/> otherwise.
     /// </returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool operator <(Box<T> left, Box<T> right)
         => left.CompareTo(right) < 0;
 
     /// <summary>
-    /// Indicates whether the one boxed value is great then another boxed value.
+    /// Indicates whether the <paramref name="left"/> boxed value is greater then the <paramref name="right"/> boxed
+    /// value.
     /// </summary>
-    /// <param name="left">A boxed value to compare with <paramref name="right"/> boxed value.</param>
-    /// <param name="right">A boxed value to compare with <paramref name="left"/> boxed value.</param>
+    /// <param name="left">A boxed value to compare with the <paramref name="right"/> boxed value.</param>
+    /// <param name="right">A boxed value to compare with the <paramref name="left"/> boxed value.</param>
     /// <returns>
-    /// true if <paramref name="left"/> boxed value is great than <paramref name="right"/> boxed value; false
-    /// otherwise.
+    /// <see langword="true"/> if the <paramref name="left"/> boxed value is greater than the <paramref name="right"/>
+    /// boxed value; <see langword="false"/> otherwise.
     /// </returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool operator >(Box<T> left, Box<T> right)
         => left.CompareTo(right) > 0;
 
     /// <summary>
-    /// Indicates whether the one boxed value is less then or equal to another boxed value.
+    /// Indicates whether the <paramref name="left"/> boxed value is less then or equal to the <paramref name="right"/>
+    /// boxed value.
     /// </summary>
-    /// <param name="left">A boxed value to compare with <paramref name="right"/> boxed value.</param>
-    /// <param name="right">A boxed value to compare with <paramref name="left"/> boxed value.</param>
+    /// <param name="left">A boxed value to compare with the the <paramref name="right"/> boxed value.</param>
+    /// <param name="right">A boxed value to compare with the the <paramref name="left"/> boxed value.</param>
     /// <returns>
-    /// true if <paramref name="left"/> boxed value is less than or equal to <paramref name="right"/> boxed value;
-    /// false otherwise.
+    /// <see langword="true"/> if the <paramref name="left"/> boxed value is less than or equal to the
+    /// <paramref name="right"/> boxed value; <see langword="false"/> otherwise.
     /// </returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool operator <=(Box<T> left, Box<T> right)
         => left.CompareTo(right) <= 0;
 
     /// <summary>
-    /// Indicates whether the one boxed value is great then or equal to another boxed value.
+    /// Indicates whether the <paramref name="left"/> boxed value is greater then or equal to the
+    /// <paramref name="right"/> boxed value.
     /// </summary>
-    /// <param name="left">A boxed value to compare with <paramref name="right"/> boxed value.</param>
-    /// <param name="right">A boxed value to compare with <paramref name="left"/> boxed value.</param>
+    /// <param name="left">A boxed value to compare with the <paramref name="right"/> boxed value.</param>
+    /// <param name="right">A boxed value to compare with the <paramref name="left"/> boxed value.</param>
     /// <returns>
-    /// true if <paramref name="left"/> boxed value is great than or equal to <paramref name="right"/> boxed value;
-    /// false otherwise.
+    /// <see langword="true"/> if the <paramref name="left"/> boxed value is greater than or equal to the 
+    /// <paramref name="right"/> boxed value; <see langword="false"/> otherwise.
     /// </returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool operator >=(Box<T> left, Box<T> right)
