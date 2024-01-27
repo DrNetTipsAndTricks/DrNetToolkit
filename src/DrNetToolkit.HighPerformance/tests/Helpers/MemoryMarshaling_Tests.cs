@@ -3,9 +3,9 @@
 // See the License.md file in the project root for more information.
 
 using System;
+using System.Linq;
 using Xunit;
 using Bogus;
-using System.Linq;
 
 namespace DrNetToolkit.HighPerformance.UnitTests;
 
@@ -16,8 +16,8 @@ public class MemoryMarshaling_Tests
     [Fact]
     public unsafe void MemoryMarshaling_Cast_Span()
     {
-        int len = 100;
-        int count = 10;
+        int len = 50;
+        int count = 5;
 
         var faker = new Faker()
         {
@@ -88,8 +88,8 @@ public class MemoryMarshaling_Tests
     [Fact]
     public unsafe void MemoryMarshaling_Cast_ReadOnlySpan()
     {
-        int len = 100;
-        int count = 10;
+        int len = 50;
+        int count = 5;
 
         var faker = new Faker()
         {

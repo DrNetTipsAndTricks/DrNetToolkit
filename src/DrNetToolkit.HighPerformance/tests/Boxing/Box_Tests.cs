@@ -78,7 +78,7 @@ public class Box_Tests
         Assert.Same(lObj, boxObj);
 
         Assert.Equal(iValue, box.GetReference());
-        Assert.Equal(iValue, box.GetDangerousReference());
+        Assert.Equal(iValue, box.DangerousGetReference());
         Assert.Equal(iValue, box.Value);
         Assert.Equal(iValue, (int)box);
         Assert.Equal(iValue, (long)box);
@@ -86,28 +86,28 @@ public class Box_Tests
         Assert.NotEqual(iValue, (long)boxObj);
 
         Assert.NotEqual(lValue, box.GetReference());
-        Assert.NotEqual(lValue, box.GetDangerousReference());
+        Assert.NotEqual(lValue, box.DangerousGetReference());
         Assert.NotEqual(lValue, box.Value);
         Assert.NotEqual(lValue, (int)box);
         Assert.NotEqual(lValue, (long)box);
         Assert.Equal(lValue, (long)boxObj);
 
         Assert.Equal(iObj, box.GetReference());
-        Assert.Equal(iObj, box.GetDangerousReference());
+        Assert.Equal(iObj, box.DangerousGetReference());
         Assert.Equal(iObj, box.Value);
         Assert.Equal(iObj, (int)box);
         Assert.NotEqual(iObj, (long)box);
         Assert.NotEqual(iObj, (long)boxObj);
 
         Assert.NotEqual(lObj, box.GetReference());
-        Assert.NotEqual(lObj, box.GetDangerousReference());
+        Assert.NotEqual(lObj, box.DangerousGetReference());
         Assert.NotEqual(lObj, box.Value);
         Assert.NotEqual(lObj, (int)box);
         Assert.NotEqual(lObj, (long)box);
         Assert.Equal(lObj, (long)boxObj);
 
         Assert.NotEqual(boxObj, box.GetReference());
-        Assert.NotEqual(boxObj, box.GetDangerousReference());
+        Assert.NotEqual(boxObj, box.DangerousGetReference());
         Assert.NotEqual(boxObj, box.Value);
         Assert.NotEqual(boxObj, (int)box);
         Assert.NotEqual(boxObj, (long)box);
@@ -152,7 +152,7 @@ public class Box_Tests
         // Testing that unboxing uses a fast process without unnecessary type-checking
         _ = (ValueTuple)Unsafe.As<Box<int>, Box<ValueTuple>>(ref box);
         _ = Unsafe.As<Box<int>, Box<ValueTuple>>(ref box).GetReference();
-        _ = Unsafe.As<Box<int>, Box<ValueTuple>>(ref box).GetDangerousReference();
+        _ = Unsafe.As<Box<int>, Box<ValueTuple>>(ref box).DangerousGetReference();
     }
 
     /// <summary>
@@ -262,7 +262,7 @@ public class Box_Tests
             box = obj.AsBox<T>();
             boxObj = box;
 
-            box.GetDangerousReference() = test;
+            box.DangerousGetReference() = test;
             Assert.Same(obj, box);
             Assert.Same(obj, boxObj);
             (value, test) = (test, value);
@@ -273,7 +273,7 @@ public class Box_Tests
         // Testing that unboxing uses a fast process without unnecessary type-checking
         _ = (ValueTuple)Unsafe.As<Box<T>, Box<ValueTuple>>(ref box);
         _ = Unsafe.As<Box<T>, Box<ValueTuple>>(ref box).GetReference();
-        _ = Unsafe.As<Box<T>, Box<ValueTuple>>(ref box).GetDangerousReference();
+        _ = Unsafe.As<Box<T>, Box<ValueTuple>>(ref box).DangerousGetReference();
 
         void Test()
         {
@@ -281,21 +281,21 @@ public class Box_Tests
             Assert.Same(box, boxObj);
 
             Assert.Equal(value, box.GetReference());
-            Assert.Equal(value, box.GetDangerousReference());
+            Assert.Equal(value, box.DangerousGetReference());
             Assert.Equal(value, box.Value);
             Assert.Equal(value, (T)box);
             Assert.Equal(value, (T)boxObj);
             Assert.Equal(value, boxObj);
 
             Assert.Equal(obj, box.GetReference());
-            Assert.Equal(obj, box.GetDangerousReference());
+            Assert.Equal(obj, box.DangerousGetReference());
             Assert.Equal(obj, box.Value);
             Assert.Equal(obj, (T)box);
             Assert.Equal(obj, (T)boxObj);
             Assert.Equal(obj, boxObj);
 
             Assert.Equal(boxObj, box.GetReference());
-            Assert.Equal(boxObj, box.GetDangerousReference());
+            Assert.Equal(boxObj, box.DangerousGetReference());
             Assert.Equal(boxObj, box.Value);
             Assert.Equal(boxObj, (T)box);
             Assert.Equal(boxObj, (T)boxObj);
@@ -317,7 +317,7 @@ public class Box_Tests
 
             // test
             Assert.NotEqual(test, box.GetReference());
-            Assert.NotEqual(test, box.GetDangerousReference());
+            Assert.NotEqual(test, box.DangerousGetReference());
             Assert.NotEqual(test, box.Value);
             Assert.NotEqual(test, (T)box);
             Assert.NotEqual(test, (T)boxObj);

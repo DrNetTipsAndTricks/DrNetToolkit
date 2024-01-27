@@ -37,7 +37,7 @@ public class Box_SetValue_Benchmarks
     {
         for (int i = 0; i < this.Count; i++)
         {
-            this.box.GetDangerousReference() = i;
+            this.box.DangerousGetReference() = i;
         }
     }
 }

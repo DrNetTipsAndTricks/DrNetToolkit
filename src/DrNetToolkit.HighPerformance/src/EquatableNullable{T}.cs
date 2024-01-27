@@ -3,8 +3,6 @@
 // See the License.md file in the project root for more information.
 
 using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 
 namespace DrNetToolkit.HighPerformance;
@@ -31,8 +29,8 @@ namespace DrNetToolkit.HighPerformance;
 /// <see cref="Nullable{T}"/> value.
 /// </remarks>
 [method: MethodImpl(MethodImplOptions.AggressiveInlining)]
-public readonly struct EquatableNullable<T>(T? value)
-    : IEquatable<EquatableNullable<T>>, IComparable<EquatableNullable<T>>
+public readonly struct EquatableNullable<T>(T? value) :
+    IEquatable<EquatableNullable<T>>, IComparable<EquatableNullable<T>>
     where T : struct
 {
     /// <summary>
@@ -46,40 +44,6 @@ public readonly struct EquatableNullable<T>(T? value)
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         get;
     } = value;
-
-    ///// <summary>
-    ///// Gets a value indicating whether the current <see cref="EquatableNullable{T}"/> object has a valid value of its
-    ///// underlying type.
-    ///// </summary>
-    ///// <returns>
-    ///// <see langword="true"/> if the current <see cref="EquatableNullable{T}"/> structure has a value;
-    ///// <see langword="false"/> if the current <see cref="EquatableNullable{T}"/> structure has no value.
-    ///// </returns>
-    ///// <seealso cref="Nullable{T}.HasValue"/>
-    //public readonly bool HasValue
-    //{
-    //    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    //    get => NullableValue.HasValue;
-    //}
-
-    ///// <summary>
-    ///// Gets the value of the current <see cref="EquatableNullable{T}"/> structure if it has been assigned a valid
-    ///// underlying value.
-    ///// </summary>
-    ///// <returns>
-    ///// The value of the current <see cref="EquatableNullable{T}"/> structure if the <see cref="HasValue"/> property is
-    ///// <see langword="true"/>. An exception is thrown if the <see cref="HasValue"/> property is
-    ///// <see langword="false"/>.
-    ///// </returns>
-    ///// <exception cref="InvalidOperationException">
-    ///// The <see cref="HasValue"/> property is <see langword="false"/>.
-    ///// </exception>
-    ///// <seealso cref="Nullable{T}.Value"/>
-    //public readonly T Value
-    //{
-    //    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    //    get => NullableValue!.Value;
-    //}
 
     /// <summary>
     /// Retrieves the value of the current <see cref="EquatableNullable{T}"/> structure, or the default value of the
@@ -138,7 +102,12 @@ public readonly struct EquatableNullable<T>(T? value)
     /// <seealso cref="Nullable{T}.Equals(object)"/>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override bool Equals(object? other)
-        => NullableValue.Equals(other);
+    {
+        if (other is EquatableNullable<T> equatable)
+            return Equals(equatable);
+
+        return NullableValue.Equals(other);
+    }
 
     /// <summary>
     /// Retrieves the hash code of the value returned by the <see cref="Value"/> property.
@@ -226,7 +195,7 @@ public readonly struct EquatableNullable<T>(T? value)
     /// </returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool Equals(EquatableNullable<T> other)
-        => EqualityComparer<T?>.Default.Equals(NullableValue, other.NullableValue);
+        => Nullable.Equals(NullableValue, other.NullableValue);
 
     /// <summary>
     /// Indicates whether the <paramref name="left"/> value is equal to the <paramref name="right"/> value.
@@ -239,7 +208,7 @@ public readonly struct EquatableNullable<T>(T? value)
     /// </returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool operator ==(EquatableNullable<T> left, EquatableNullable<T> right)
-        => EqualityComparer<T?>.Default.Equals(left.NullableValue, right.NullableValue);
+        => Nullable.Equals(left.NullableValue, right.NullableValue);
 
     /// <summary>
     /// Indicates whether the <paramref name="left"/> value is not equal to the <paramref name="right"/> value.
@@ -252,7 +221,7 @@ public readonly struct EquatableNullable<T>(T? value)
     /// </returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool operator !=(EquatableNullable<T> left, EquatableNullable<T> right)
-        => !EqualityComparer<T?>.Default.Equals(left.NullableValue, right.NullableValue);
+        => !Nullable.Equals(left.NullableValue, right.NullableValue);
 
     /// <summary>
     /// Compares this value with another value and returns an integer that indicates whether the this value precedes, 
@@ -282,7 +251,7 @@ public readonly struct EquatableNullable<T>(T? value)
     /// </returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public int CompareTo(EquatableNullable<T> other)
-        => Comparer<T?>.Default.Compare(NullableValue, other.NullableValue);
+        => Nullable.Compare(NullableValue, other.NullableValue);
 
     /// <summary>
     /// Indicates whether the <paramref name="left"/> value is less than the <paramref name="right"/> value.
@@ -294,7 +263,7 @@ public readonly struct EquatableNullable<T>(T? value)
     /// <see langword="false"/> otherwise.
     /// </returns>
     public static bool operator <(EquatableNullable<T> left, EquatableNullable<T> right)
-        => Comparer<T?>.Default.Compare(left, right) < 0;
+        => Nullable.Compare(left.NullableValue, right.NullableValue) < 0;
 
     /// <summary>
     /// Indicates whether the <paramref name="left"/> value is greater than the <paramref name="right"/> value.
@@ -306,7 +275,7 @@ public readonly struct EquatableNullable<T>(T? value)
     /// <see langword="false"/> otherwise.
     /// </returns>
     public static bool operator >(EquatableNullable<T> left, EquatableNullable<T> right)
-        => Comparer<T?>.Default.Compare(left, right) > 0;
+        => Nullable.Compare(left.NullableValue, right.NullableValue) > 0;
 
     /// <summary>
     /// Indicates whether the <paramref name="left"/> value is less than or equal to the <paramref name="right"/>
@@ -318,7 +287,7 @@ public readonly struct EquatableNullable<T>(T? value)
     /// <see langword="true"/> if the <paramref name="left"/> value is less than or equal to the
     /// <paramref name="right"/> value; <see langword="false"/> otherwise.
     public static bool operator <=(EquatableNullable<T> left, EquatableNullable<T> right)
-        => Comparer<T?>.Default.Compare(left, right) <= 0;
+        => Nullable.Compare(left.NullableValue, right.NullableValue) <= 0;
 
     /// <summary>
     /// Indicates whether the <paramref name="left"/> value is greater than or equal to the <paramref name="right"/> 
@@ -331,7 +300,7 @@ public readonly struct EquatableNullable<T>(T? value)
     /// <paramref name="right"/> value; <see langword="false"/> otherwise.
     /// </returns>
     public static bool operator >=(EquatableNullable<T> left, EquatableNullable<T> right)
-        => Comparer<T?>.Default.Compare(left, right) >= 0;
+        => Nullable.Compare(left.NullableValue, right.NullableValue) >= 0;
 }
 
 public static partial class SpanExtensions

@@ -4,7 +4,6 @@
 
 using System;
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using DrNetToolkit.HighPerformance.ThrowHelpers;
 
@@ -101,7 +100,7 @@ public abstract class BoxBase<T>
     /// <summary>Gets a reference to the boxed <typeparamref name="T"/> value from this box.</summary>
     /// <returns>A reference to the boxed <typeparamref name="T"/> value from this box.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public ref T GetDangerousReference() => ref Unsafe.AsRef(in _value);
+    public ref T DangerousGetReference() => ref Unsafe.AsRef(in _value);
 
     /// <summary>
     /// Implicitly gets the <typeparamref name="T"/> value from a given <see cref="BoxBase{T}"/> boxed instance.
