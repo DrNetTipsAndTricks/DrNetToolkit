@@ -8,11 +8,12 @@ using System.Globalization;
 using System.Runtime.CompilerServices;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using DrNetToolkit.HighPerformance.Boxing;
+using DrNetToolkit.HighPerformance.Protected.Boxing;
 
 namespace DrNetToolkit.HighPerformance.UnitTests;
 
 [TestClass]
-public class MemoryMarshaling_Tests
+public class Box_Tests
 {
     [TestMethod]
     public void Box_Valid()
@@ -379,9 +380,9 @@ public class MemoryMarshaling_Tests
 
         /// <inheritdoc/>
         public readonly bool Equals(TestStruct other) =>
-            this.Number == other.Number &&
-                this.Character == other.Character &&
-                this.Text == other.Text;
+            Number == other.Number &&
+                Character == other.Character &&
+                Text == other.Text;
     }
 
 #if NETSTANDARD2_1_OR_GREATER

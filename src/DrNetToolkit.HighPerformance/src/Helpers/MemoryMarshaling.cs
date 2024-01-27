@@ -39,7 +39,7 @@ public static partial class MemoryMarshaling
         // Use unsigned integers - unsigned division by constant (especially by power of 2)
         // and checked casts are faster and smaller.
         uint fromSize = (uint)Unsafe.SizeOf<TFrom?>();
-        uint toSize = (uint)Unsafe.SizeOf<TTo?>();
+        uint toSize = (uint)Unsafe.SizeOf<TTo>();
         uint fromLength = (uint)span.Length;
         int toLength;
         if (fromSize == toSize)
