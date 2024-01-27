@@ -9,16 +9,26 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DrNetToolkit.HighPerformanc
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DrNetToolkit.HighPerformance.Benchmarks", "src\DrNetToolkit.HighPerformance\benchmarks\DrNetToolkit.HighPerformance.Benchmarks.csproj", "{CADE15D7-D3E8-4263-B9C7-788D4450760F}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionItems", "{02B4116A-CFC5-4685-9B95-E0D141E5D7C0}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{02B4116A-CFC5-4685-9B95-E0D141E5D7C0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Config", "Config", "{5CA19DC6-6C0A-404E-B763-4998D465A20A}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 		.gitattributes = .gitattributes
 		.gitignore = .gitignore
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{45DD5601-3186-460F-A50E-D4CF1022665A}"
+	ProjectSection(SolutionItems) = preProject
 		Copyright.md = Copyright.md
-		Directory.Build.props = Directory.Build.props
-		Directory.Build.targets = Directory.Build.targets
 		License.md = License.md
 		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{9BE8C30E-E6CE-46A3-9ADF-7067F9C76431}"
+	ProjectSection(SolutionItems) = preProject
+		Directory.Build.props = Directory.Build.props
+		Directory.Build.targets = Directory.Build.targets
 	EndProjectSection
 EndProject
 Global
@@ -42,6 +52,11 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{5CA19DC6-6C0A-404E-B763-4998D465A20A} = {02B4116A-CFC5-4685-9B95-E0D141E5D7C0}
+		{45DD5601-3186-460F-A50E-D4CF1022665A} = {02B4116A-CFC5-4685-9B95-E0D141E5D7C0}
+		{9BE8C30E-E6CE-46A3-9ADF-7067F9C76431} = {02B4116A-CFC5-4685-9B95-E0D141E5D7C0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9C72CE3D-438E-404D-818D-7A4C576C6903}

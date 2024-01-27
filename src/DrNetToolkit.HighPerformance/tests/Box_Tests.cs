@@ -2,19 +2,17 @@
 // The "DrNet Tips & Tricks" licenses this file to you under the MIT license.
 // See the License.md file in the project root for more information.
 
-namespace DrNetToolkit.HighPerformance.UnitTests;
-
-using DrNetToolkit.HighPerformance.Internal.Boxing;
-using DrNetToolkit.HighPerformance.Boxing;
-
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Runtime.CompilerServices;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using DrNetToolkit.HighPerformance.Boxing;
+
+namespace DrNetToolkit.HighPerformance.UnitTests;
 
 [TestClass]
-public class Box_Tests
+public class MemoryMarshaling_Tests
 {
     [TestMethod]
     public void Box_Valid()

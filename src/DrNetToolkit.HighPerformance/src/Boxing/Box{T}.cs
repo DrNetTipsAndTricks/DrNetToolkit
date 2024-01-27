@@ -2,12 +2,12 @@
 // The "DrNet Tips & Tricks" licenses this file to you under the MIT license.
 // See the License.md file in the project root for more information.
 
-namespace DrNetToolkit.HighPerformance.Boxing;
-
-using DrNetToolkit.HighPerformance.Internal.Boxing;
 using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using DrNetToolkit.HighPerformance.Protected.Boxing;
+
+namespace DrNetToolkit.HighPerformance.Boxing;
 
 #pragma warning disable CS0660 // Type defines operator == or operator != but does not override Object.Equals(object o)
 #pragma warning disable CS0661 // Type defines operator == or operator != but does not override Object.GetHashCode()
