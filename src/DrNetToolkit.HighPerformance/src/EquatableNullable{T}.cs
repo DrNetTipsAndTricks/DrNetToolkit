@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 
 namespace DrNetToolkit.HighPerformance;
@@ -46,39 +47,39 @@ public readonly struct EquatableNullable<T>(T? value)
         get;
     } = value;
 
-    /// <summary>
-    /// Gets a value indicating whether the current <see cref="EquatableNullable{T}"/> object has a valid value of its
-    /// underlying type.
-    /// </summary>
-    /// <returns>
-    /// <see langword="true"/> if the current <see cref="EquatableNullable{T}"/> structure has a value;
-    /// <see langword="false"/> if the current <see cref="EquatableNullable{T}"/> structure has no value.
-    /// </returns>
-    /// <seealso cref="Nullable{T}.HasValue"/>
-    public readonly bool HasValue
-    {
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        get => NullableValue.HasValue;
-    }
+    ///// <summary>
+    ///// Gets a value indicating whether the current <see cref="EquatableNullable{T}"/> object has a valid value of its
+    ///// underlying type.
+    ///// </summary>
+    ///// <returns>
+    ///// <see langword="true"/> if the current <see cref="EquatableNullable{T}"/> structure has a value;
+    ///// <see langword="false"/> if the current <see cref="EquatableNullable{T}"/> structure has no value.
+    ///// </returns>
+    ///// <seealso cref="Nullable{T}.HasValue"/>
+    //public readonly bool HasValue
+    //{
+    //    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    //    get => NullableValue.HasValue;
+    //}
 
-    /// <summary>
-    /// Gets the value of the current <see cref="EquatableNullable{T}"/> structure if it has been assigned a valid
-    /// underlying value.
-    /// </summary>
-    /// <returns>
-    /// The value of the current <see cref="EquatableNullable{T}"/> structure if the <see cref="HasValue"/> property is
-    /// <see langword="true"/>. An exception is thrown if the <see cref="HasValue"/> property is
-    /// <see langword="false"/>.
-    /// </returns>
-    /// <exception cref="InvalidOperationException">
-    /// The <see cref="HasValue"/> property is <see langword="false"/>.
-    /// </exception>
-    /// <seealso cref="Nullable{T}.Value"/>
-    public readonly T Value
-    {
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        get => NullableValue!.Value;
-    }
+    ///// <summary>
+    ///// Gets the value of the current <see cref="EquatableNullable{T}"/> structure if it has been assigned a valid
+    ///// underlying value.
+    ///// </summary>
+    ///// <returns>
+    ///// The value of the current <see cref="EquatableNullable{T}"/> structure if the <see cref="HasValue"/> property is
+    ///// <see langword="true"/>. An exception is thrown if the <see cref="HasValue"/> property is
+    ///// <see langword="false"/>.
+    ///// </returns>
+    ///// <exception cref="InvalidOperationException">
+    ///// The <see cref="HasValue"/> property is <see langword="false"/>.
+    ///// </exception>
+    ///// <seealso cref="Nullable{T}.Value"/>
+    //public readonly T Value
+    //{
+    //    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    //    get => NullableValue!.Value;
+    //}
 
     /// <summary>
     /// Retrieves the value of the current <see cref="EquatableNullable{T}"/> structure, or the default value of the
@@ -202,7 +203,7 @@ public readonly struct EquatableNullable<T>(T? value)
     /// </returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static implicit operator T?(EquatableNullable<T> value)
-        => value.Value;
+        => value.NullableValue;
 
     /// <summary>
     /// Defines an explicit conversion of a <see cref="EquatableNullable{T}"/> instance to its underlying value.
@@ -212,7 +213,8 @@ public readonly struct EquatableNullable<T>(T? value)
     /// The value of the <see cref="Value"/> property for the <paramref name="value"/> parameter.
     /// </returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static explicit operator T(EquatableNullable<T> value) => value.Value;
+    public static explicit operator T(EquatableNullable<T> value)
+        => value.NullableValue!.Value;
 
     /// <summary>
     /// Indicates whether this value is equal to another value.
@@ -347,7 +349,7 @@ public static partial class SpanExtensions
     /// A <see cref="Span{T}"/> with <see cref="EquatableNullable{T}"/> elements that support the 
     /// <see cref="IEquatable{T}"/> and <see cref="IComparable{T}"/> interfaces.
     /// </returns>
-    public static Span<EquatableNullable<T>> CastToEquatable<T>(this Span<T?> source)
+    public static Span<EquatableNullable<T>> AsEquatable<T>(this Span<T?> source)
         where T : struct
         => MemoryMarshaling.Cast<T, EquatableNullable<T>>(source);
 
@@ -362,33 +364,40 @@ public static partial class SpanExtensions
     /// A <see cref="ReadOnlySpan{T}"/> with <see cref="EquatableNullable{T}"/> elements that support the 
     /// <see cref="IEquatable{T}"/> and <see cref="IComparable{T}"/> interfaces.
     /// </returns>
-    public static ReadOnlySpan<EquatableNullable<T>> CastToEquatable<T>(this ReadOnlySpan<T?> source)
+    public static ReadOnlySpan<EquatableNullable<T>> AsEquatable<T>(this ReadOnlySpan<T?> source)
         where T : struct
         => MemoryMarshaling.Cast<T, EquatableNullable<T>>(source);
 
-    ///// <summary>
-    ///// Creates a <see cref="Span{T}"/> with original <see cref="Nullable{T}"/> elements if you need Span with original 
-    ///// <see cref="Nullable{T}"/> elements after <see cref="WithEquatableNullable{T}(Span{T?})"/> method.
-    ///// </summary>
-    ///// <typeparam name="T">The underlying value type of span elements.</typeparam>
-    ///// <param name="source">A source with <see cref="EquatableNullable{T}"/> elements.</param>
-    ///// <returns><see cref="Span{T}"/> with <see cref="Nullable{T}"/> elements.</returns>
-    //public static Span<T?> WithNullable<T>(this Span<EquatableNullable<T>> source)
-    //    where T : struct
-    //=> MemoryMarshal.CreateSpan(ref Unsafe.As<EquatableNullable<T>, T?>(
-    //    ref MemoryMarshal.GetReference(source)), source.Length);
+    /// <summary>
+    /// Creates a <see cref="Span{T}"/> with <see cref="EquatableNullable{T}"/> elements that support the 
+    /// <see cref="IEquatable{T}"/> and <see cref="IComparable{T}"/> interfaces. After this, many 
+    /// <see cref="MemoryExtensions"/> methods for spans become available.
+    /// </summary>
+    /// <typeparam name="T">The underlying value type of <see cref="source"/> elements.</typeparam>
+    /// <param name="source">A source with <see cref="Nullable{T}"/> elements.</param>
+    /// <returns>
+    /// A <see cref="Span{T}"/> with <see cref="EquatableNullable{T}"/> elements that support the 
+    /// <see cref="IEquatable{T}"/> and <see cref="IComparable{T}"/> interfaces.
+    /// </returns>
+    public static Span<T?> AsNullable<T>(this Span<EquatableNullable<T>> source)
+        where T : struct
+        => MemoryMarshaling.CastToNullable<EquatableNullable<T>, T>(source);
 
-    ///// <summary>
-    ///// Creates a <see cref="Span{T}"/> with original <see cref="Nullable{T}"/> elements if you need Span with original 
-    ///// <see cref="Nullable{T}"/> elements after <see cref="WithEquatableNullable{T}(Span{T?})"/> method.
-    ///// </summary>
-    ///// <typeparam name="T">The underlying value type of span elements.</typeparam>
-    ///// <param name="source">A source with <see cref="EquatableNullable{T}"/> elements.</param>
-    ///// <returns><see cref="Span{T}"/> with <see cref="Nullable{T}"/> elements.</returns>
-    //public static ReadOnlySpan<T?> WithNullable<T>(this ReadOnlySpan<EquatableNullable<T>> source)
-    //    where T : struct
-    //=> MemoryMarshal.CreateReadOnlySpan(ref Unsafe.As<EquatableNullable<T>, T?>(
-    //    ref MemoryMarshal.GetReference(source)), source.Length);
+
+    /// <summary>
+    /// Creates a <see cref="Span{T}"/> with <see cref="EquatableNullable{T}"/> elements that support the 
+    /// <see cref="IEquatable{T}"/> and <see cref="IComparable{T}"/> interfaces. After this, many 
+    /// <see cref="MemoryExtensions"/> methods for spans become available.
+    /// </summary>
+    /// <typeparam name="T">The underlying value type of <see cref="source"/> elements.</typeparam>
+    /// <param name="source">A source with <see cref="Nullable{T}"/> elements.</param>
+    /// <returns>
+    /// A <see cref="Span{T}"/> with <see cref="EquatableNullable{T}"/> elements that support the 
+    /// <see cref="IEquatable{T}"/> and <see cref="IComparable{T}"/> interfaces.
+    /// </returns>
+    public static ReadOnlySpan<T?> AsNullable<T>(this ReadOnlySpan<EquatableNullable<T>> source)
+        where T : struct
+        => MemoryMarshaling.CastToNullable<EquatableNullable<T>, T>(source);
 
 #endif
 }

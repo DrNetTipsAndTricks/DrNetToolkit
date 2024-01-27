@@ -24,7 +24,7 @@ public class MemoryMarshaling_Tests
             Random = new Randomizer(248218),
         };
 
-        byte[] bytes = faker.Make(len, () => (byte)faker.Random.Number(255)).ToArray();
+        byte[] bytes = [.. faker.Make(len, () => (byte)faker.Random.Number(255))];
         byte?[] nBytes = bytes.Select(n => faker.Random.Double() > 0.1 ? (byte?)n : null).ToArray();
 
         // Nullable to Nullable
@@ -96,7 +96,7 @@ public class MemoryMarshaling_Tests
             Random = new Randomizer(792361),
         };
 
-        byte[] bytes = faker.Make(len, () => (byte)faker.Random.Number(255)).ToArray();
+        byte[] bytes = [.. faker.Make(len, () => (byte)faker.Random.Number(255))];
         byte?[] nBytes = bytes.Select(n => faker.Random.Double() > 0.1 ? (byte?)n : null).ToArray();
 
         // Nullable to Nullable
