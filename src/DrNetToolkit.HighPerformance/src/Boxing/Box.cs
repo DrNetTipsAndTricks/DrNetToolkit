@@ -65,7 +65,7 @@ public static class Box
     /// </remarks>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     [return: NotNullIfNotNull(nameof(obj))]
-    public static Box<T>? DangerousAsBox<T>(this object? obj)
+    public static Box<T>? DangerousAsBox<T>(object? obj)
         where T : struct
         => BoxBase.DangerousAsBox<T, Box<T>>(obj);
 }
