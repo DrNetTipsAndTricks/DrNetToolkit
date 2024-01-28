@@ -34,7 +34,7 @@ jobs:
 
   build-on-Windows:
 
-    runs-on: windows-latest
+    runs-on: windows-2023
     strategy:
       matrix:
         dotnet-version: [ '4.8.0' ]
