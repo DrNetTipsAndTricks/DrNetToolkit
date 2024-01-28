@@ -173,7 +173,7 @@ public class Box_Tests
 
             //Assert.Null(obj.AsBox<T>());
             //Assert.Null(obj.TryAsBox<T>());
-            Assert.Null(obj.DangerousAsBox<T>());
+            Assert.Null(Box.DangerousAsBox<T>(obj));
         }
 
         // Not null
@@ -229,7 +229,7 @@ public class Box_Tests
             Assert.Same(obj, boxObj);
             Test();
 
-            box = obj.DangerousAsBox<T>();
+            box = Box.DangerousAsBox<T>(obj);
             boxObj = box;
             Assert.Same(obj, box);
             Assert.Same(obj, boxObj);
@@ -252,7 +252,7 @@ public class Box_Tests
             boxObj = box;
             Test();
 
-            box = value.DangerousAsBox<T>();
+            box = Box.DangerousAsBox<T>(value);
             boxObj = box;
             Test();
         }
@@ -353,6 +353,7 @@ public class Box_Tests
 
                 Assert.Equal(0, box.CompareTo(value.ToBox()));
                 Assert.Equal(compare, Math.Sign(box.CompareTo(test.ToBox())));
+                Assert.Equal(1, Math.Sign(box.CompareTo(null)));
 
                 Assert.False(box < value.ToBox());
                 Assert.False(box > value.ToBox());

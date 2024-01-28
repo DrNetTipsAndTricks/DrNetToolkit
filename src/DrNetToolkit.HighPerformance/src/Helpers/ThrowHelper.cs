@@ -16,6 +16,9 @@ public static partial class ThrowHelper
         => throw new ArgumentException(
             $"Cannot use type '{targetType}'. Only value types without pointers or references are supported.");
 
+    public static void ThrowArgumentNullException(string parameterName)
+        => throw new ArgumentNullException(parameterName);
+
     [DoesNotReturn]
     public static void ThrowInvalidCastException(Type sourceType, Type targetType)
         => throw new InvalidCastException(

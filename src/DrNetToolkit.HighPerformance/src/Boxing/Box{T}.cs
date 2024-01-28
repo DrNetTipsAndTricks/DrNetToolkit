@@ -88,8 +88,8 @@ public sealed class Box<T> : BoxBase<T>, IEquatable<Box<T>>, IComparable<Box<T>>
     ///     </item>
     /// </list>
     /// </returns>
-    public int CompareTo(Box<T> other)
-        => Comparer<T>.Default.Compare(this, other);
+    public int CompareTo(Box<T>? other)
+        => other is null ? 1 : Comparer<T>.Default.Compare(this, other);
 
     /// <summary>
     /// Indicates whether the <paramref name="left"/> boxed value is less then the <paramref name="right"/> boxed

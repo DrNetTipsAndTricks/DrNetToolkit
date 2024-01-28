@@ -33,6 +33,7 @@ all rights not expressly granted herein, whether by implication, estoppel or oth
 
 ### .NET Foundation and Contributors
 
+1. 	[Various pieces of code from .NET Runtime](https://github.com/dotnet/runtime).
 1. 	[Box&lt;T&gt; included](https://github.com/CommunityToolkit/dotnet/blob/7b53ae23dfc6a7fb12d0fc058b89b6e948f48448/src/CommunityToolkit.HighPerformance/Box%7BT%7D.cs).
 
 #### License

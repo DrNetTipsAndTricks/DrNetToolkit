@@ -2,6 +2,8 @@
 // The "DrNet Tips & Tricks" licenses this file to you under the MIT license.
 // See the License.md file in the project root for more information.
 
+#if !NET7_0_OR_GREATER
+
 namespace System.Diagnostics;
 
 /// <summary>
@@ -16,3 +18,5 @@ internal sealed class StackTraceHiddenAttribute : Attribute
     /// </summary>
     public StackTraceHiddenAttribute() { }
 }
+
+#endif
