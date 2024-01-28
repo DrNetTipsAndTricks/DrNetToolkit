@@ -37,7 +37,7 @@ jobs:
     runs-on: windows-latest
     strategy:
       matrix:
-        dotnet-version: [ '7.0.15' ]
+        dotnet-version: [ '7.0.405' ]
 
     steps:
     - uses: actions/checkout@v3
