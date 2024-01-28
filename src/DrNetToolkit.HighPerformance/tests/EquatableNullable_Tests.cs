@@ -6,6 +6,8 @@ using System;
 using System.Linq;
 using Xunit;
 using Bogus;
+using System.Collections.Generic;
+using System.Collections;
 
 namespace DrNetToolkit.HighPerformance.UnitTests;
 
@@ -51,7 +53,7 @@ public class EquatableNullable_Tests
 
         for (int i = 0; i < count; i++)
         {
-            Range range = new(faker.Random.Number(len / 10), new(faker.Random.Number(len / 10), true));
+            Range range = faker.Random.Number(len / 10)..^faker.Random.Odd(len / 2, len - len / 10);
             if (i == 0)
                 range = (len / 2)..(len / 2);
 
@@ -90,7 +92,7 @@ public class EquatableNullable_Tests
 
             // ReadOnlySpan
             {
-                ReadOnlySpan<EquatableNullable<int>> eSpan = ((ReadOnlySpan<int?>)nInts.AsSpan(range)).AsEquatable();
+                ReadOnlySpan<EquatableNullable<int>> eSpan = nInts.AsSpan(range).AsReadOnlySpan().AsEquatable();
 
                 Assert.Equal(nIntsSlice, eSpan.ToArray().Select(e => e.NullableValue));
 
@@ -133,14 +135,15 @@ public class EquatableNullable_Tests
         where T : struct
     {
         T? nullable;
-        T? nullableTest = test;
+        T? nullableTest;
 
         EquatableNullable<T> equatable;
 
         // Null
-        nullable = default;
+        nullable = null;
+        nullableTest = test;
         {
-            equatable = default;
+            equatable = null;
             Test();
 
             equatable = new(nullable);
@@ -186,7 +189,7 @@ public class EquatableNullable_Tests
                 Assert.False(equatable.Equals((object)nullableTest.Value));
 
             Assert.True(equatable.Equals((object)nullable!));
-            Assert.False(equatable.Equals((object)nullableTest));
+            Assert.False(equatable.Equals((object)nullableTest!));
 
             Assert.True(equatable.Equals((EquatableNullable<T>)nullable));
             Assert.False(equatable.Equals((EquatableNullable<T>)nullableTest));
@@ -215,19 +218,52 @@ public class EquatableNullable_Tests
             Assert.Equal(nullable is null, equatable.Equals((EquatableNullable<T>)null));
             Assert.Equal(nullable is null, ((EquatableNullable<T>)null).Equals(equatable));
 
-#pragma warning disable CS1718 // Comparison made to same variable
             Assert.True(equatable == (EquatableNullable<T>)nullable);
             Assert.False(equatable == (EquatableNullable<T>)nullableTest);
             Assert.Equal(nullable is null, equatable == (EquatableNullable<T>)null);
             Assert.Equal(nullable is null, (EquatableNullable<T>)null == equatable);
 
-            Assert.False(equatable != equatable);
+            Assert.False(equatable != (EquatableNullable<T>)nullable);
             Assert.True(equatable != (EquatableNullable<T>)nullableTest);
             Assert.Equal(nullable is not null, equatable != (EquatableNullable<T>)null);
             Assert.Equal(nullable is not null, (EquatableNullable<T>)null != equatable);
-#pragma warning restore CS1718 // Comparison made to same variable
 
             // IComparable
+            {
+                Comparer<T?> comparer = Comparer<T?>.Default;
+
+                Assert.Equal(0, equatable.CompareTo((EquatableNullable<T>)nullable));
+                Assert.Equal(Math.Sign(comparer.Compare(nullable, nullableTest)),
+                    Math.Sign(equatable.CompareTo((EquatableNullable<T>)nullableTest)));
+                Assert.Equal(Math.Sign(comparer.Compare(nullable, null)),
+                    Math.Sign(equatable.CompareTo((EquatableNullable<T>)null)));
+                Assert.Equal(Math.Sign(comparer.Compare(null, nullable)),
+                    Math.Sign(((EquatableNullable<T>)null).CompareTo(equatable)));
+
+                Assert.False(equatable < (EquatableNullable<T>)nullable);
+                Assert.Equal(comparer.Compare(nullable, nullableTest) < 0,
+                    equatable < (EquatableNullable<T>)nullableTest);
+                Assert.Equal(comparer.Compare(nullable, null) < 0, equatable < (EquatableNullable<T>)null);
+                Assert.Equal(comparer.Compare(null, nullable) < 0, (EquatableNullable<T>)null < equatable);
+
+                Assert.False(equatable > (EquatableNullable<T>)nullable);
+                Assert.Equal(comparer.Compare(nullable, nullableTest) > 0,
+                    equatable > (EquatableNullable<T>)nullableTest);
+                Assert.Equal(comparer.Compare(nullable, null) > 0, equatable > (EquatableNullable<T>)null);
+                Assert.Equal(comparer.Compare(null, nullable) > 0, (EquatableNullable<T>)null > equatable);
+
+                Assert.True(equatable <= (EquatableNullable<T>)nullable);
+                Assert.Equal(comparer.Compare(nullable, nullableTest) <= 0,
+                    equatable <= (EquatableNullable<T>)nullableTest);
+                Assert.Equal(comparer.Compare(nullable, null) <= 0, equatable <= (EquatableNullable<T>)null);
+                Assert.Equal(comparer.Compare(null, nullable) <= 0, (EquatableNullable<T>)null <= equatable);
+
+                Assert.True(equatable >= (EquatableNullable<T>)nullable);
+                Assert.Equal(comparer.Compare(nullable, nullableTest) >= 0,
+                    equatable >= (EquatableNullable<T>)nullableTest);
+                Assert.Equal(comparer.Compare(nullable, null) >= 0, equatable >= (EquatableNullable<T>)null);
+                Assert.Equal(comparer.Compare(null, nullable) >= 0, (EquatableNullable<T>)null >= equatable);
+            }
         }
     }
 }

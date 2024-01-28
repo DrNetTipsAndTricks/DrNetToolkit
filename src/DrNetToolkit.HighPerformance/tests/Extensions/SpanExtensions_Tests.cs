@@ -3,7 +3,6 @@
 // See the License.md file in the project root for more information.
 
 using System;
-using System.Linq;
 using Bogus;
 using Xunit;
 
@@ -36,10 +35,10 @@ public class SpanExtensions_Tests
             ReadOnlySpan<int> roInts = ints.AsSpan(range).ToArray();
 
             Span<int> sInts = roInts.DangerousAsSpan();
-            Assert.Equal(roInts, sInts.ToArray());
+            Assert.Equal(roInts, sInts);
 
             sInts.Sort();
-            Assert.Equal(sInts.ToArray(), roInts.ToArray());
+            Assert.Equal(sInts, roInts);
         }
     }
 
@@ -66,10 +65,10 @@ public class SpanExtensions_Tests
             Span<int> sInts = ints.AsSpan(range).ToArray();
 
             ReadOnlySpan<int> roInts = sInts.AsReadOnlySpan();
-            Assert.Equal(sInts.ToArray(), roInts.ToArray());
+            Assert.Equal(sInts, roInts);
 
             sInts.Sort();
-            Assert.Equal(sInts.ToArray(), roInts.ToArray());
+            Assert.Equal(sInts, roInts);
         }
     }
 }

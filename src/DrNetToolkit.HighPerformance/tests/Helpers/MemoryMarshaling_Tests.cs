@@ -75,7 +75,7 @@ public class MemoryMarshaling_Tests
 
             Span<byte> span = MemoryMarshaling.Cast<long, byte>(nLongsSpan);
             Assert.Equal(nLongsSpan.Length * sizeof(long?) / sizeof(byte), span.Length);
-            Assert.Equal(bytesSpan.Slice(0, span.Length).ToArray(), span.ToArray());
+            Assert.Equal(bytesSpan.Slice(0, span.Length), span);
         }
     }
 
@@ -141,7 +141,7 @@ public class MemoryMarshaling_Tests
 
             ReadOnlySpan<byte> span = MemoryMarshaling.Cast<long, byte>(nLongsSpan);
             Assert.Equal(nLongsSpan.Length * sizeof(long?) / sizeof(byte), span.Length);
-            Assert.Equal(bytesSpan.Slice(0, span.Length).ToArray(), span.ToArray());
+            Assert.Equal(bytesSpan.Slice(0, span.Length), span);
         }
     }
 

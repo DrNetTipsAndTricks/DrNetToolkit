@@ -17,7 +17,7 @@ public static partial class ThrowHelper
             $"Cannot use type '{targetType}'. Only value types without pointers or references are supported.");
 
     [DoesNotReturn]
-    internal static void ThrowInvalidCastException(Type sourceType, Type targetType)
+    public static void ThrowInvalidCastException(Type sourceType, Type targetType)
         => throw new InvalidCastException(
             $"Can't cast the instance of type '{sourceType}' to an instance of the type `{targetType}`");
 
