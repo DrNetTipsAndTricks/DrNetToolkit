@@ -2,12 +2,11 @@
 // The "DrNet Tips & Tricks" licenses this file to you under the MIT license.
 // See the License.md file in the project root for more information.
 
-namespace DrNetToolkit.HighPerformance.Boxing;
-
-using DrNetToolkit.HighPerformance.Internal.Boxing;
-
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
+using DrNetToolkit.HighPerformance.Protected.Boxing;
+
+namespace DrNetToolkit.HighPerformance.Boxing;
 
 /// <inheritdoc/>
 public static class Box

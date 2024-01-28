@@ -2,12 +2,12 @@
 // The "DrNet Tips & Tricks" licenses this file to you under the MIT license.
 // See the License.md file in the project root for more information.
 
-namespace DrNetToolkit.HighPerformance.Internal.Boxing;
-
 using System;
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
+using DrNetToolkit.HighPerformance.ThrowHelpers;
+
+namespace DrNetToolkit.HighPerformance.Protected.Boxing;
 
 /// <summary>
 /// A <see langword="class"/> that represents a boxed <typeparamref name="T"/> value on the managed heap. This is a
@@ -74,8 +74,8 @@ public abstract class BoxBase<T>
     /// <exception cref="InvalidOperationException">
     /// Always thrown when this constructor is used (eg. from reflection).
     /// </exception>
-    protected BoxBase() => throw new InvalidOperationException(
-        $"The {nameof(BoxBase<T>)} constructor should never be used.");
+    protected BoxBase()
+        => ThrowHelper.ThrowThisConstructorShouldNeverBeUsed(typeof(BoxBase<T>));
 
 #pragma warning disable CS0649 // Field 'BoxBase<T>._value' is never assigned to, and will always have its default value
     private readonly T _value; // used for fast unboxing
@@ -89,18 +89,18 @@ public abstract class BoxBase<T>
     public T Value
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        get => this._value;
+        get => _value;
     }
 
     /// <summary>Gets a readonly reference to the boxed <typeparamref name="T"/> value from this box.</summary>
     /// <returns>A readonly reference to the boxed <typeparamref name="T"/> value from this box.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public ref readonly T GetReference() => ref Unsafe.AsRef(in this._value);
+    public ref readonly T GetReference() => ref Unsafe.AsRef(in _value);
 
     /// <summary>Gets a reference to the boxed <typeparamref name="T"/> value from this box.</summary>
     /// <returns>A reference to the boxed <typeparamref name="T"/> value from this box.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public ref T GetDangerousReference() => ref Unsafe.AsRef(in this._value);
+    public ref T DangerousGetReference() => ref Unsafe.AsRef(in _value);
 
     /// <summary>
     /// Implicitly gets the <typeparamref name="T"/> value from a given <see cref="BoxBase{T}"/> boxed instance.
@@ -115,16 +115,4 @@ public abstract class BoxBase<T>
     /// <param name="box">The <see cref="BoxBase{T}"/>? boxed value.</param>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static implicit operator T?(BoxBase<T>? box) => box?._value;
-
-    /// <summary>
-    /// Always throws an <see cref="InvalidCastException"/> when a cast from an invalid <see cref="object"/> is
-    /// attempted.
-    /// </summary>
-    /// <exception cref="InvalidCastException">
-    /// Always thrown when a cast from an invalid <see cref="object"/> is attempted.
-    /// </exception>
-    [MethodImpl(MethodImplOptions.NoInlining)]
-    [DoesNotReturn]
-    private static void ThrowInvalidCastExceptionForGetFrom() =>
-        throw new InvalidCastException($"Can't cast the input object to the type Box<{typeof(T)}>");
 }

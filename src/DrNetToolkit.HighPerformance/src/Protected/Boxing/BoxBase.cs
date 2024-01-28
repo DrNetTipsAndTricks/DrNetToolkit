@@ -1,12 +1,13 @@
-// Licensed to the "DrNet Tips & Tricks" under one or more agreements.
+﻿// Licensed to the "DrNet Tips & Tricks" under one or more agreements.
 // The "DrNet Tips & Tricks" licenses this file to you under the MIT license.
 // See the License.md file in the project root for more information.
-
-namespace DrNetToolkit.HighPerformance.Internal.Boxing;
 
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
+using DrNetToolkit.HighPerformance.ThrowHelpers;
+
+namespace DrNetToolkit.HighPerformance.Protected.Boxing;
 
 public static class BoxBase
 {
@@ -32,9 +33,7 @@ public static class BoxBase
         where TBox : BoxBase<T>
     {
         if (obj.GetType() != typeof(T))
-        {
-            ThrowInvalidCastExceptionForAsBox();
-        }
+            ThrowHelper.ThrowInvalidCastException(obj.GetType(), typeof(T));
 
         return Unsafe.As<TBox>(obj);
     }
@@ -79,16 +78,4 @@ public static class BoxBase
         where T : struct
         where TBox : BoxBase<T>
         => Unsafe.As<TBox>(obj);
-
-    /// <summary>
-    /// Always throws an <see cref="InvalidCastException"/> when a cast from an invalid <see cref="object"/> is
-    /// attempted.
-    /// </summary>
-    /// <exception cref="InvalidCastException">
-    /// Always thrown when a cast from an invalid <see cref="object"/> is attempted.
-    /// </exception>
-    [MethodImpl(MethodImplOptions.NoInlining)]
-    [DoesNotReturn]
-    private static void ThrowInvalidCastExceptionForAsBox() =>
-        throw new InvalidCastException("Can't cast the input object to the box of specified type.");
 }
