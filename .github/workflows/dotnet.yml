@@ -34,10 +34,10 @@ jobs:
 
   build-on-Windows:
 
-    runs-on: windows-2021
+    runs-on: windows-2020
     strategy:
       matrix:
-        dotnet-version: [ '4.8.0' ]
+        dotnet-version: [ '4.7.x' ]
 
     steps:
     - uses: actions/checkout@v3
