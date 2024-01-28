@@ -4,8 +4,8 @@
 
 using System;
 using System.Linq;
-using Xunit;
 using Bogus;
+using Xunit;
 
 namespace DrNetToolkit.HighPerformance.UnitTests;
 

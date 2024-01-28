@@ -11,6 +11,9 @@ namespace DrNetToolkit.HighPerformance;
 
 public static partial class SpanExtensions
 {
+    public static ReadOnlySpan<T> AsReadOnlySpan<T>(this Span<T> span)
+        => span;
+
     public static Span<T> DangerousAsSpan<T>(this ReadOnlySpan<T> span)
         => MemoryMarshal.CreateSpan(ref MemoryMarshal.GetReference(span), span.Length);
 }

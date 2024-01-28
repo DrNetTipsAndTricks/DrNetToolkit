@@ -43,7 +43,7 @@ public class EquatableNullable_Tests
 
         var faker = new Faker()
         {
-            Random = new Randomizer(248218),
+            Random = new Randomizer(334794),
         };
 
         int?[] nInts = faker.Make(len, () => faker.Random.Number(-delta, delta)).
