@@ -14,7 +14,7 @@ public class MemoryMarshaling_Tests
 #if NETSTANDARD2_1_OR_GREATER
 
     [Fact]
-    public unsafe void MemoryMarshaling_Cast_Span()
+    public unsafe void MemoryMarshaling_CastFromToNullable_Span()
     {
         int len = 50;
         int count = 5;
@@ -30,70 +30,64 @@ public class MemoryMarshaling_Tests
         // Nullable to Nullable
         for (int i = 0; i < count; i++)
         {
-            Span<byte?> nBytesSpan = nBytes.AsSpan().
-                Slice(faker.Random.Number(len / 10), faker.Random.Odd(len / 2, len - len / 10));
+            Range range = faker.Random.Number(len / 10)..^faker.Random.Odd(len / 2, len - len / 10);
+            if (i == 0)
+                range = (len / 2)..(len / 2);
+
+            Span<byte?> nBytesSpan = nBytes.AsSpan(range).ToArray();
 
             Span<long?> nLongsSpan = MemoryMarshaling.CastToNullable<byte, long>(nBytesSpan);
             Assert.Equal(nBytesSpan.Length * sizeof(byte?) / sizeof(long?), nLongsSpan.Length);
 
             Span<byte?> span = MemoryMarshaling.CastToNullable<long, byte>(nLongsSpan);
             Assert.Equal(nLongsSpan.Length * sizeof(long?) / sizeof(byte?), span.Length);
-
             Assert.Equal(nBytesSpan.Slice(0, span.Length).ToArray(), span.ToArray());
-
-            nBytesSpan = nBytes.AsSpan().Slice(faker.Random.Number(len / 10), sizeof(long?) / sizeof(byte?) - 1);
-            nLongsSpan = MemoryMarshaling.CastToNullable<byte, long>(nBytesSpan);
-            Assert.Equal(0, nLongsSpan.Length);
         }
 
         // Nullable to Non Nullable
         for (int i = 0; i < count; i++)
         {
-            Span<byte?> nBytesSpan = nBytes.AsSpan().
-                Slice(faker.Random.Number(len / 10), faker.Random.Odd(len / 2, len - len / 10));
+            Range range = faker.Random.Number(len / 10)..^faker.Random.Odd(len / 2, len - len / 10);
+            if (i == 0)
+                range = (len / 2)..(len / 2);
+
+            Span<byte?> nBytesSpan = nBytes.AsSpan(range).ToArray();
 
             Span<long> longsSpan = MemoryMarshaling.Cast<byte, long>(nBytesSpan);
             Assert.Equal(nBytesSpan.Length * sizeof(byte?) / sizeof(long), longsSpan.Length);
 
             Span<byte?> span = MemoryMarshaling.CastToNullable<long, byte>(longsSpan);
             Assert.Equal(longsSpan.Length * sizeof(long) / sizeof(byte?), span.Length);
-
             Assert.Equal(nBytesSpan.Slice(0, span.Length).ToArray(), span.ToArray());
-
-            nBytesSpan = nBytes.AsSpan().Slice(faker.Random.Number(len / 10), sizeof(long) / sizeof(byte?) - 1);
-            longsSpan = MemoryMarshaling.Cast<byte, long>(nBytesSpan);
-            Assert.Equal(0, longsSpan.Length);
         }
 
         // Non Nullable to Nullable
         for (int i = 0; i < count; i++)
         {
-            Span<byte> bytesSpan = bytes.AsSpan().
-                Slice(faker.Random.Number(len / 10), faker.Random.Odd(len / 2, len - len / 10));
+            Range range = faker.Random.Number(len / 10)..^faker.Random.Odd(len / 2, len - len / 10);
+            if (i == 0)
+                range = (len / 2)..(len / 2);
+
+            Span<byte> bytesSpan = bytes.AsSpan(range).ToArray();
 
             Span<long?> nLongsSpan = MemoryMarshaling.CastToNullable<byte, long>(bytesSpan);
             Assert.Equal(bytesSpan.Length * sizeof(byte) / sizeof(long?), nLongsSpan.Length);
 
             Span<byte> span = MemoryMarshaling.Cast<long, byte>(nLongsSpan);
             Assert.Equal(nLongsSpan.Length * sizeof(long?) / sizeof(byte), span.Length);
-
             Assert.Equal(bytesSpan.Slice(0, span.Length).ToArray(), span.ToArray());
-
-            bytesSpan = bytes.AsSpan().Slice(faker.Random.Number(len / 10), sizeof(long?) / sizeof(byte) - 1);
-            nLongsSpan = MemoryMarshaling.CastToNullable<byte, long>(bytesSpan);
-            Assert.Equal(0, nLongsSpan.Length);
         }
     }
 
     [Fact]
-    public unsafe void MemoryMarshaling_Cast_ReadOnlySpan()
+    public unsafe void MemoryMarshaling_CastFromToNullable_ReadOnlySpan()
     {
         int len = 50;
         int count = 5;
 
         var faker = new Faker()
         {
-            Random = new Randomizer(792361),
+            Random = new Randomizer(248218),
         };
 
         byte[] bytes = [.. faker.Make(len, () => (byte)faker.Random.Number(255))];
@@ -102,58 +96,52 @@ public class MemoryMarshaling_Tests
         // Nullable to Nullable
         for (int i = 0; i < count; i++)
         {
-            ReadOnlySpan<byte?> nBytesSpan = nBytes.AsSpan().
-                Slice(faker.Random.Number(len / 10), faker.Random.Odd(len / 2, len - len / 10));
+            Range range = faker.Random.Number(len / 10)..^faker.Random.Odd(len / 2, len - len / 10);
+            if (i == 0)
+                range = (len / 2)..(len / 2);
+
+            ReadOnlySpan<byte?> nBytesSpan = nBytes.AsSpan(range).ToArray();
 
             ReadOnlySpan<long?> nLongsSpan = MemoryMarshaling.CastToNullable<byte, long>(nBytesSpan);
             Assert.Equal(nBytesSpan.Length * sizeof(byte?) / sizeof(long?), nLongsSpan.Length);
 
             ReadOnlySpan<byte?> span = MemoryMarshaling.CastToNullable<long, byte>(nLongsSpan);
             Assert.Equal(nLongsSpan.Length * sizeof(long?) / sizeof(byte?), span.Length);
-
             Assert.Equal(nBytesSpan.Slice(0, span.Length).ToArray(), span.ToArray());
-
-            nBytesSpan = nBytes.AsSpan().Slice(faker.Random.Number(len / 10), sizeof(long?) / sizeof(byte?) - 1);
-            nLongsSpan = MemoryMarshaling.CastToNullable<byte, long>(nBytesSpan);
-            Assert.Equal(0, nLongsSpan.Length);
         }
 
         // Nullable to Non Nullable
         for (int i = 0; i < count; i++)
         {
-            ReadOnlySpan<byte?> nBytesSpan = nBytes.AsSpan().
-                Slice(faker.Random.Number(len / 10), faker.Random.Odd(len / 2, len - len / 10));
+            Range range = faker.Random.Number(len / 10)..^faker.Random.Odd(len / 2, len - len / 10);
+            if (i == 0)
+                range = (len / 2)..(len / 2);
+
+            ReadOnlySpan<byte?> nBytesSpan = nBytes.AsSpan(range).ToArray();
 
             ReadOnlySpan<long> longsSpan = MemoryMarshaling.Cast<byte, long>(nBytesSpan);
             Assert.Equal(nBytesSpan.Length * sizeof(byte?) / sizeof(long), longsSpan.Length);
 
             ReadOnlySpan<byte?> span = MemoryMarshaling.CastToNullable<long, byte>(longsSpan);
             Assert.Equal(longsSpan.Length * sizeof(long) / sizeof(byte?), span.Length);
-
             Assert.Equal(nBytesSpan.Slice(0, span.Length).ToArray(), span.ToArray());
-
-            nBytesSpan = nBytes.AsSpan().Slice(faker.Random.Number(len / 10), sizeof(long) / sizeof(byte?) - 1);
-            longsSpan = MemoryMarshaling.Cast<byte, long>(nBytesSpan);
-            Assert.Equal(0, longsSpan.Length);
         }
 
         // Non Nullable to Nullable
         for (int i = 0; i < count; i++)
         {
-            ReadOnlySpan<byte> bytesSpan = bytes.AsSpan().
-                Slice(faker.Random.Number(len / 10), faker.Random.Odd(len / 2, len - len / 10));
+            Range range = faker.Random.Number(len / 10)..^faker.Random.Odd(len / 2, len - len / 10);
+            if (i == 0)
+                range = (len / 2)..(len / 2);
+
+            ReadOnlySpan<byte> bytesSpan = bytes.AsSpan(range).ToArray();
 
             ReadOnlySpan<long?> nLongsSpan = MemoryMarshaling.CastToNullable<byte, long>(bytesSpan);
             Assert.Equal(bytesSpan.Length * sizeof(byte) / sizeof(long?), nLongsSpan.Length);
 
             ReadOnlySpan<byte> span = MemoryMarshaling.Cast<long, byte>(nLongsSpan);
             Assert.Equal(nLongsSpan.Length * sizeof(long?) / sizeof(byte), span.Length);
-
             Assert.Equal(bytesSpan.Slice(0, span.Length).ToArray(), span.ToArray());
-
-            bytesSpan = bytes.AsSpan().Slice(faker.Random.Number(len / 10), sizeof(long?) / sizeof(byte) - 1);
-            nLongsSpan = MemoryMarshaling.CastToNullable<byte, long>(bytesSpan);
-            Assert.Equal(0, nLongsSpan.Length);
         }
     }
 

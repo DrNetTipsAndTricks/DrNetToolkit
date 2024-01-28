@@ -3,6 +3,7 @@
 // See the License.md file in the project root for more information.
 
 using System;
+using System.Linq;
 using Bogus;
 using Xunit;
 
@@ -28,15 +29,17 @@ public class SpanExtensions_Tests
 
         for (int i = 0; i < count; i++)
         {
-            Range range = new(faker.Random.Number(len / 10), new(faker.Random.Number(len / 10), true));
+            Range range = faker.Random.Number(len / 10)..^faker.Random.Odd(len / 2, len - len / 10);
             if (i == 0)
                 range = (len / 2)..(len / 2);
 
-            ReadOnlySpan<int> roInts = ints.AsSpan(range);
+            ReadOnlySpan<int> roInts = ints.AsSpan(range).ToArray();
 
             Span<int> sInts = roInts.DangerousAsSpan();
-
             Assert.Equal(roInts, sInts.ToArray());
+
+            sInts.Sort();
+            Assert.Equal(sInts.ToArray(), roInts.ToArray());
         }
     }
 
@@ -49,21 +52,23 @@ public class SpanExtensions_Tests
 
         var faker = new Faker()
         {
-            Random = new Randomizer(146321),
+            Random = new Randomizer(686762),
         };
 
         int[] ints = [.. faker.Make(len, () => faker.Random.Number(-delta, delta))];
 
         for (int i = 0; i < count; i++)
         {
-            Range range = new(faker.Random.Number(len / 10), new(faker.Random.Number(len / 10), true));
+            Range range = faker.Random.Number(len / 10)..^faker.Random.Odd(len / 2, len - len / 10);
             if (i == 0)
                 range = (len / 2)..(len / 2);
 
-            Span<int> sInts = ints.AsSpan(range);
+            Span<int> sInts = ints.AsSpan(range).ToArray();
 
             ReadOnlySpan<int> roInts = sInts.AsReadOnlySpan();
+            Assert.Equal(sInts.ToArray(), roInts.ToArray());
 
+            sInts.Sort();
             Assert.Equal(sInts.ToArray(), roInts.ToArray());
         }
     }
