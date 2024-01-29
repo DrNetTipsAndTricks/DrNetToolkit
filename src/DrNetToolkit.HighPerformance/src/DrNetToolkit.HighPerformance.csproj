@@ -54,6 +54,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>CodeExtensions.Fluent.tt</DependentUpon>
     </Compile>
+    <Compile Update="Extensions\Generated\CodeExtensions.FluentThrow.g.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>CodeExtensions.FluentThrow.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
 
   <!-- T4 templates -->
@@ -61,6 +66,10 @@
     <None Update="Extensions\Generated\CodeExtensions.Fluent.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>CodeExtensions.Fluent.g.cs</LastGenOutput>
+    </None>
+    <None Update="Extensions\Generated\CodeExtensions.FluentThrow.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>CodeExtensions.FluentThrow.g.cs</LastGenOutput>
     </None>
   </ItemGroup>
 
