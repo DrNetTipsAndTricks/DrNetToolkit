@@ -8,7 +8,7 @@ using System.Globalization;
 using System.Runtime.CompilerServices;
 using Xunit;
 using DrNetToolkit.HighPerformance.Boxing;
-using DrNetToolkit.HighPerformance.Protected.Boxing;
+using DrNetToolkit.HighPerformance.Boxing.Protected;
 
 namespace DrNetToolkit.HighPerformance.UnitTests;
 

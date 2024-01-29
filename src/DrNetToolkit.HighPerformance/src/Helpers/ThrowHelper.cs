@@ -6,7 +6,7 @@ using System;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 
-namespace DrNetToolkit.HighPerformance.ThrowHelpers;
+namespace DrNetToolkit.HighPerformance;
 
 [StackTraceHidden]
 public static partial class ThrowHelper

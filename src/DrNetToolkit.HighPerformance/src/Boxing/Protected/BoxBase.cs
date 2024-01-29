@@ -5,9 +5,8 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
-using DrNetToolkit.HighPerformance.ThrowHelpers;
 
-namespace DrNetToolkit.HighPerformance.Protected.Boxing;
+namespace DrNetToolkit.HighPerformance.Boxing.Protected;
 
 public static class BoxBase
 {
