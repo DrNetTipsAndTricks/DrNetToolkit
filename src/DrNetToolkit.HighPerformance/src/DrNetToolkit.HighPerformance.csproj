@@ -44,4 +44,24 @@
     </PolySharpIncludeGeneratedTypes>
   </PropertyGroup>
 
+  <!-- T4 service -->
+  <ItemGroup>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Extensions\Generated\CodeExtensions.Fluent.g.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>CodeExtensions.Fluent.tt</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <!-- T4 templates -->
+  <ItemGroup>
+    <None Update="Extensions\Generated\CodeExtensions.Fluent.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>CodeExtensions.Fluent.g.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+
 </Project>
