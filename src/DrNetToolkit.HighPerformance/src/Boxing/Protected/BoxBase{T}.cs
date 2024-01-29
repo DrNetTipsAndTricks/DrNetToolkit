@@ -5,9 +5,8 @@
 using System;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
-using DrNetToolkit.HighPerformance.ThrowHelpers;
 
-namespace DrNetToolkit.HighPerformance.Protected.Boxing;
+namespace DrNetToolkit.HighPerformance.Boxing.Protected;
 
 /// <summary>
 /// A <see langword="class"/> that represents a boxed <typeparamref name="T"/> value on the managed heap. This is a

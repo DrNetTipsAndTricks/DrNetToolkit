@@ -7,7 +7,6 @@
 using System;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using DrNetToolkit.HighPerformance.ThrowHelpers;
 
 namespace DrNetToolkit.HighPerformance;
 

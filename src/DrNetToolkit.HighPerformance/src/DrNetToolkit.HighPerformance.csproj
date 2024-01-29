@@ -35,4 +35,13 @@
     </When>
   </Choose>
 
+  <!-- Necessary polyfills -->
+  <PropertyGroup>
+    <PolySharpIncludeGeneratedTypes>
+      System.Diagnostics.StackTraceHiddenAttribute;
+      System.Diagnostics.CodeAnalysis.DoesNotReturnAttribute;
+      System.Diagnostics.CodeAnalysis.NotNullIfNotNullAttribute;
+    </PolySharpIncludeGeneratedTypes>
+  </PropertyGroup>
+
 </Project>
