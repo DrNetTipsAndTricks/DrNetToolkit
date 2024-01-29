@@ -34,7 +34,7 @@ jobs:
 
   build-on-Windows:
 
-    runs-on: windows-2019
+    runs-on: windows-latest
     strategy:
       matrix:
         dotnet-version: [ '7.0.405' ]
