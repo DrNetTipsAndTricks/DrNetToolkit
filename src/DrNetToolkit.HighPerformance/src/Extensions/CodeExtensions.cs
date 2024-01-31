@@ -6,7 +6,6 @@ using System.Runtime.CompilerServices;
 
 namespace DrNetToolkit.HighPerformance.Coding;
 
-
 public static partial class CodeExtensions
 {
 
