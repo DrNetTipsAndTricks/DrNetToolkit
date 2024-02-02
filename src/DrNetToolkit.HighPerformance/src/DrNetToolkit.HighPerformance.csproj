@@ -45,7 +45,7 @@
   </PropertyGroup>
   
   <ItemGroup>
-    <ProjectReference Include="..\..\DrNetToolkit.Diagnostics\DrNetToolkit.Diagnostics.csproj" />
+    <ProjectReference Include="..\..\DrNetToolkit.Diagnostics\src\DrNetToolkit.Diagnostics.csproj" />
   </ItemGroup>
 
   <!-- T4 service -->
