@@ -38,11 +38,15 @@
   <!-- Necessary polyfills -->
   <PropertyGroup>
     <PolySharpIncludeGeneratedTypes>
-      System.Diagnostics.StackTraceHiddenAttribute;
+      <!--System.Diagnostics.StackTraceHiddenAttribute;
       System.Diagnostics.CodeAnalysis.DoesNotReturnAttribute;
-      System.Diagnostics.CodeAnalysis.NotNullIfNotNullAttribute;
+      System.Diagnostics.CodeAnalysis.NotNullIfNotNullAttribute;-->
     </PolySharpIncludeGeneratedTypes>
   </PropertyGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\..\DrNetToolkit.Diagnostics\DrNetToolkit.Diagnostics.csproj" />
+  </ItemGroup>
 
   <!-- T4 service -->
   <ItemGroup>
@@ -54,11 +58,6 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>CodeExtensions.Fluent.tt</DependentUpon>
     </Compile>
-    <Compile Update="Extensions\Generated\CodeExtensions.FluentThrow.g.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>CodeExtensions.FluentThrow.tt</DependentUpon>
-    </Compile>
   </ItemGroup>
 
   <!-- T4 templates -->
@@ -66,10 +65,6 @@
     <None Update="Extensions\Generated\CodeExtensions.Fluent.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>CodeExtensions.Fluent.g.cs</LastGenOutput>
-    </None>
-    <None Update="Extensions\Generated\CodeExtensions.FluentThrow.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>CodeExtensions.FluentThrow.g.cs</LastGenOutput>
     </None>
   </ItemGroup>
 

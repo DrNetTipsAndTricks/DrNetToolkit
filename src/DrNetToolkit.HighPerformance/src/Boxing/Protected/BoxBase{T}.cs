@@ -6,6 +6,8 @@ using System;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
+using DrNetToolkit.Diagnostics;
+
 namespace DrNetToolkit.HighPerformance.Boxing.Protected;
 
 /// <summary>

@@ -5,12 +5,14 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+
 using DrNetToolkit.HighPerformance.Boxing.Protected;
 
 namespace DrNetToolkit.HighPerformance.Boxing;
 
 #pragma warning disable CS0660 // Type defines operator == or operator != but does not override Object.Equals(object o)
 #pragma warning disable CS0661 // Type defines operator == or operator != but does not override Object.GetHashCode()
+#pragma warning disable CA1067 // Override Object.Equals(object) when implementing IEquatable<T>
 
 /// <inheritdoc/>
 public sealed class Box<T> : BoxBase<T>, IEquatable<Box<T>>, IComparable<Box<T>>

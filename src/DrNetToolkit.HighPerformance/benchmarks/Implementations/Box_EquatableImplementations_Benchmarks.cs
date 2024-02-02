@@ -2,11 +2,10 @@
 // The "DrNet Tips & Tricks" licenses this file to you under the MIT license.
 // See the License.md file in the project root for more information.
 
-namespace DrNetToolkit.HighPerformance.Benchmarks.Implementations;
-
+using BenchmarkDotNet.Attributes;
 using DrNetToolkit.HighPerformance.Boxing;
 
-using BenchmarkDotNet.Attributes;
+namespace DrNetToolkit.HighPerformance.Benchmarks.Implementations;
 
 public class Box_EquatableImplementations_Benchmarks
 {
@@ -16,11 +15,11 @@ public class Box_EquatableImplementations_Benchmarks
 #pragma warning disable IDE0052 // Remove unread private members
 #pragma warning disable IDE0044 // Add readonly modifier
 
-    private volatile Box<int> box0 = 0.ToBox();
-    private volatile Box<int> box1 = 1.ToBox();
-    private volatile Box<int> box0_2 = 0.ToBox();
+    private volatile Box<int> _box0 = 0.ToBox();
+    private volatile Box<int> _box1 = 1.ToBox();
+    private volatile Box<int> _box0_2 = 0.ToBox();
 
-    private volatile bool result;
+    private volatile bool _result;
 
 #pragma warning restore IDE0044 // Add readonly modifier
 #pragma warning restore IDE0052 // Remove unread private members
@@ -28,10 +27,10 @@ public class Box_EquatableImplementations_Benchmarks
     [Benchmark(Baseline = true)]
     public void Equals()
     {
-        for (int i = 0; i < this.Count; i++)
+        for (int i = 0; i < Count; i++)
         {
-            this.result = this.box0.Equals(this.box1);
-            this.result = this.box0.Equals(this.box0_2);
+            _result = _box0.Equals(_box1);
+            _result = _box0.Equals(_box0_2);
         }
     }
 
