@@ -13,16 +13,18 @@
 #>using System;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
 
-namespace DrNetToolkit.HighPerformance.Coding;
+namespace DrNetToolkit.Diagnostics;
 
-public static partial class CodeExtensions
+public static partial class ThrowHelper
 {
 <#
     foreach(int pCount in Enumerable.Range(0, 17))
     {
         if (pCount > 0) WriteLine("");
 #>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     [StackTraceHidden]
     [DoesNotReturn]
     public static TOut FluentThrow<<#= string.Concat(Enumerable.Range(1, pCount).Select(pNum => $"T{pNum}, ")) #>TOut>

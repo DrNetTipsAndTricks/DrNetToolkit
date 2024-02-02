@@ -2,12 +2,12 @@
 // The "DrNet Tips & Tricks" licenses this file to you under the MIT license.
 // See the License.md file in the project root for more information.
 
-using DrNetToolkit.HighPerformance.Benchmarks;
-
 using BenchmarkDotNet.Running;
 using BenchmarkDotNet.Configs;
 using BenchmarkDotNet.Jobs;
 using Perfolizer.Horology;
+
+using DrNetToolkit.HighPerformance.Benchmarks;
 
 IConfig config = DefaultConfig.Instance
     .WithOption(ConfigOptions.StopOnFirstError, true)
