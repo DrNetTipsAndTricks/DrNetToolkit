@@ -21,6 +21,11 @@
       System.Diagnostics.StackTraceHiddenAttribute;
       System.Diagnostics.CodeAnalysis.DoesNotReturnAttribute;
     </PolySharpIncludeGeneratedTypes>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Authors>DrNet Tips&amp;Tricks and Contributors</Authors>
+    <Company>DrNet Tips&amp;Tricks</Company>
+    <Product>DrNet Toolkit</Product>
+    <Copyright>(c) DrNet Tips&amp;Tricks and Contributors. All rights reserved.</Copyright>
   </PropertyGroup>
   
   <!-- T4 service -->

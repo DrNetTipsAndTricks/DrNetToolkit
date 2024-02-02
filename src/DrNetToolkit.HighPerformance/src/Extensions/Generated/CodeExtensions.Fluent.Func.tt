@@ -23,16 +23,14 @@ public static partial class CodeExtensions
         if (pCount > 1) WriteLine("");
 #>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static T1 Fluent<<#= string.Join(", ", Enumerable.Range(1, pCount).Select(pNum => $"T{pNum}")) #>>
+    public static TOut Fluent<<#= string.Join(", ", Enumerable.Range(1, pCount).Select(pNum => $"T{pNum}")) #>, TOut>
     (
         this <#= string.Join(", ", Enumerable.Range(1, pCount).Select(pNum => $"T{pNum} v{pNum}")) #>,
-        Action<<#= string.Join(", ", Enumerable.Range(1, pCount).Select(pNum => $"T{pNum}")) #>> action
+        Func<<#= string.Join(", ", Enumerable.Range(1, pCount).Select(pNum => $"T{pNum}")) #>, TOut> function
     )
     {
-        action(<#= string.Join(", ", Enumerable.Range(1, pCount).Select(pNum => $"v{pNum}")) #>);
-        return v1;
+        return function(<#= string.Join(", ", Enumerable.Range(1, pCount).Select(pNum => $"v{pNum}")) #>);
     }
-
 <#
     }
 #>
