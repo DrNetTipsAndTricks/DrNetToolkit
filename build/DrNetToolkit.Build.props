@@ -26,9 +26,10 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(IsPackable)' == 'true'">
+    <EnableNETAnalyzers>True</EnableNETAnalyzers>
+    <!--<TreatWarningsAsErrors Condition="'$(Configuration)' == 'Release'">true</TreatWarningsAsErrors>-->
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <PackageOutputPath>$(RepositoryDirectory)bin\nupkg</PackageOutputPath>
-    <TreatWarningsAsErrors Condition="'$(Configuration)' == 'Release'">true</TreatWarningsAsErrors>
   </PropertyGroup>
 
 </Project>

@@ -8,8 +8,6 @@ using System.Runtime.CompilerServices;
 
 namespace DrNetToolkit.Diagnostics;
 
-#pragma warning disable CS8763 // A method marked [DoesNotReturn] should not return.
-
 public static partial class ThrowHelper
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
