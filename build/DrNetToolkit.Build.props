@@ -1,0 +1,32 @@
+<Project>
+
+  <PropertyGroup>
+    <Authors>DrNet Tips&amp;Tricks and Contributors</Authors>
+    <Company>DrNet Tips&amp;Tricks</Company>
+    <Product>DrNet Toolkit</Product>
+    <Copyright>(c) DrNet Tips&amp;Tricks and Contributors. All rights reserved.</Copyright>
+    <CommonTags>DrNet;Toolkit;.NET;dotNet;</CommonTags>
+    <PackageProjectUrl>https://github.com/DrNetTipsAndTricks/DrNetToolkit</PackageProjectUrl>
+    <PackageReleaseNotes>https://github.com/DrNetTipsAndTricks/DrNetToolkit/releases</PackageReleaseNotes>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+    <PackageIcon>Icon.png</PackageIcon>
+    <PackageIconUrl>https://raw.githubusercontent.com/DrNetTipsAndTricks/DrNetToolkit/main/build/nuget.png</PackageIconUrl>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <IsPackableProject Condition="$(IsTestingProject) == 'true'">false</IsPackableProject>
+    <IsPackableProject Condition="$(IsBenchmarkingProject) == 'true'">false</IsPackableProject>
+    <IsPackableProject Condition="'$(IsPackableProject)' == ''">true</IsPackableProject>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(IsPackableProject)' == 'true'">
+    <IsPackable>true</IsPackable>
+    <IsPublishable>true</IsPublishable>
+  </PropertyGroup>
+
+</Project>
