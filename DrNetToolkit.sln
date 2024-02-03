@@ -38,7 +38,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{
 		.github\workflows\dotnet.yml = .github\workflows\dotnet.yml
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DrNetToolkit.Diagnostics", "src\DrNetToolkit.Diagnostics\src\DrNetToolkit.Diagnostics.csproj", "{1E15791B-5BCE-4188-A1DC-1D957851D993}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DrNetToolkit.Diagnostics", "src\DrNetToolkit.Diagnostics\src\DrNetToolkit.Diagnostics.csproj", "{1E15791B-5BCE-4188-A1DC-1D957851D993}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Nuget", "Nuget", "{F055D268-61AC-40A4-8484-6033F7CDB823}"
+	ProjectSection(SolutionItems) = preProject
+		build\DrNetToolkit.Build.props = build\DrNetToolkit.Build.props
+		build\DrNetToolkit.Build.targets = build\DrNetToolkit.Build.targets
+		build\nuget.png = build\nuget.png
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
