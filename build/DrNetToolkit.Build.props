@@ -19,14 +19,16 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <IsPackableProject Condition="$(IsTestingProject) == 'true'">false</IsPackableProject>
-    <IsPackableProject Condition="$(IsBenchmarkingProject) == 'true'">false</IsPackableProject>
-    <IsPackableProject Condition="'$(IsPackableProject)' == ''">true</IsPackableProject>
+    <IsPackable Condition="$(IsTestingProject) == 'true'">false</IsPackable>
+    <IsPackable Condition="$(IsBenchmarkingProject) == 'true'">false</IsPackable>
+    <IsPackable Condition="'$(IsPackable)' == ''">true</IsPackable>
+    <IsPublishable Condition="'$(IsPackable)' == 'true'">true</IsPublishable>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(IsPackableProject)' == 'true'">
-    <IsPackable>true</IsPackable>
-    <IsPublishable>true</IsPublishable>
+  <PropertyGroup Condition="'$(IsPackable)' == 'true'">
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <PackageOutputPath>$(RepositoryDirectory)bin\nupkg</PackageOutputPath>
+    <TreatWarningsAsErrors Condition="'$(Configuration)' == 'Release'">true</TreatWarningsAsErrors>
   </PropertyGroup>
 
 </Project>

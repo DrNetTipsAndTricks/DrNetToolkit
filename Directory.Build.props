@@ -32,7 +32,6 @@
     <Nullable>enable</Nullable>
     <!-- Enables Strict mode for Roslyn compiler -->
     <Features>strict;nullablePublicOnly</Features>
-    <TreatWarningsAsErrors Condition="'$(TreatWarningsAsErrors)' == ''">true</TreatWarningsAsErrors>
   </PropertyGroup>
 
   <!-- Include PolySharp to generate polyfills for all projects (on their .NET Standard 2.x targets) -->
@@ -42,4 +41,5 @@
       <IncludeAssets>build; analyzers</IncludeAssets>
     </PackageReference>
   </ItemGroup>
+
 </Project>
