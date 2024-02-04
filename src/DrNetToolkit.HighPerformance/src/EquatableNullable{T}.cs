@@ -31,7 +31,9 @@ namespace DrNetToolkit.HighPerformance;
 /// Initializes a new instance of the <see cref="EquatableNullable{T}"/> structure to the specified
 /// <see cref="Nullable{T}"/> value.
 /// </remarks>
+#if !NETSTANDARD2_1_OR_GREATER
 #pragma warning restore CS1574 // XML comment has cref attribute that could not be resolved
+#endif
 [method: MethodImpl(MethodImplOptions.AggressiveInlining)]
 public readonly struct EquatableNullable<T>(T? value) :
     IEquatable<EquatableNullable<T>>, IComparable<EquatableNullable<T>>
@@ -319,7 +321,7 @@ public static partial class SpanExtensions
     /// <see cref="IEquatable{T}"/> and <see cref="IComparable{T}"/> interfaces. After this, many 
     /// <see cref="MemoryExtensions"/> methods for spans become available.
     /// </summary>
-    /// <typeparam name="T">The underlying value type of <see cref="source"/> elements.</typeparam>
+    /// <typeparam name="T">The underlying value type of <paramref name="source"/> elements.</typeparam>
     /// <param name="source">A source with <see cref="Nullable{T}"/> elements.</param>
     /// <returns>
     /// A <see cref="Span{T}"/> with <see cref="EquatableNullable{T}"/> elements that support the 
@@ -334,7 +336,7 @@ public static partial class SpanExtensions
     /// <see cref="IEquatable{T}"/> and <see cref="IComparable{T}"/> interfaces. After this, many 
     /// <see cref="MemoryExtensions"/> methods for spans become available.
     /// </summary>
-    /// <typeparam name="T">The underlying value type of <see cref="source"/> elements.</typeparam>
+    /// <typeparam name="T">The underlying value type of <paramref name="source"/> elements.</typeparam>
     /// <param name="source">A source with <see cref="Nullable{T}"/> elements.</param>
     /// <returns>
     /// A <see cref="ReadOnlySpan{T}"/> with <see cref="EquatableNullable{T}"/> elements that support the 
@@ -349,7 +351,7 @@ public static partial class SpanExtensions
     /// <see cref="IEquatable{T}"/> and <see cref="IComparable{T}"/> interfaces. After this, many 
     /// <see cref="MemoryExtensions"/> methods for spans become available.
     /// </summary>
-    /// <typeparam name="T">The underlying value type of <see cref="source"/> elements.</typeparam>
+    /// <typeparam name="T">The underlying value type of <paramref name="source"/> elements.</typeparam>
     /// <param name="source">A source with <see cref="Nullable{T}"/> elements.</param>
     /// <returns>
     /// A <see cref="Span{T}"/> with <see cref="EquatableNullable{T}"/> elements that support the 
@@ -365,7 +367,7 @@ public static partial class SpanExtensions
     /// <see cref="IEquatable{T}"/> and <see cref="IComparable{T}"/> interfaces. After this, many 
     /// <see cref="MemoryExtensions"/> methods for spans become available.
     /// </summary>
-    /// <typeparam name="T">The underlying value type of <see cref="source"/> elements.</typeparam>
+    /// <typeparam name="T">The underlying value type of <paramref name="source"/> elements.</typeparam>
     /// <param name="source">A source with <see cref="Nullable{T}"/> elements.</param>
     /// <returns>
     /// A <see cref="Span{T}"/> with <see cref="EquatableNullable{T}"/> elements that support the 

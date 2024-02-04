@@ -28,7 +28,9 @@ public static class NullableExtensions
     /// value.
     /// </returns>
     /// <seealso cref="Nullable.GetValueRefOrDefaultRef{T}(in T?)"/>
+#if !NET7_0_OR_GREATER
 #pragma warning restore CS1574 // XML comment has cref attribute that could not be resolved
+#endif
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static ref readonly T GetValueRef<T>(this in T? nullable)
         where T : struct
@@ -52,7 +54,9 @@ public static class NullableExtensions
     /// <see cref="Nullable{T}.HasValue"/> is false, the current value at that location may be the default value.
     /// </returns>
     /// <seealso cref="Nullable.GetValueRefOrDefaultRef{T}(in T?)"/>
+#if !NET7_0_OR_GREATER
 #pragma warning restore CS1574 // XML comment has cref attribute that could not be resolved
+#endif
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static ref T DangerousGetValueRef<T>(in T? nullable)
         where T : struct

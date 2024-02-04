@@ -15,14 +15,20 @@ namespace DrNetToolkit.HighPerformance;
 public static partial class SpanExtensions
 {
     /// <summary>
-    /// 
+    /// Cast a <see cref="Span{T}"/> to a <see cref="ReadOnlySpan{T}"/>.
     /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="span"></param>
-    /// <returns></returns>
+    /// <typeparam name="T">The type of items in the <see cref="Span{T}"/>.</typeparam>
+    /// <param name="span">The span to cast to a <see cref="ReadOnlySpan{T}"/>.</param>
+    /// <returns>A <see cref="ReadOnlySpan{T}"/> that corresponds to specified <paramref name="span"/>.</returns>
     public static ReadOnlySpan<T> AsReadOnlySpan<T>(this Span<T> span)
         => span;
 
+    /// <summary>
+    /// Cast a <see cref="ReadOnlySpan{T}"/> to a <see cref="Span{T}"/>.
+    /// </summary>
+    /// <typeparam name="T">The type of items in the <see cref="ReadOnlySpan{T}"/>.</typeparam>
+    /// <param name="span">The readonly span to cast to a <see cref="Span{T}"/>.</param>
+    /// <returns>A <see cref="Span{T}"/> that corresponds to specified readonly <paramref name="span"/>.</returns>
     public static Span<T> DangerousAsSpan<T>(this ReadOnlySpan<T> span)
         => MemoryMarshal.CreateSpan(ref MemoryMarshal.GetReference(span), span.Length);
 }
