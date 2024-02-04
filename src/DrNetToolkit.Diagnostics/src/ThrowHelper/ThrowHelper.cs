@@ -20,6 +20,7 @@ public static partial class ThrowHelper
     /// <param name="exception">The exception that will be thrown.</param>
     /// <exception>Always thrown the specified <paramref name="exception"/>.</exception>
     [MethodImpl(MethodImplOptions.NoInlining)]
+    [DebuggerStepThrough]
     [StackTraceHidden]
     [DoesNotReturn]
     public static void Throw(this Exception exception)
@@ -36,6 +37,7 @@ public static partial class ThrowHelper
     /// <seealso cref="Throw(Exception)"/> method cannot be used due to a code compilation error.
     /// </remarks>
     [MethodImpl(MethodImplOptions.NoInlining)]
+    [DebuggerStepThrough]
     [StackTraceHidden]
     [DoesNotReturn]
     public static T Throw<T>(this Exception exception)

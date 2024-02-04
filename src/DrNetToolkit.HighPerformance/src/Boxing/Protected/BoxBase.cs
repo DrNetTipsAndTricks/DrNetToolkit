@@ -36,9 +36,7 @@ public static class BoxBase
         where T : struct
         where TBox : BoxBase<T>
     {
-        if (obj.GetType() != typeof(T))
-            ThrowHelper.ThrowInvalidCastException(obj.GetType(), typeof(T));
-
+        Guard.CastToTheSameType<T>(obj.GetType());
         return Unsafe.As<TBox>(obj);
     }
 

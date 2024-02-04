@@ -36,10 +36,8 @@ public static partial class MemoryMarshaling
         where TFrom : struct
         where TTo : struct
     {
-        if (RuntimeHelpers.IsReferenceOrContainsReferences<TFrom?>())
-            ThrowHelper.ThrowInvalidTypeWithPointersNotSupported(typeof(TFrom?));
-        if (RuntimeHelpers.IsReferenceOrContainsReferences<TTo>())
-            ThrowHelper.ThrowInvalidTypeWithPointersNotSupported(typeof(TTo));
+        Guard.IsNotReferenceAndNotContainsReferences<TFrom?>(nameof(span));
+        Guard.IsNotReferenceAndNotContainsReferences<TTo>(nameof(TTo));
 
         // Use unsigned integers - unsigned division by constant (especially by power of 2)
         // and checked casts are faster and smaller.
@@ -91,10 +89,8 @@ public static partial class MemoryMarshaling
         where TFrom : struct
         where TTo : struct
     {
-        if (RuntimeHelpers.IsReferenceOrContainsReferences<TFrom?>())
-            ThrowHelper.ThrowInvalidTypeWithPointersNotSupported(typeof(TFrom?));
-        if (RuntimeHelpers.IsReferenceOrContainsReferences<TTo>())
-            ThrowHelper.ThrowInvalidTypeWithPointersNotSupported(typeof(TTo));
+        Guard.IsNotReferenceAndNotContainsReferences<TFrom?>(nameof(span));
+        Guard.IsNotReferenceAndNotContainsReferences<TTo>(nameof(TTo));
 
         // Use unsigned integers - unsigned division by constant (especially by power of 2)
         // and checked casts are faster and smaller.
@@ -147,10 +143,8 @@ public static partial class MemoryMarshaling
         where TFrom : struct
         where TTo : struct
     {
-        if (RuntimeHelpers.IsReferenceOrContainsReferences<TFrom>())
-            ThrowHelper.ThrowInvalidTypeWithPointersNotSupported(typeof(TFrom));
-        if (RuntimeHelpers.IsReferenceOrContainsReferences<TTo?>())
-            ThrowHelper.ThrowInvalidTypeWithPointersNotSupported(typeof(TTo?));
+        Guard.IsNotReferenceAndNotContainsReferences<TFrom>(nameof(span));
+        Guard.IsNotReferenceAndNotContainsReferences<TTo?>(nameof(Nullable<TTo>));
 
         // Use unsigned integers - unsigned division by constant (especially by power of 2)
         // and checked casts are faster and smaller.
@@ -202,10 +196,8 @@ public static partial class MemoryMarshaling
         where TFrom : struct
         where TTo : struct
     {
-        if (RuntimeHelpers.IsReferenceOrContainsReferences<TFrom>())
-            ThrowHelper.ThrowInvalidTypeWithPointersNotSupported(typeof(TFrom));
-        if (RuntimeHelpers.IsReferenceOrContainsReferences<TTo?>())
-            ThrowHelper.ThrowInvalidTypeWithPointersNotSupported(typeof(TTo?));
+        Guard.IsNotReferenceAndNotContainsReferences<TFrom>(nameof(span));
+        Guard.IsNotReferenceAndNotContainsReferences<TTo?>(nameof(Nullable<TTo>));
 
         // Use unsigned integers - unsigned division by constant (especially by power of 2)
         // and checked casts are faster and smaller.
@@ -258,10 +250,8 @@ public static partial class MemoryMarshaling
         where TFrom : struct
         where TTo : struct
     {
-        if (RuntimeHelpers.IsReferenceOrContainsReferences<TFrom?>())
-            ThrowHelper.ThrowInvalidTypeWithPointersNotSupported(typeof(TFrom?));
-        if (RuntimeHelpers.IsReferenceOrContainsReferences<TTo?>())
-            ThrowHelper.ThrowInvalidTypeWithPointersNotSupported(typeof(TTo?));
+        Guard.IsNotReferenceAndNotContainsReferences<TFrom?>(nameof(span));
+        Guard.IsNotReferenceAndNotContainsReferences<TTo?>(nameof(Nullable<TTo>));
 
         // Use unsigned integers - unsigned division by constant (especially by power of 2)
         // and checked casts are faster and smaller.
@@ -313,10 +303,8 @@ public static partial class MemoryMarshaling
         where TFrom : struct
         where TTo : struct
     {
-        if (RuntimeHelpers.IsReferenceOrContainsReferences<TFrom?>())
-            ThrowHelper.ThrowInvalidTypeWithPointersNotSupported(typeof(TFrom?));
-        if (RuntimeHelpers.IsReferenceOrContainsReferences<TTo?>())
-            ThrowHelper.ThrowInvalidTypeWithPointersNotSupported(typeof(TTo?));
+        Guard.IsNotReferenceAndNotContainsReferences<TFrom?>(nameof(span));
+        Guard.IsNotReferenceAndNotContainsReferences<TTo?>(nameof(Nullable<TTo>));
 
         // Use unsigned integers - unsigned division by constant (especially by power of 2)
         // and checked casts are faster and smaller.

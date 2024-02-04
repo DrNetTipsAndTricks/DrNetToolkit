@@ -3,6 +3,7 @@
 // See the License.md file in the project root for more information.
 
 using System;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 
@@ -20,6 +21,8 @@ public static partial class ThrowHelper
     /// "The {<paramref name="targetType"/>} constructor should never be used."
     /// </exception>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [DebuggerStepThrough]
+    [StackTraceHidden]
     [DoesNotReturn]
     public static void ThrowThisConstructorShouldNeverBeUsed(Type targetType)
         => new InvalidOperationException($"The {targetType} constructor should never be used.")
