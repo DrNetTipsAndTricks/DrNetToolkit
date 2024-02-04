@@ -16,6 +16,7 @@
   <PropertyGroup>
     <PolySharpIncludeGeneratedTypes>
       System.Diagnostics.CodeAnalysis.DoesNotReturnAttribute;
+      System.Diagnostics.CodeAnalysis.DoesNotReturnIfAttribute;
       System.Diagnostics.StackTraceHiddenAttribute;
       System.Runtime.CompilerServices.SkipLocalsInitAttribute;
     </PolySharpIncludeGeneratedTypes>
