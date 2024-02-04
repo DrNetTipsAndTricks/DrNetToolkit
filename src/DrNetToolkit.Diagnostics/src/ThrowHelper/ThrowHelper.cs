@@ -18,6 +18,7 @@ public static partial class ThrowHelper
     /// Throws the specified <paramref name="exception"/>. Method will never return under any circumstance.
     /// </summary>
     /// <param name="exception">The exception that will be thrown.</param>
+    /// <exception>Always thrown the specified <paramref name="exception"/>.</exception>
     [MethodImpl(MethodImplOptions.NoInlining)]
     [StackTraceHidden]
     [DoesNotReturn]
@@ -25,32 +26,18 @@ public static partial class ThrowHelper
         => throw exception;
 
     /// <summary>
-    /// Throws the specified <paramref name="exception"/>. Method will not return if the <paramref name="flag"/> is
-    /// <see langword="true"/>.
+    /// Throws the specified <paramref name="exception"/>. Function will never return under any circumstance.
     /// </summary>
-    /// <param name="exception">
-    /// The exception that will be thrown if the <paramref name="flag"/> is <see langword="true"/>.
-    /// </param>
-    /// <param name="flag">The flag indicates when the method will throw the <paramref name="exception"/>.</param>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    /// <typeparam name="T">The type of the expected value to be returned.</typeparam>
+    /// <param name="exception">The exception that will be thrown.</param>
+    /// <exception>Always thrown the specified <paramref name="exception"/>.</exception>
+    /// <remarks>
+    /// This function can be used where the compiler expects a value of type <typeparamref name="T"/> and the
+    /// <seealso cref="Throw(Exception)"/> method cannot be used due to a code compilation error.
+    /// </remarks>
+    [MethodImpl(MethodImplOptions.NoInlining)]
     [StackTraceHidden]
-    public static void ThrowIfTrue(this Exception exception, [DoesNotReturnIf(true)] bool flag)
-    {
-        if (flag) Throw(exception);
-    }
-
-    /// <summary>
-    /// Throws the specified <paramref name="exception"/>. Method will not return if the <paramref name="flag"/> is
-    /// <see langword="false"/>.
-    /// </summary>
-    /// <param name="exception">
-    /// The exception that will be thrown if the <paramref name="flag"/> is <see langword="false"/>.
-    /// </param>
-    /// <param name="flag">The flag indicates when the method will throw the <paramref name="exception"/>.</param>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    [StackTraceHidden]
-    public static void ThrowIfFalse(this Exception exception, [DoesNotReturnIf(false)] bool flag)
-    {
-        if (!flag) Throw(exception);
-    }
+    [DoesNotReturn]
+    public static T Throw<T>(this Exception exception)
+        => throw exception;
 }

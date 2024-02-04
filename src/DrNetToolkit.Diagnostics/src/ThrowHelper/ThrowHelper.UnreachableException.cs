@@ -3,38 +3,49 @@
 // See the License.md file in the project root for more information.
 
 using System;
-using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
+
+#if NET7_0_OR_GREATER
+using UnreachableException = System.Diagnostics.UnreachableException;
+#else
+using UnreachableException = System.InvalidOperationException;
+#endif
 
 namespace DrNetToolkit.Diagnostics;
 
 public static partial class ThrowHelper
 {
+    /// <summary>
+    /// Throws a new <see cref="UnreachableException"/>.
+    /// </summary>
+    /// <exception cref="UnreachableException">Always thrown new created with no parameters.</exception>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     [DoesNotReturn]
     public static void ThrowUnreachableException()
-#if NET7_0_OR_GREATER
         => new UnreachableException().Throw();
-#else
-        => new InvalidOperationException().Throw();
-#endif
 
+    /// <summary>
+    /// Throws a new <see cref="UnreachableException"/>.
+    /// </summary>
+    /// <param name="message">The message that describes the error.</param>
+    /// <exception cref="UnreachableException">Always thrown new created with the specified parameter.</exception>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     [DoesNotReturn]
     public static void ThrowUnreachableException(string? message)
-#if NET7_0_OR_GREATER
         => new UnreachableException(message).Throw();
-#else
-        => new InvalidOperationException(message).Throw();
-#endif
 
+    /// <summary>
+    /// Throws a new <see cref="UnreachableException"/>.
+    /// </summary>
+    /// <param name="message">The message that describes the error.</param>
+    /// <param name="innerException">
+    /// The exception that is the cause of the current exception. If the <paramref name="innerException"/> is not null,
+    /// the current exception is raised in a catch block that handles the inner exception.
+    /// </param>
+    /// <exception cref="UnreachableException">Always thrown new created with the specified parameters.</exception>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     [DoesNotReturn]
     public static void ThrowUnreachableException(string? message, Exception? innerException)
-#if NET7_0_OR_GREATER
         => new UnreachableException(message, innerException).Throw();
-#else
-        => new InvalidOperationException(message, innerException).Throw();
-#endif
 }

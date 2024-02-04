@@ -7,8 +7,28 @@ using System.Runtime.CompilerServices;
 
 namespace DrNetToolkit.HighPerformance;
 
+/// <summary>
+/// Extension methods for the <see cref="Nullable{T}"/> structure.
+/// </summary>
 public static class NullableExtensions
 {
+
+#if !NET7_0_OR_GREATER
+#pragma warning disable CS1574 // XML comment has cref attribute that could not be resolved
+#endif
+    /// <summary>
+    /// Retrieves a readonly reference to the location in the <see cref="Nullable{T}"/> instance where the
+    /// <see cref="Nullable{T}.Value"/> is stored.
+    /// </summary>
+    /// <typeparam name="T">The underlying value type of the <see cref="Nullable{T}"/> generic type.</typeparam>
+    /// <param name="nullable">The readonly reference to the input <see cref="Nullable{T}"/> value.</param>
+    /// <returns>
+    /// A readonly reference to the location where the instance's <see cref="Nullable{T}.Value"/> is stored. If the
+    /// instance's <see cref="Nullable{T}.HasValue"/> is false, the current value at that location may be the default
+    /// value.
+    /// </returns>
+    /// <seealso cref="Nullable.GetValueRefOrDefaultRef{T}(in T?)"/>
+#pragma warning restore CS1574 // XML comment has cref attribute that could not be resolved
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static ref readonly T GetValueRef<T>(this in T? nullable)
         where T : struct
@@ -18,6 +38,21 @@ public static class NullableExtensions
         => ref Unsafe.As<T?, RawNullableData<T>>(ref Unsafe.AsRef(in nullable)).Value;
 #endif
 
+#if !NET7_0_OR_GREATER
+#pragma warning disable CS1574 // XML comment has cref attribute that could not be resolved
+#endif
+    /// <summary>
+    /// Retrieves a reference to the location in the <see cref="Nullable{T}"/> instance where the
+    /// <see cref="Nullable{T}.Value"/> is stored.
+    /// </summary>
+    /// <typeparam name="T">The underlying value type of the <see cref="Nullable{T}"/> generic type.</typeparam>
+    /// <param name="nullable">The readonly reference to the input <see cref="Nullable{T}"/> value.</param>
+    /// <returns>
+    /// A reference to the location where the instance's <see cref="Nullable{T}.Value"/> is stored. If the instance's
+    /// <see cref="Nullable{T}.HasValue"/> is false, the current value at that location may be the default value.
+    /// </returns>
+    /// <seealso cref="Nullable.GetValueRefOrDefaultRef{T}(in T?)"/>
+#pragma warning restore CS1574 // XML comment has cref attribute that could not be resolved
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static ref T DangerousGetValueRef<T>(in T? nullable)
         where T : struct

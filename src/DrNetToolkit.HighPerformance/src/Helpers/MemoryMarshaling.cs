@@ -12,6 +12,10 @@ using DrNetToolkit.Diagnostics;
 
 namespace DrNetToolkit.HighPerformance;
 
+/// <summary>
+/// Provides methods to interoperate with <see cref="Memory{T}"/>, <see cref="ReadOnlyMemory{T}"/>,
+/// <see cref="Span{T}"/>, <see cref="ReadOnlySpan{T}"/>.
+/// </summary>
 public static partial class MemoryMarshaling
 {
     /// <summary>

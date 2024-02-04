@@ -10,6 +10,15 @@ namespace DrNetToolkit.Diagnostics;
 
 public static partial class ThrowHelper
 {
+    /// <summary>
+    /// Throws a new <see cref="InvalidOperationException"/>.
+    /// "The {<paramref name="targetType"/>} constructor should never be used."
+    /// </summary>
+    /// <param name="targetType">The target type whose constructor should never be used.</param>
+    /// <exception cref="InvalidOperationException">
+    /// Always thrown new created with next message:
+    /// "The {<paramref name="targetType"/>} constructor should never be used."
+    /// </exception>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     [DoesNotReturn]
     public static void ThrowThisConstructorShouldNeverBeUsed(Type targetType)

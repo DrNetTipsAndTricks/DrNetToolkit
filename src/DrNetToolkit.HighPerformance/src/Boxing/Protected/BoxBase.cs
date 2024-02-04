@@ -10,6 +10,9 @@ using DrNetToolkit.Diagnostics;
 
 namespace DrNetToolkit.HighPerformance.Boxing.Protected;
 
+/// <summary>
+/// Helper methods for <see cref="BoxBase{T}"/> class.
+/// </summary>
 public static class BoxBase
 {
 
@@ -19,7 +22,7 @@ public static class BoxBase
     /// </typeparam>
     /// <typeparam name="TBox">
     /// The type of the box to which the boxed value will be cast to. Where <typeparamref name="TBox"/> : 
-    /// <see cref="BoxBase<T>"/>.
+    /// <see cref="BoxBase{T}"/>.
     /// </typeparam>
     /// <param name="obj">The boxed value to cast.</param>
     /// <returns>The original boxed value, casted to the box of specified type.</returns>
@@ -45,7 +48,7 @@ public static class BoxBase
     /// </typeparam>
     /// <typeparam name="TBox">
     /// The type of the box to which the boxed value will be cast to. Where <typeparamref name="TBox"/> : 
-    /// <see cref="BoxBase<T>"/>.
+    /// <see cref="BoxBase{T}"/>.
     /// </typeparam>
     /// <param name="obj">The boxed value to cast.</param>
     /// <returns>
@@ -65,7 +68,7 @@ public static class BoxBase
     /// </typeparam>
     /// <typeparam name="TBox">
     /// The type of the box to which the boxed value will be cast to. Where <typeparamref name="TBox"/> : 
-    /// <see cref="BoxBase<T>"/>.
+    /// <see cref="BoxBase{T}"/>.
     /// </typeparam>
     /// <param name="obj">The boxed value to cast.</param>
     /// <returns>The original boxed value, casted to the box of specified type.</returns>

@@ -9,8 +9,17 @@ using System.Runtime.InteropServices;
 
 namespace DrNetToolkit.HighPerformance;
 
+/// <summary>
+/// Helper methods for <see cref="Span{T}"/> and <see cref="ReadOnlySpan{T}"/> structures.
+/// </summary>
 public static partial class SpanExtensions
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="span"></param>
+    /// <returns></returns>
     public static ReadOnlySpan<T> AsReadOnlySpan<T>(this Span<T> span)
         => span;
 
