@@ -3,6 +3,7 @@
 // See the License.md file in the project root for more information.
 
 using System;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 
@@ -15,6 +16,8 @@ public static partial class ThrowHelper
     /// </summary>
     /// <exception cref="InvalidCastException">Always thrown new created with no parameters.</exception>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [DebuggerStepThrough]
+    [StackTraceHidden]
     [DoesNotReturn]
     public static void ThrowInvalidCastException()
         => new InvalidCastException().Throw();
@@ -25,6 +28,8 @@ public static partial class ThrowHelper
     /// <param name="message">The message that describes the error.</param>
     /// <exception cref="InvalidCastException">Always thrown new created with the specified parameter.</exception>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [DebuggerStepThrough]
+    [StackTraceHidden]
     [DoesNotReturn]
     public static void ThrowInvalidCastException(string? message)
         => new InvalidCastException(message).Throw();
@@ -39,6 +44,8 @@ public static partial class ThrowHelper
     /// </param>
     /// <exception cref="InvalidCastException">Always thrown new created with the specified parameters.</exception>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [DebuggerStepThrough]
+    [StackTraceHidden]
     [DoesNotReturn]
     public static void ThrowInvalidCastException(string? message, Exception? innerException)
         => new InvalidCastException(message, innerException).Throw();
@@ -56,6 +63,8 @@ public static partial class ThrowHelper
     /// `{<paramref name="targetType"/>}`.".
     /// </exception>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [DebuggerStepThrough]
+    [StackTraceHidden]
     [DoesNotReturn]
     public static void ThrowInvalidCastException(Type sourceType, Type targetType)
         => ThrowInvalidCastException(

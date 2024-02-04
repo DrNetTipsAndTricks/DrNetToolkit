@@ -3,6 +3,7 @@
 // See the License.md file in the project root for more information.
 
 using System;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 
@@ -21,6 +22,8 @@ public static partial class ThrowHelper
     /// </summary>
     /// <exception cref="UnreachableException">Always thrown new created with no parameters.</exception>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [DebuggerStepThrough]
+    [StackTraceHidden]
     [DoesNotReturn]
     public static void ThrowUnreachableException()
         => new UnreachableException().Throw();
@@ -31,6 +34,8 @@ public static partial class ThrowHelper
     /// <param name="message">The message that describes the error.</param>
     /// <exception cref="UnreachableException">Always thrown new created with the specified parameter.</exception>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [DebuggerStepThrough]
+    [StackTraceHidden]
     [DoesNotReturn]
     public static void ThrowUnreachableException(string? message)
         => new UnreachableException(message).Throw();
@@ -45,6 +50,8 @@ public static partial class ThrowHelper
     /// </param>
     /// <exception cref="UnreachableException">Always thrown new created with the specified parameters.</exception>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [DebuggerStepThrough]
+    [StackTraceHidden]
     [DoesNotReturn]
     public static void ThrowUnreachableException(string? message, Exception? innerException)
         => new UnreachableException(message, innerException).Throw();
