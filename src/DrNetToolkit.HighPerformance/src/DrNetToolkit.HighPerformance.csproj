@@ -45,7 +45,7 @@
   </PropertyGroup>
   
   <ItemGroup>
-    <ProjectReference Include="..\..\DrNetToolkit.Diagnostics\DrNetToolkit.Diagnostics.csproj" />
+    <ProjectReference Include="..\..\DrNetToolkit.Diagnostics\src\DrNetToolkit.Diagnostics.csproj" />
   </ItemGroup>
 
   <!-- T4 service -->
@@ -53,18 +53,27 @@
     <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Update="Extensions\Generated\CodeExtensions.Fluent.g.cs">
+    <Compile Update="Extensions\Generated\CodeExtensions.Fluent.Action.g.cs">
+      <DependentUpon>CodeExtensions.Fluent.Action.tt</DependentUpon>
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>CodeExtensions.Fluent.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Extensions\Generated\CodeExtensions.Fluent.Func.g.cs">
+      <DependentUpon>CodeExtensions.Fluent.Func.tt</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
     </Compile>
   </ItemGroup>
 
   <!-- T4 templates -->
   <ItemGroup>
-    <None Update="Extensions\Generated\CodeExtensions.Fluent.tt">
+    <None Update="Extensions\Generated\CodeExtensions.Fluent.Action.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>CodeExtensions.Fluent.g.cs</LastGenOutput>
+      <LastGenOutput>CodeExtensions.Fluent.Action.g.cs</LastGenOutput>
+    </None>
+    <None Update="Extensions\Generated\CodeExtensions.Fluent.Func.tt">
+      <LastGenOutput>CodeExtensions.Fluent.Func.g.cs</LastGenOutput>
+      <Generator>TextTemplatingFileGenerator</Generator>
     </None>
   </ItemGroup>
 

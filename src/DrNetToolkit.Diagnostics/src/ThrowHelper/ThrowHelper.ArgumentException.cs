@@ -1,5 +1,5 @@
-﻿// Licensed to the "DrNet Tips & Tricks" under one or more agreements.
-// The "DrNet Tips & Tricks" licenses this file to you under the MIT license.
+﻿// Licensed to the "DrNet Tips&Tricks" under one or more agreements.
+// The "DrNet Tips&Tricks" licenses this file to you under the MIT license.
 // See the License.md file in the project root for more information.
 
 using System;
@@ -7,8 +7,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 
 namespace DrNetToolkit.Diagnostics;
-
-#pragma warning disable CS8763 // A method marked [DoesNotReturn] should not return.
 
 public static partial class ThrowHelper
 {

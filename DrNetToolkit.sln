@@ -38,7 +38,16 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{
 		.github\workflows\dotnet.yml = .github\workflows\dotnet.yml
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DrNetToolkit.Diagnostics", "src\DrNetToolkit.Diagnostics\DrNetToolkit.Diagnostics.csproj", "{1E15791B-5BCE-4188-A1DC-1D957851D993}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DrNetToolkit.Diagnostics", "src\DrNetToolkit.Diagnostics\src\DrNetToolkit.Diagnostics.csproj", "{1E15791B-5BCE-4188-A1DC-1D957851D993}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Nuget", "Nuget", "{F055D268-61AC-40A4-8484-6033F7CDB823}"
+	ProjectSection(SolutionItems) = preProject
+		build\DrNetToolkit.Build.props = build\DrNetToolkit.Build.props
+		build\DrNetToolkit.Build.targets = build\DrNetToolkit.Build.targets
+		build\nuget.png = build\nuget.png
+		build\NugetPush.cmd = build\NugetPush.cmd
+		version.json = version.json
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -72,6 +81,7 @@ Global
 		{9BE8C30E-E6CE-46A3-9ADF-7067F9C76431} = {02B4116A-CFC5-4685-9B95-E0D141E5D7C0}
 		{C2E9FEBA-4696-4819-9F22-D559C0E6C33B} = {02B4116A-CFC5-4685-9B95-E0D141E5D7C0}
 		{4270F9F5-B20E-4C17-8D2B-24FC191685A0} = {C2E9FEBA-4696-4819-9F22-D559C0E6C33B}
+		{F055D268-61AC-40A4-8484-6033F7CDB823} = {9BE8C30E-E6CE-46A3-9ADF-7067F9C76431}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9C72CE3D-438E-404D-818D-7A4C576C6903}

@@ -7,22 +7,21 @@
 
   <PropertyGroup>
     <Title>DrNet Toolkit - Diagnostics</Title>
-    <Description>
-      This package includes .NET helpers such as:
-      - Guard: Helper methods to verify conditions when running code.
-      - ThrowHelper: Helper methods to efficiently throw exceptions.
-    </Description>
-    <PackageTags>Diagnostics;Guard;ThrowHelper;TypeInfo;Extensions;Helpers</PackageTags>
+    <Description>This package includes .NET helpers such as:
+— ThrowHelper: Helper methods to efficiently throw exceptions.    </Description>
+    <PackageTags>Diagnostics;ThrowHelper;Extensions;Helpers</PackageTags>
   </PropertyGroup>
 
   <!-- Necessary polyfills -->
   <PropertyGroup>
     <PolySharpIncludeGeneratedTypes>
-      System.Diagnostics.StackTraceHiddenAttribute;
       System.Diagnostics.CodeAnalysis.DoesNotReturnAttribute;
+      System.Diagnostics.CodeAnalysis.DoesNotReturnIfAttribute;
+      System.Diagnostics.StackTraceHiddenAttribute;
+      System.Runtime.CompilerServices.SkipLocalsInitAttribute;
     </PolySharpIncludeGeneratedTypes>
   </PropertyGroup>
-  
+
   <!-- T4 service -->
   <ItemGroup>
     <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />

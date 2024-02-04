@@ -1,5 +1,5 @@
-﻿// Licensed to the "DrNet Tips & Tricks" under one or more agreements.
-// The "DrNet Tips & Tricks" licenses this file to you under the MIT license.
+﻿// Licensed to the "DrNet Tips&Tricks" under one or more agreements.
+// The "DrNet Tips&Tricks" licenses this file to you under the MIT license.
 // See the License.md file in the project root for more information.
 
 <#@ template debug="true" hostspecific="false" language="C#" #>
@@ -17,25 +17,6 @@ namespace DrNetToolkit.HighPerformance.Coding;
 
 public static partial class CodeExtensions
 {
-<#
-    foreach(int pCount in Enumerable.Range(1, 16))
-    {
-        if (pCount > 1) WriteLine("");
-#>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static T1 Fluent<<#= string.Join(", ", Enumerable.Range(1, pCount).Select(pNum => $"T{pNum}")) #>>
-    (
-        this <#= string.Join(", ", Enumerable.Range(1, pCount).Select(pNum => $"T{pNum} v{pNum}")) #>,
-        Action<<#= string.Join(", ", Enumerable.Range(1, pCount).Select(pNum => $"T{pNum}")) #>> action
-    )
-    {
-        action(<#= string.Join(", ", Enumerable.Range(1, pCount).Select(pNum => $"v{pNum}")) #>);
-        return v1;
-    }
-
-<#
-    }
-#>
 <#
     foreach(int pCount in Enumerable.Range(1, 16))
     {
