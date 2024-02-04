@@ -2,6 +2,7 @@
 // The "DrNet Tips&Tricks" licenses this file to you under the MIT license.
 // See the License.md file in the project root for more information.
 
+using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 
@@ -9,7 +10,9 @@ using DrNetToolkit.HighPerformance.Boxing.Protected;
 
 namespace DrNetToolkit.HighPerformance.Boxing;
 
-/// <inheritdoc/>
+/// <summary>
+/// Helper methods for <see cref="Box{T}"/> class.
+/// </summary>
 public static class Box
 {
     /// <summary>Creates a new boxed <paramref name="value"/> instance and cast it to the box.</summary>

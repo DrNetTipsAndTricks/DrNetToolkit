@@ -379,7 +379,6 @@ public class Box_Tests
         public char Character;
         public string Text;
 
-        /// <inheritdoc/>
         public readonly bool Equals(TestStruct other) =>
             Number == other.Number &&
                 Character == other.Character &&

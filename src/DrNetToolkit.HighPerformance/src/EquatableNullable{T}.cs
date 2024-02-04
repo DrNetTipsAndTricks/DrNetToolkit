@@ -7,6 +7,9 @@ using System.Runtime.CompilerServices;
 
 namespace DrNetToolkit.HighPerformance;
 
+#if !NETSTANDARD2_1_OR_GREATER
+#pragma warning disable CS1574 // XML comment has cref attribute that could not be resolved
+#endif
 /// <summary>
 /// Represents a value type that can be assigned <see langword="null"/> and supports <see cref="IEquatable{T}"/> and
 /// <see cref="IComparable{T}"/> interfaces.
@@ -28,6 +31,9 @@ namespace DrNetToolkit.HighPerformance;
 /// Initializes a new instance of the <see cref="EquatableNullable{T}"/> structure to the specified
 /// <see cref="Nullable{T}"/> value.
 /// </remarks>
+#if !NETSTANDARD2_1_OR_GREATER
+#pragma warning restore CS1574 // XML comment has cref attribute that could not be resolved
+#endif
 [method: MethodImpl(MethodImplOptions.AggressiveInlining)]
 public readonly struct EquatableNullable<T>(T? value) :
     IEquatable<EquatableNullable<T>>, IComparable<EquatableNullable<T>>
@@ -50,14 +56,15 @@ public readonly struct EquatableNullable<T>(T? value) :
     /// underlying type.
     /// </summary>
     /// <returns>
-    /// The value of the <see cref="Value"/> property if the <see cref="HasValue"/> property is <see langword="true"/>;
-    /// otherwise, the default value of the underlying type.
+    /// The <see cref="Nullable{T}.Value"/> of the <see cref="NullableValue"/> property if the
+    /// <see cref="Nullable{T}.HasValue"/> property is <see langword="true"/>; otherwise, the default value of the
+    /// underlying type.
     /// </returns>
     /// <remarks>
-    /// The <see cref="GetValueOrDefault"/> method returns a value even if the <see cref="HasValue"/> property is
-    /// <see langword="false"/> (unlike the <see cref="Value"/> property, which throws an exception). If the
-    /// <see cref="HasValue"/> property is <see langword="false"/>, the method returns the default value of the
-    /// underlying type.
+    /// The <see cref="GetValueOrDefault()"/> method returns a value even if the <see cref="Nullable{T}.HasValue"/>
+    /// property is <see langword="false"/> (unlike the <see cref="Nullable{T}.Value"/> property, which throws an
+    /// exception). If the <see cref="Nullable{T}.HasValue"/> property is <see langword="false"/>, the method returns
+    /// the default value of the underlying type.
     /// </remarks>
     /// <seealso cref="GetValueOrDefault(T)"/>
     /// <seealso cref="Nullable{T}.GetValueOrDefault()"/>
@@ -70,17 +77,17 @@ public readonly struct EquatableNullable<T>(T? value) :
     /// value.
     /// </summary>
     /// <param name="defaultValue">
-    /// A value to return if the <see cref="HasValue"/> property is <see langword="false"/>.
+    /// A value to return if the <see cref="Nullable{T}.HasValue"/> property is <see langword="false"/>.
     /// </param>
     /// <returns>
-    /// The value of the <see cref="Value"/> property if the <see cref="HasValue"/> property is <see langword="true"/>;
-    /// otherwise, the <paramref name="defaultValue"/> parameter.
+    /// The value of the <see cref="Nullable{T}.Value"/> property if the <see cref="Nullable{T}.HasValue"/> property is
+    /// <see langword="true"/>; otherwise, the <paramref name="defaultValue"/> parameter.
     /// </returns>
     /// <remarks>
-    /// The <see cref="GetValueOrDefault"/> method returns a value even if the <see cref="HasValue"/> property is
-    /// <see langword="false"/> (unlike the <see cref="Value"/> property, which throws an exception). If the
-    /// <see cref="HasValue"/> property is <see langword="false"/>, the method returns the
-    /// <paramref name="defaultValue"/> parameter.
+    /// The <see cref="GetValueOrDefault(T)"/> method returns a value even if the <see cref="Nullable{T}.HasValue"/>
+    /// property is <see langword="false"/> (unlike the <see cref="Nullable{T}.Value"/> property, which throws an
+    /// exception). If the <see cref="Nullable{T}.HasValue"/> property is <see langword="false"/>, the method returns
+    /// the <paramref name="defaultValue"/> parameter.
     /// </remarks>
     /// <seealso cref="GetValueOrDefault()"/>
     /// <seealso cref="Nullable{T}.GetValueOrDefault(T)"/>
@@ -110,11 +117,12 @@ public readonly struct EquatableNullable<T>(T? value) :
     }
 
     /// <summary>
-    /// Retrieves the hash code of the value returned by the <see cref="Value"/> property.
+    /// Retrieves the hash code of the value returned by the <see cref="Nullable{T}.Value"/> property.
     /// </summary>
     /// <returns>
-    /// The hash code of the value returned by the <see cref="Value"/> property if the <see cref="HasValue"/> property
-    /// is <see langword="true"/>, or zero if the <see cref="HasValue"/> property is <see langword="false"/>.
+    /// The hash code of the value returned by the <see cref="Nullable{T}.Value"/> property if the
+    /// <see cref="Nullable{T}.HasValue"/> property is <see langword="true"/>, or zero if the
+    /// <see cref="Nullable{T}.HasValue"/> property is <see langword="false"/>.
     /// </returns>
     /// <seealso cref="Nullable{T}.GetHashCode"/>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -122,12 +130,12 @@ public readonly struct EquatableNullable<T>(T? value) :
         => NullableValue.GetHashCode();
 
     /// <summary>
-    /// Returns the text representation of the value returned by the <see cref="Value"/> property.
+    /// Returns the text representation of the value returned by the <see cref="Nullable{T}.Value"/> property.
     /// </summary>
     /// <returns>
-    /// The text representation of the value returned by the <see cref="Value"/> if the <see cref="HasValue"/> property
-    /// is <see langword="true"/>, or an empty string ("") if the <see cref="HasValue"/> property is
-    /// <see langword="false"/>.
+    /// The text representation of the value returned by the <see cref="Nullable{T}.Value"/> if the
+    /// <see cref="Nullable{T}.HasValue"/> property is <see langword="true"/>, or an empty string ("") if the
+    /// <see cref="Nullable{T}.HasValue"/> property is <see langword="false"/>.
     /// </returns>
     /// <seealso cref="Nullable{T}.ToString"/>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -143,8 +151,8 @@ public readonly struct EquatableNullable<T>(T? value) :
     /// the <paramref name="value"/> parameter.
     /// </returns>
     /// <remarks>
-    /// The <see cref="Value"/> property of the new <see cref="EquatableNullable{T}"/> value is initialized to the
-    /// <paramref name="value"/> parameter and the <see cref="HasValue"/> property is initialized to
+    /// The <see cref="Nullable{T}.Value"/> property of the new <see cref="EquatableNullable{T}"/> value is initialized
+    /// to the <paramref name="value"/> parameter and the <see cref="Nullable{T}.HasValue"/> property is initialized to
     /// <see langword="true"/>.
     /// </remarks>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -156,15 +164,15 @@ public readonly struct EquatableNullable<T>(T? value) :
     /// </summary>
     /// <param name="value">A nullable value.</param>
     /// <returns>
-    /// A <see cref="EquatableNullable{T}"/> structure whose <see cref="Value"/> property is initialized with
-    /// the <paramref name="value"/> parameter.
+    /// A <see cref="EquatableNullable{T}"/> structure whose <see cref="Nullable{T}.Value"/> property is initialized
+    /// with the <paramref name="value"/> parameter.
     /// </returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static implicit operator EquatableNullable<T>(T? value)
         => new(value);
 
     /// <summary>
-    /// Conversion of a <see cref="EquatableNullable{T}"/> instance to its underlying <see cref="Nullable<T>"/> value.
+    /// Conversion of a <see cref="EquatableNullable{T}"/> instance to its underlying <see cref="Nullable{T}"/> value.
     /// </summary>
     /// <param name="value">A value instance.</param>
     /// <returns>
@@ -179,7 +187,7 @@ public readonly struct EquatableNullable<T>(T? value) :
     /// </summary>
     /// <param name="value">A value instance.</param>
     /// <returns>
-    /// The value of the <see cref="Value"/> property for the <paramref name="value"/> parameter.
+    /// The value of the <see cref="Nullable{T}.Value"/> property for the <paramref name="value"/> parameter.
     /// </returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static explicit operator T(EquatableNullable<T> value)
@@ -286,6 +294,7 @@ public readonly struct EquatableNullable<T>(T? value) :
     /// <returns>
     /// <see langword="true"/> if the <paramref name="left"/> value is less than or equal to the
     /// <paramref name="right"/> value; <see langword="false"/> otherwise.
+    /// </returns>
     public static bool operator <=(EquatableNullable<T> left, EquatableNullable<T> right)
         => Nullable.Compare(left.NullableValue, right.NullableValue) <= 0;
 
@@ -303,16 +312,16 @@ public readonly struct EquatableNullable<T>(T? value) :
         => Nullable.Compare(left.NullableValue, right.NullableValue) >= 0;
 }
 
-public static partial class SpanExtensions
-{
 #if NETSTANDARD2_1_OR_GREATER
 
+public static partial class SpanExtensions
+{
     /// <summary>
     /// Creates a <see cref="Span{T}"/> with <see cref="EquatableNullable{T}"/> elements that support the 
     /// <see cref="IEquatable{T}"/> and <see cref="IComparable{T}"/> interfaces. After this, many 
     /// <see cref="MemoryExtensions"/> methods for spans become available.
     /// </summary>
-    /// <typeparam name="T">The underlying value type of <see cref="source"/> elements.</typeparam>
+    /// <typeparam name="T">The underlying value type of <paramref name="source"/> elements.</typeparam>
     /// <param name="source">A source with <see cref="Nullable{T}"/> elements.</param>
     /// <returns>
     /// A <see cref="Span{T}"/> with <see cref="EquatableNullable{T}"/> elements that support the 
@@ -327,7 +336,7 @@ public static partial class SpanExtensions
     /// <see cref="IEquatable{T}"/> and <see cref="IComparable{T}"/> interfaces. After this, many 
     /// <see cref="MemoryExtensions"/> methods for spans become available.
     /// </summary>
-    /// <typeparam name="T">The underlying value type of <see cref="source"/> elements.</typeparam>
+    /// <typeparam name="T">The underlying value type of <paramref name="source"/> elements.</typeparam>
     /// <param name="source">A source with <see cref="Nullable{T}"/> elements.</param>
     /// <returns>
     /// A <see cref="ReadOnlySpan{T}"/> with <see cref="EquatableNullable{T}"/> elements that support the 
@@ -342,7 +351,7 @@ public static partial class SpanExtensions
     /// <see cref="IEquatable{T}"/> and <see cref="IComparable{T}"/> interfaces. After this, many 
     /// <see cref="MemoryExtensions"/> methods for spans become available.
     /// </summary>
-    /// <typeparam name="T">The underlying value type of <see cref="source"/> elements.</typeparam>
+    /// <typeparam name="T">The underlying value type of <paramref name="source"/> elements.</typeparam>
     /// <param name="source">A source with <see cref="Nullable{T}"/> elements.</param>
     /// <returns>
     /// A <see cref="Span{T}"/> with <see cref="EquatableNullable{T}"/> elements that support the 
@@ -358,7 +367,7 @@ public static partial class SpanExtensions
     /// <see cref="IEquatable{T}"/> and <see cref="IComparable{T}"/> interfaces. After this, many 
     /// <see cref="MemoryExtensions"/> methods for spans become available.
     /// </summary>
-    /// <typeparam name="T">The underlying value type of <see cref="source"/> elements.</typeparam>
+    /// <typeparam name="T">The underlying value type of <paramref name="source"/> elements.</typeparam>
     /// <param name="source">A source with <see cref="Nullable{T}"/> elements.</param>
     /// <returns>
     /// A <see cref="Span{T}"/> with <see cref="EquatableNullable{T}"/> elements that support the 
@@ -367,6 +376,6 @@ public static partial class SpanExtensions
     public static ReadOnlySpan<T?> AsNullable<T>(this ReadOnlySpan<EquatableNullable<T>> source)
         where T : struct
         => MemoryMarshaling.CastToNullable<EquatableNullable<T>, T>(source);
+}
 
 #endif
-}
