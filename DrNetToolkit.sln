@@ -45,6 +45,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Nuget", "Nuget", "{F055D268
 		build\DrNetToolkit.Build.props = build\DrNetToolkit.Build.props
 		build\DrNetToolkit.Build.targets = build\DrNetToolkit.Build.targets
 		build\nuget.png = build\nuget.png
+		build\NugetPush.cmd = build\NugetPush.cmd
 		version.json = version.json
 	EndProjectSection
 EndProject
