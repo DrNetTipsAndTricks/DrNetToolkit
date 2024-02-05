@@ -14,6 +14,12 @@
     <PackageTags>Common;CodeExtensions;Extensions;Helpers</PackageTags>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <PolySharpIncludeGeneratedTypes>
+      System.Runtime.CompilerServices.SkipLocalsInitAttribute;
+    </PolySharpIncludeGeneratedTypes>
+  </PropertyGroup>
+
   <!-- T4 service -->
   <ItemGroup>
     <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
