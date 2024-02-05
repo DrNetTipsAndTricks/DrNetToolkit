@@ -18,12 +18,12 @@ namespace DrNetToolkit.HighPerformance.Coding;
 public static partial class CodeExtensions
 {
     /// <summary>
-    /// Fluent styled function to call <see cref="Action"/> in fluent styled code.
+    /// Calls <see cref="Action"/> in fluent code.
     /// </summary>
-    /// <typeparam name="T">The type of <paramref name="value"/>.</typeparam>
-    /// <param name="value">The value that will be returned.</param>
-    /// <param name="action">The action that will be called.</param>
-    /// <returns>A <paramref name="value"/>.</returns>
+    /// <typeparam name="T">Type of <paramref name="value"/>.</typeparam>
+    /// <param name="value">Value to return.</param>
+    /// <param name="action">Action to call.</param>
+    /// <returns><paramref name="value"/>.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static T Fluent<T>(this T value, Action action)
     {
@@ -32,12 +32,12 @@ public static partial class CodeExtensions
     }
 
     /// <summary>
-    /// Fluent styled function to call <see cref="Action{T}"/> in fluent styled code.
+    /// Calls <see cref="Action{T}"/> in fluent code.
     /// </summary>
-    /// <typeparam name="T">The type of <paramref name="value"/> value.</typeparam>
-    /// <param name="value">The value that will be passed to <paramref name="action"/>.</param>
-    /// <param name="action">The action that will be called.</param>
-    /// <returns>A <paramref name="value"/>.</returns>
+    /// <typeparam name="T">Type of <paramref name="value"/>.</typeparam>
+    /// <param name="value">Value for <paramref name="action"/> and return.</param>
+    /// <param name="action">Action to call.</param>
+    /// <returns><paramref name="value"/>.</returns>    
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static T Fluent<T>(this T value, Action<T> action)
     {
@@ -51,26 +51,27 @@ public static partial class CodeExtensions
 #>
 
     /// <summary>
-    /// Fluent styled function to call <see cref="Action{<#= string.Join(", ", Enumerable.Range(1, pCount).Select(pIndex => $"T{pIndex}")) #>}"/> in fluent styled code.
+    /// Calls <see cref="Action{<#= string.Join(", ", Enumerable.Range(1, pCount).Select(pIndex => $"T{pIndex}")) #>}"/> in fluent code.
     /// </summary>
 <#
         foreach(int pIndex in Enumerable.Range(1, pCount))
         {
 #>
-    /// <typeparam name="T<#= pIndex #>">The type of <paramref name="v<#= pIndex #>"/> value.</typeparam>
+    /// <typeparam name="T<#= pIndex #>">Type of <paramref name="v<#= pIndex #>"/>.</typeparam>
 <#
         }
 #>
+    /// <param name="v1">Value for <paramref name="action"/> and return.</param>
 <#
-        foreach(int pIndex in Enumerable.Range(1, pCount))
+        foreach(int pIndex in Enumerable.Range(2, pCount - 1))
         {
 #>
-    /// <param name="v<#= pIndex #>">The value that will be passed to <paramref name="action"/> at position <#= pIndex #>.</param>
+    /// <param name="v<#= pIndex #>">Value for <paramref name="action"/>.</param>
 <#
         }
 #>
-    /// <param name="action">The action that will be called.</param>
-    /// <returns>A <paramref name="v1"/> value.</returns>
+    /// <param name="action">Action to call.</param>
+    /// <returns><paramref name="v1"/>.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static T1 Fluent<<#= string.Join(", ", Enumerable.Range(1, pCount).Select(pIndex => $"T{pIndex}")) #>>
     (

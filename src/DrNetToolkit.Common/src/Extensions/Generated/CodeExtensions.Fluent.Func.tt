@@ -18,25 +18,25 @@ namespace DrNetToolkit.HighPerformance.Coding;
 public static partial class CodeExtensions
 {
     /// <summary>
-    /// Fluent styled function to call <see cref="Func{TResult}"/> in fluent styled code.
+    /// Calls <see cref="Func{TResult}"/> in fluent code.
     /// </summary>
-    /// <typeparam name="T">The type of <paramref name="value"/> value.</typeparam>
-    /// <typeparam name="TResult">The type of the return value of the <paramref name="function"/>.</typeparam>
-    /// <param name="value">The value that will be discarded.</param>
-    /// <param name="function">The function that will be called.</param>
-    /// <returns>The return value of <paramref name="function"/>.</returns>
+    /// <typeparam name="T">Type of <paramref name="value"/>.</typeparam>
+    /// <typeparam name="TResult">Return type of <paramref name="function"/>.</typeparam>
+    /// <param name="value">Value to discard.</param>
+    /// <param name="function">Function to call.</param>
+    /// <returns><paramref name="function"/> result.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static TResult Fluent<T, TResult>(this T value, Func<TResult> function)
         => function();
 
     /// <summary>
-    /// Fluent styled function to call <see cref="Func{T, TResult}"/> in fluent styled code.
+    /// Calls <see cref="Func{T, TResult}"/> in fluent code.
     /// </summary>
-    /// <typeparam name="T">The type of <paramref name="value"/>.</typeparam>
-    /// <typeparam name="TResult">The type of the return value of the <paramref name="function"/>.</typeparam>
-    /// <param name="value">The value that will be passed to <paramref name="function"/>.</param>
-    /// <param name="function">The function that will be called.</param>
-    /// <returns>The return value of <paramref name="function"/>.</returns>
+    /// <typeparam name="T">Type of <paramref name="value"/>.</typeparam>
+    /// <typeparam name="TResult">Return type of <paramref name="function"/>.</typeparam>
+    /// <param name="value">Value for <paramref name="function"/>.</param>
+    /// <param name="function">Function to call.</param>
+    /// <returns><paramref name="function"/> result.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static TResult Fluent<T, TResult>(this T value, Func<T, TResult> function)
         => function(value);
@@ -46,27 +46,27 @@ public static partial class CodeExtensions
 #>
     
     /// <summary>
-    /// Fluent styled function to call <see cref="Func{<#= string.Join(", ", Enumerable.Range(1, pCount).Select(pIndex => $"T{pIndex}")) #>, TResult}"/> in fluent styled code.
+    /// Calls <see cref="Func{<#= string.Join(", ", Enumerable.Range(1, pCount).Select(pIndex => $"T{pIndex}")) #>, TResult}"/> in fluent code.
     /// </summary>
 <#
         foreach(int pIndex in Enumerable.Range(1, pCount))
         {
 #>
-    /// <typeparam name="T<#= pIndex #>">The type of <paramref name="v<#= pIndex #>"/> value.</typeparam>
+    /// <typeparam name="T<#= pIndex #>">Type of <paramref name="v<#= pIndex #>"/> parameter.</typeparam>
 <#
         }
 #>
-    /// <typeparam name="TResult">The type of the return value of the <paramref name="function"/>.</typeparam>
+    /// <typeparam name="TResult">Return type of <paramref name="function"/>.</typeparam>
 <#
         foreach(int pIndex in Enumerable.Range(1, pCount))
         {
 #>
-    /// <param name="v<#= pIndex #>">The value that will be passed to <paramref name="function"/> at position <#= pIndex #>.</param>
+    /// <param name="v<#= pIndex #>">Value for <paramref name="function"/>.</param>
 <#
         }
 #>
-    /// <param name="function">The function that will be called.</param>
-    /// <returns>The return value of <paramref name="function"/>.</returns>
+    /// <param name="function">Function to call.</param>
+    /// <returns><paramref name="function"/> result.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static TResult Fluent<<#= string.Join(", ", Enumerable.Range(1, pCount).Select(pIndex => $"T{pIndex}")) #>, TResult>
     (

@@ -8,9 +8,6 @@ using System.Runtime.CompilerServices;
 
 namespace DrNetToolkit.Diagnostics;
 
-/// <summary>
-/// Helper methods to verify conditions when running code.
-/// </summary>
 public static partial class Guard
 {
     /// <summary>

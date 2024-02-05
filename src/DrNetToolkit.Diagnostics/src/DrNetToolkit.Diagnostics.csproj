@@ -7,40 +7,21 @@
 
   <PropertyGroup>
     <Title>DrNet Toolkit - Diagnostics</Title>
-    <Description>This package includes .NET helpers such as:
-— ThrowHelper: Helper methods to efficiently throw exceptions.    </Description>
-    <PackageTags>Diagnostics;ThrowHelper;Extensions;Helpers</PackageTags>
+    <Description>
+      This package provides next APIs:
+      — Guard: Helper methods for checking conditions and protecting code.
+      — ThrowHelper: Helper methods to efficiently throw exceptions.
+    </Description>
+    <PackageTags>Diagnostics;Guard;ThrowHelper;Extensions;Helpers</PackageTags>
   </PropertyGroup>
 
   <!-- Necessary polyfills -->
   <PropertyGroup>
     <PolySharpIncludeGeneratedTypes>
       System.Diagnostics.CodeAnalysis.DoesNotReturnAttribute;
-      System.Diagnostics.CodeAnalysis.DoesNotReturnIfAttribute;
       System.Diagnostics.StackTraceHiddenAttribute;
-      System.Runtime.CompilerServices.CallerArgumentExpressionAttribute;
       System.Runtime.CompilerServices.SkipLocalsInitAttribute;
     </PolySharpIncludeGeneratedTypes>
   </PropertyGroup>
 
-  <!-- T4 service -->
-  <ItemGroup>
-    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Update="ThrowHelper\ThrowHelper.FluentThrow.g.cs">
-      <DependentUpon>ThrowHelper.FluentThrow.tt</DependentUpon>
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-    </Compile>
-  </ItemGroup>
-
-  <!-- T4 templates -->
-  <ItemGroup>
-    <None Update="ThrowHelper\ThrowHelper.FluentThrow.tt">
-      <LastGenOutput>ThrowHelper.FluentThrow.g.cs</LastGenOutput>
-      <Generator>TextTemplatingFileGenerator</Generator>
-    </None>
-  </ItemGroup>
-  
 </Project>
