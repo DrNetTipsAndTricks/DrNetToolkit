@@ -33,7 +33,7 @@
     JIT ensuring that all local memory is zeroed out to work. Doing this can provide some minor
     performance benefits, depending on the workload.
   -->
-  <PropertyGroup Condition="'$(IsPackable)' == 'true'">
+  <PropertyGroup Condition="'$(IsCoreProject)' == 'true'">
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
     <GeneratedSkipLocalsInitFile Condition="'$(GeneratedSkipLocalsInitFile)' == ''">$(IntermediateOutputPath)$(MSBuildProjectName).SkipLocalsInit.g.cs</GeneratedSkipLocalsInitFile>
     <GeneratedSkipLocalsInitFileLines>
@@ -53,7 +53,7 @@
   <Target Name="GenerateSkipLocalsInit"
           BeforeTargets="BeforeCompile;CoreCompile"
           DependsOnTargets="PrepareForBuild"
-          Condition="'$(Language)' == 'C#'"
+          Condition="'$(IsCoreProject)' == 'true' and '$(Language)' == 'C#'"
           Inputs="$(MSBuildAllProjects)"
           Outputs="$(GeneratedSkipLocalsInitFile)">
 
