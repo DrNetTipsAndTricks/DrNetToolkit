@@ -15,10 +15,6 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
-  </PropertyGroup>
-
-  <PropertyGroup>
     <IsPackable Condition="$(IsTestingProject) == 'true'">false</IsPackable>
     <IsPackable Condition="$(IsBenchmarkingProject) == 'true'">false</IsPackable>
     <IsPackable Condition="'$(IsPackable)' == ''">true</IsPackable>
@@ -26,10 +22,26 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(IsPackable)' == 'true'">
-    <EnableNETAnalyzers>True</EnableNETAnalyzers>
-    <TreatWarningsAsErrors Condition="'$(Configuration)' == 'Release'">true</TreatWarningsAsErrors>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <PackageOutputPath>$(RepositoryDirectory)bin\nupkg</PackageOutputPath>
+    <TreatWarningsAsErrors Condition="'$(Configuration)' == 'Release'">true</TreatWarningsAsErrors>
   </PropertyGroup>
+
+  <PropertyGroup Condition="'$(IsPackable)' == 'true' and '$(SourceLinkEnabled)' != 'false'">
+    <!-- Declare that the Repository URL can be published to NuSpec -->
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <!-- Embed source files that are not tracked by the source control manager to the PDB -->
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <!-- Include PDB in the built .nupkg -->
+    <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(IsPackable)' == 'true'">
+    <PackageReference Include="Nerdbank.GitVersioning" Version="3.6.128" PrivateAssets="All" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(IsPackable)' == 'true' and '$(SourceLinkEnabled)' != 'false'">
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />
+  </ItemGroup>
 
 </Project>

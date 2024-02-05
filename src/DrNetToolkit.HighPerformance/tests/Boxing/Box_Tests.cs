@@ -369,9 +369,7 @@ public class Box_Tests
         }
     }
 
-#if NETSTANDARD2_1_OR_GREATER
 #pragma warning disable CA1067 // Override Object.Equals(object) when implementing IEquatable<T>
-#endif
 
     private struct TestStruct : IEquatable<TestStruct>
     {
@@ -385,7 +383,5 @@ public class Box_Tests
                 Text == other.Text;
     }
 
-#if NETSTANDARD2_1_OR_GREATER
 #pragma warning restore CA1067 // Override Object.Equals(object) when implementing IEquatable<T>
-#endif
 }
