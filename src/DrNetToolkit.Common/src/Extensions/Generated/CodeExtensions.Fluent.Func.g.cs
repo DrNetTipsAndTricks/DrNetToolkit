@@ -10,39 +10,39 @@ namespace DrNetToolkit.HighPerformance.Coding;
 public static partial class CodeExtensions
 {
     /// <summary>
-    /// Fluent styled function to call <see cref="Func{TResult}"/> in fluent styled code.
+    /// Calls <see cref="Func{TResult}"/> in fluent code.
     /// </summary>
-    /// <typeparam name="T">The type of <paramref name="value"/> value.</typeparam>
-    /// <typeparam name="TResult">The type of the return value of the <paramref name="function"/>.</typeparam>
-    /// <param name="value">The value that will be discarded.</param>
-    /// <param name="function">The function that will be called.</param>
-    /// <returns>The return value of <paramref name="function"/>.</returns>
+    /// <typeparam name="T">Type of <paramref name="value"/>.</typeparam>
+    /// <typeparam name="TResult">Return type of <paramref name="function"/>.</typeparam>
+    /// <param name="value">Value to discard.</param>
+    /// <param name="function">Function to call.</param>
+    /// <returns><paramref name="function"/> result.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static TResult Fluent<T, TResult>(this T value, Func<TResult> function)
         => function();
 
     /// <summary>
-    /// Fluent styled function to call <see cref="Func{T, TResult}"/> in fluent styled code.
+    /// Calls <see cref="Func{T, TResult}"/> in fluent code.
     /// </summary>
-    /// <typeparam name="T">The type of <paramref name="value"/>.</typeparam>
-    /// <typeparam name="TResult">The type of the return value of the <paramref name="function"/>.</typeparam>
-    /// <param name="value">The value that will be passed to <paramref name="function"/>.</param>
-    /// <param name="function">The function that will be called.</param>
-    /// <returns>The return value of <paramref name="function"/>.</returns>
+    /// <typeparam name="T">Type of <paramref name="value"/>.</typeparam>
+    /// <typeparam name="TResult">Return type of <paramref name="function"/>.</typeparam>
+    /// <param name="value">Value for <paramref name="function"/>.</param>
+    /// <param name="function">Function to call.</param>
+    /// <returns><paramref name="function"/> result.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static TResult Fluent<T, TResult>(this T value, Func<T, TResult> function)
         => function(value);
     
     /// <summary>
-    /// Fluent styled function to call <see cref="Func{T1, T2, TResult}"/> in fluent styled code.
+    /// Calls <see cref="Func{T1, T2, TResult}"/> in fluent code.
     /// </summary>
-    /// <typeparam name="T1">The type of <paramref name="v1"/> value.</typeparam>
-    /// <typeparam name="T2">The type of <paramref name="v2"/> value.</typeparam>
-    /// <typeparam name="TResult">The type of the return value of the <paramref name="function"/>.</typeparam>
-    /// <param name="v1">The value that will be passed to <paramref name="function"/> at position 1.</param>
-    /// <param name="v2">The value that will be passed to <paramref name="function"/> at position 2.</param>
-    /// <param name="function">The function that will be called.</param>
-    /// <returns>The return value of <paramref name="function"/>.</returns>
+    /// <typeparam name="T1">Type of <paramref name="v1"/> parameter.</typeparam>
+    /// <typeparam name="T2">Type of <paramref name="v2"/> parameter.</typeparam>
+    /// <typeparam name="TResult">Return type of <paramref name="function"/>.</typeparam>
+    /// <param name="v1">Value for <paramref name="function"/>.</param>
+    /// <param name="v2">Value for <paramref name="function"/>.</param>
+    /// <param name="function">Function to call.</param>
+    /// <returns><paramref name="function"/> result.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static TResult Fluent<T1, T2, TResult>
     (
@@ -54,17 +54,17 @@ public static partial class CodeExtensions
     }
     
     /// <summary>
-    /// Fluent styled function to call <see cref="Func{T1, T2, T3, TResult}"/> in fluent styled code.
+    /// Calls <see cref="Func{T1, T2, T3, TResult}"/> in fluent code.
     /// </summary>
-    /// <typeparam name="T1">The type of <paramref name="v1"/> value.</typeparam>
-    /// <typeparam name="T2">The type of <paramref name="v2"/> value.</typeparam>
-    /// <typeparam name="T3">The type of <paramref name="v3"/> value.</typeparam>
-    /// <typeparam name="TResult">The type of the return value of the <paramref name="function"/>.</typeparam>
-    /// <param name="v1">The value that will be passed to <paramref name="function"/> at position 1.</param>
-    /// <param name="v2">The value that will be passed to <paramref name="function"/> at position 2.</param>
-    /// <param name="v3">The value that will be passed to <paramref name="function"/> at position 3.</param>
-    /// <param name="function">The function that will be called.</param>
-    /// <returns>The return value of <paramref name="function"/>.</returns>
+    /// <typeparam name="T1">Type of <paramref name="v1"/> parameter.</typeparam>
+    /// <typeparam name="T2">Type of <paramref name="v2"/> parameter.</typeparam>
+    /// <typeparam name="T3">Type of <paramref name="v3"/> parameter.</typeparam>
+    /// <typeparam name="TResult">Return type of <paramref name="function"/>.</typeparam>
+    /// <param name="v1">Value for <paramref name="function"/>.</param>
+    /// <param name="v2">Value for <paramref name="function"/>.</param>
+    /// <param name="v3">Value for <paramref name="function"/>.</param>
+    /// <param name="function">Function to call.</param>
+    /// <returns><paramref name="function"/> result.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static TResult Fluent<T1, T2, T3, TResult>
     (
@@ -76,19 +76,19 @@ public static partial class CodeExtensions
     }
     
     /// <summary>
-    /// Fluent styled function to call <see cref="Func{T1, T2, T3, T4, TResult}"/> in fluent styled code.
+    /// Calls <see cref="Func{T1, T2, T3, T4, TResult}"/> in fluent code.
     /// </summary>
-    /// <typeparam name="T1">The type of <paramref name="v1"/> value.</typeparam>
-    /// <typeparam name="T2">The type of <paramref name="v2"/> value.</typeparam>
-    /// <typeparam name="T3">The type of <paramref name="v3"/> value.</typeparam>
-    /// <typeparam name="T4">The type of <paramref name="v4"/> value.</typeparam>
-    /// <typeparam name="TResult">The type of the return value of the <paramref name="function"/>.</typeparam>
-    /// <param name="v1">The value that will be passed to <paramref name="function"/> at position 1.</param>
-    /// <param name="v2">The value that will be passed to <paramref name="function"/> at position 2.</param>
-    /// <param name="v3">The value that will be passed to <paramref name="function"/> at position 3.</param>
-    /// <param name="v4">The value that will be passed to <paramref name="function"/> at position 4.</param>
-    /// <param name="function">The function that will be called.</param>
-    /// <returns>The return value of <paramref name="function"/>.</returns>
+    /// <typeparam name="T1">Type of <paramref name="v1"/> parameter.</typeparam>
+    /// <typeparam name="T2">Type of <paramref name="v2"/> parameter.</typeparam>
+    /// <typeparam name="T3">Type of <paramref name="v3"/> parameter.</typeparam>
+    /// <typeparam name="T4">Type of <paramref name="v4"/> parameter.</typeparam>
+    /// <typeparam name="TResult">Return type of <paramref name="function"/>.</typeparam>
+    /// <param name="v1">Value for <paramref name="function"/>.</param>
+    /// <param name="v2">Value for <paramref name="function"/>.</param>
+    /// <param name="v3">Value for <paramref name="function"/>.</param>
+    /// <param name="v4">Value for <paramref name="function"/>.</param>
+    /// <param name="function">Function to call.</param>
+    /// <returns><paramref name="function"/> result.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static TResult Fluent<T1, T2, T3, T4, TResult>
     (
@@ -100,21 +100,21 @@ public static partial class CodeExtensions
     }
     
     /// <summary>
-    /// Fluent styled function to call <see cref="Func{T1, T2, T3, T4, T5, TResult}"/> in fluent styled code.
+    /// Calls <see cref="Func{T1, T2, T3, T4, T5, TResult}"/> in fluent code.
     /// </summary>
-    /// <typeparam name="T1">The type of <paramref name="v1"/> value.</typeparam>
-    /// <typeparam name="T2">The type of <paramref name="v2"/> value.</typeparam>
-    /// <typeparam name="T3">The type of <paramref name="v3"/> value.</typeparam>
-    /// <typeparam name="T4">The type of <paramref name="v4"/> value.</typeparam>
-    /// <typeparam name="T5">The type of <paramref name="v5"/> value.</typeparam>
-    /// <typeparam name="TResult">The type of the return value of the <paramref name="function"/>.</typeparam>
-    /// <param name="v1">The value that will be passed to <paramref name="function"/> at position 1.</param>
-    /// <param name="v2">The value that will be passed to <paramref name="function"/> at position 2.</param>
-    /// <param name="v3">The value that will be passed to <paramref name="function"/> at position 3.</param>
-    /// <param name="v4">The value that will be passed to <paramref name="function"/> at position 4.</param>
-    /// <param name="v5">The value that will be passed to <paramref name="function"/> at position 5.</param>
-    /// <param name="function">The function that will be called.</param>
-    /// <returns>The return value of <paramref name="function"/>.</returns>
+    /// <typeparam name="T1">Type of <paramref name="v1"/> parameter.</typeparam>
+    /// <typeparam name="T2">Type of <paramref name="v2"/> parameter.</typeparam>
+    /// <typeparam name="T3">Type of <paramref name="v3"/> parameter.</typeparam>
+    /// <typeparam name="T4">Type of <paramref name="v4"/> parameter.</typeparam>
+    /// <typeparam name="T5">Type of <paramref name="v5"/> parameter.</typeparam>
+    /// <typeparam name="TResult">Return type of <paramref name="function"/>.</typeparam>
+    /// <param name="v1">Value for <paramref name="function"/>.</param>
+    /// <param name="v2">Value for <paramref name="function"/>.</param>
+    /// <param name="v3">Value for <paramref name="function"/>.</param>
+    /// <param name="v4">Value for <paramref name="function"/>.</param>
+    /// <param name="v5">Value for <paramref name="function"/>.</param>
+    /// <param name="function">Function to call.</param>
+    /// <returns><paramref name="function"/> result.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static TResult Fluent<T1, T2, T3, T4, T5, TResult>
     (
@@ -126,23 +126,23 @@ public static partial class CodeExtensions
     }
     
     /// <summary>
-    /// Fluent styled function to call <see cref="Func{T1, T2, T3, T4, T5, T6, TResult}"/> in fluent styled code.
+    /// Calls <see cref="Func{T1, T2, T3, T4, T5, T6, TResult}"/> in fluent code.
     /// </summary>
-    /// <typeparam name="T1">The type of <paramref name="v1"/> value.</typeparam>
-    /// <typeparam name="T2">The type of <paramref name="v2"/> value.</typeparam>
-    /// <typeparam name="T3">The type of <paramref name="v3"/> value.</typeparam>
-    /// <typeparam name="T4">The type of <paramref name="v4"/> value.</typeparam>
-    /// <typeparam name="T5">The type of <paramref name="v5"/> value.</typeparam>
-    /// <typeparam name="T6">The type of <paramref name="v6"/> value.</typeparam>
-    /// <typeparam name="TResult">The type of the return value of the <paramref name="function"/>.</typeparam>
-    /// <param name="v1">The value that will be passed to <paramref name="function"/> at position 1.</param>
-    /// <param name="v2">The value that will be passed to <paramref name="function"/> at position 2.</param>
-    /// <param name="v3">The value that will be passed to <paramref name="function"/> at position 3.</param>
-    /// <param name="v4">The value that will be passed to <paramref name="function"/> at position 4.</param>
-    /// <param name="v5">The value that will be passed to <paramref name="function"/> at position 5.</param>
-    /// <param name="v6">The value that will be passed to <paramref name="function"/> at position 6.</param>
-    /// <param name="function">The function that will be called.</param>
-    /// <returns>The return value of <paramref name="function"/>.</returns>
+    /// <typeparam name="T1">Type of <paramref name="v1"/> parameter.</typeparam>
+    /// <typeparam name="T2">Type of <paramref name="v2"/> parameter.</typeparam>
+    /// <typeparam name="T3">Type of <paramref name="v3"/> parameter.</typeparam>
+    /// <typeparam name="T4">Type of <paramref name="v4"/> parameter.</typeparam>
+    /// <typeparam name="T5">Type of <paramref name="v5"/> parameter.</typeparam>
+    /// <typeparam name="T6">Type of <paramref name="v6"/> parameter.</typeparam>
+    /// <typeparam name="TResult">Return type of <paramref name="function"/>.</typeparam>
+    /// <param name="v1">Value for <paramref name="function"/>.</param>
+    /// <param name="v2">Value for <paramref name="function"/>.</param>
+    /// <param name="v3">Value for <paramref name="function"/>.</param>
+    /// <param name="v4">Value for <paramref name="function"/>.</param>
+    /// <param name="v5">Value for <paramref name="function"/>.</param>
+    /// <param name="v6">Value for <paramref name="function"/>.</param>
+    /// <param name="function">Function to call.</param>
+    /// <returns><paramref name="function"/> result.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static TResult Fluent<T1, T2, T3, T4, T5, T6, TResult>
     (
@@ -154,25 +154,25 @@ public static partial class CodeExtensions
     }
     
     /// <summary>
-    /// Fluent styled function to call <see cref="Func{T1, T2, T3, T4, T5, T6, T7, TResult}"/> in fluent styled code.
+    /// Calls <see cref="Func{T1, T2, T3, T4, T5, T6, T7, TResult}"/> in fluent code.
     /// </summary>
-    /// <typeparam name="T1">The type of <paramref name="v1"/> value.</typeparam>
-    /// <typeparam name="T2">The type of <paramref name="v2"/> value.</typeparam>
-    /// <typeparam name="T3">The type of <paramref name="v3"/> value.</typeparam>
-    /// <typeparam name="T4">The type of <paramref name="v4"/> value.</typeparam>
-    /// <typeparam name="T5">The type of <paramref name="v5"/> value.</typeparam>
-    /// <typeparam name="T6">The type of <paramref name="v6"/> value.</typeparam>
-    /// <typeparam name="T7">The type of <paramref name="v7"/> value.</typeparam>
-    /// <typeparam name="TResult">The type of the return value of the <paramref name="function"/>.</typeparam>
-    /// <param name="v1">The value that will be passed to <paramref name="function"/> at position 1.</param>
-    /// <param name="v2">The value that will be passed to <paramref name="function"/> at position 2.</param>
-    /// <param name="v3">The value that will be passed to <paramref name="function"/> at position 3.</param>
-    /// <param name="v4">The value that will be passed to <paramref name="function"/> at position 4.</param>
-    /// <param name="v5">The value that will be passed to <paramref name="function"/> at position 5.</param>
-    /// <param name="v6">The value that will be passed to <paramref name="function"/> at position 6.</param>
-    /// <param name="v7">The value that will be passed to <paramref name="function"/> at position 7.</param>
-    /// <param name="function">The function that will be called.</param>
-    /// <returns>The return value of <paramref name="function"/>.</returns>
+    /// <typeparam name="T1">Type of <paramref name="v1"/> parameter.</typeparam>
+    /// <typeparam name="T2">Type of <paramref name="v2"/> parameter.</typeparam>
+    /// <typeparam name="T3">Type of <paramref name="v3"/> parameter.</typeparam>
+    /// <typeparam name="T4">Type of <paramref name="v4"/> parameter.</typeparam>
+    /// <typeparam name="T5">Type of <paramref name="v5"/> parameter.</typeparam>
+    /// <typeparam name="T6">Type of <paramref name="v6"/> parameter.</typeparam>
+    /// <typeparam name="T7">Type of <paramref name="v7"/> parameter.</typeparam>
+    /// <typeparam name="TResult">Return type of <paramref name="function"/>.</typeparam>
+    /// <param name="v1">Value for <paramref name="function"/>.</param>
+    /// <param name="v2">Value for <paramref name="function"/>.</param>
+    /// <param name="v3">Value for <paramref name="function"/>.</param>
+    /// <param name="v4">Value for <paramref name="function"/>.</param>
+    /// <param name="v5">Value for <paramref name="function"/>.</param>
+    /// <param name="v6">Value for <paramref name="function"/>.</param>
+    /// <param name="v7">Value for <paramref name="function"/>.</param>
+    /// <param name="function">Function to call.</param>
+    /// <returns><paramref name="function"/> result.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static TResult Fluent<T1, T2, T3, T4, T5, T6, T7, TResult>
     (
@@ -184,27 +184,27 @@ public static partial class CodeExtensions
     }
     
     /// <summary>
-    /// Fluent styled function to call <see cref="Func{T1, T2, T3, T4, T5, T6, T7, T8, TResult}"/> in fluent styled code.
+    /// Calls <see cref="Func{T1, T2, T3, T4, T5, T6, T7, T8, TResult}"/> in fluent code.
     /// </summary>
-    /// <typeparam name="T1">The type of <paramref name="v1"/> value.</typeparam>
-    /// <typeparam name="T2">The type of <paramref name="v2"/> value.</typeparam>
-    /// <typeparam name="T3">The type of <paramref name="v3"/> value.</typeparam>
-    /// <typeparam name="T4">The type of <paramref name="v4"/> value.</typeparam>
-    /// <typeparam name="T5">The type of <paramref name="v5"/> value.</typeparam>
-    /// <typeparam name="T6">The type of <paramref name="v6"/> value.</typeparam>
-    /// <typeparam name="T7">The type of <paramref name="v7"/> value.</typeparam>
-    /// <typeparam name="T8">The type of <paramref name="v8"/> value.</typeparam>
-    /// <typeparam name="TResult">The type of the return value of the <paramref name="function"/>.</typeparam>
-    /// <param name="v1">The value that will be passed to <paramref name="function"/> at position 1.</param>
-    /// <param name="v2">The value that will be passed to <paramref name="function"/> at position 2.</param>
-    /// <param name="v3">The value that will be passed to <paramref name="function"/> at position 3.</param>
-    /// <param name="v4">The value that will be passed to <paramref name="function"/> at position 4.</param>
-    /// <param name="v5">The value that will be passed to <paramref name="function"/> at position 5.</param>
-    /// <param name="v6">The value that will be passed to <paramref name="function"/> at position 6.</param>
-    /// <param name="v7">The value that will be passed to <paramref name="function"/> at position 7.</param>
-    /// <param name="v8">The value that will be passed to <paramref name="function"/> at position 8.</param>
-    /// <param name="function">The function that will be called.</param>
-    /// <returns>The return value of <paramref name="function"/>.</returns>
+    /// <typeparam name="T1">Type of <paramref name="v1"/> parameter.</typeparam>
+    /// <typeparam name="T2">Type of <paramref name="v2"/> parameter.</typeparam>
+    /// <typeparam name="T3">Type of <paramref name="v3"/> parameter.</typeparam>
+    /// <typeparam name="T4">Type of <paramref name="v4"/> parameter.</typeparam>
+    /// <typeparam name="T5">Type of <paramref name="v5"/> parameter.</typeparam>
+    /// <typeparam name="T6">Type of <paramref name="v6"/> parameter.</typeparam>
+    /// <typeparam name="T7">Type of <paramref name="v7"/> parameter.</typeparam>
+    /// <typeparam name="T8">Type of <paramref name="v8"/> parameter.</typeparam>
+    /// <typeparam name="TResult">Return type of <paramref name="function"/>.</typeparam>
+    /// <param name="v1">Value for <paramref name="function"/>.</param>
+    /// <param name="v2">Value for <paramref name="function"/>.</param>
+    /// <param name="v3">Value for <paramref name="function"/>.</param>
+    /// <param name="v4">Value for <paramref name="function"/>.</param>
+    /// <param name="v5">Value for <paramref name="function"/>.</param>
+    /// <param name="v6">Value for <paramref name="function"/>.</param>
+    /// <param name="v7">Value for <paramref name="function"/>.</param>
+    /// <param name="v8">Value for <paramref name="function"/>.</param>
+    /// <param name="function">Function to call.</param>
+    /// <returns><paramref name="function"/> result.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static TResult Fluent<T1, T2, T3, T4, T5, T6, T7, T8, TResult>
     (
@@ -216,29 +216,29 @@ public static partial class CodeExtensions
     }
     
     /// <summary>
-    /// Fluent styled function to call <see cref="Func{T1, T2, T3, T4, T5, T6, T7, T8, T9, TResult}"/> in fluent styled code.
+    /// Calls <see cref="Func{T1, T2, T3, T4, T5, T6, T7, T8, T9, TResult}"/> in fluent code.
     /// </summary>
-    /// <typeparam name="T1">The type of <paramref name="v1"/> value.</typeparam>
-    /// <typeparam name="T2">The type of <paramref name="v2"/> value.</typeparam>
-    /// <typeparam name="T3">The type of <paramref name="v3"/> value.</typeparam>
-    /// <typeparam name="T4">The type of <paramref name="v4"/> value.</typeparam>
-    /// <typeparam name="T5">The type of <paramref name="v5"/> value.</typeparam>
-    /// <typeparam name="T6">The type of <paramref name="v6"/> value.</typeparam>
-    /// <typeparam name="T7">The type of <paramref name="v7"/> value.</typeparam>
-    /// <typeparam name="T8">The type of <paramref name="v8"/> value.</typeparam>
-    /// <typeparam name="T9">The type of <paramref name="v9"/> value.</typeparam>
-    /// <typeparam name="TResult">The type of the return value of the <paramref name="function"/>.</typeparam>
-    /// <param name="v1">The value that will be passed to <paramref name="function"/> at position 1.</param>
-    /// <param name="v2">The value that will be passed to <paramref name="function"/> at position 2.</param>
-    /// <param name="v3">The value that will be passed to <paramref name="function"/> at position 3.</param>
-    /// <param name="v4">The value that will be passed to <paramref name="function"/> at position 4.</param>
-    /// <param name="v5">The value that will be passed to <paramref name="function"/> at position 5.</param>
-    /// <param name="v6">The value that will be passed to <paramref name="function"/> at position 6.</param>
-    /// <param name="v7">The value that will be passed to <paramref name="function"/> at position 7.</param>
-    /// <param name="v8">The value that will be passed to <paramref name="function"/> at position 8.</param>
-    /// <param name="v9">The value that will be passed to <paramref name="function"/> at position 9.</param>
-    /// <param name="function">The function that will be called.</param>
-    /// <returns>The return value of <paramref name="function"/>.</returns>
+    /// <typeparam name="T1">Type of <paramref name="v1"/> parameter.</typeparam>
+    /// <typeparam name="T2">Type of <paramref name="v2"/> parameter.</typeparam>
+    /// <typeparam name="T3">Type of <paramref name="v3"/> parameter.</typeparam>
+    /// <typeparam name="T4">Type of <paramref name="v4"/> parameter.</typeparam>
+    /// <typeparam name="T5">Type of <paramref name="v5"/> parameter.</typeparam>
+    /// <typeparam name="T6">Type of <paramref name="v6"/> parameter.</typeparam>
+    /// <typeparam name="T7">Type of <paramref name="v7"/> parameter.</typeparam>
+    /// <typeparam name="T8">Type of <paramref name="v8"/> parameter.</typeparam>
+    /// <typeparam name="T9">Type of <paramref name="v9"/> parameter.</typeparam>
+    /// <typeparam name="TResult">Return type of <paramref name="function"/>.</typeparam>
+    /// <param name="v1">Value for <paramref name="function"/>.</param>
+    /// <param name="v2">Value for <paramref name="function"/>.</param>
+    /// <param name="v3">Value for <paramref name="function"/>.</param>
+    /// <param name="v4">Value for <paramref name="function"/>.</param>
+    /// <param name="v5">Value for <paramref name="function"/>.</param>
+    /// <param name="v6">Value for <paramref name="function"/>.</param>
+    /// <param name="v7">Value for <paramref name="function"/>.</param>
+    /// <param name="v8">Value for <paramref name="function"/>.</param>
+    /// <param name="v9">Value for <paramref name="function"/>.</param>
+    /// <param name="function">Function to call.</param>
+    /// <returns><paramref name="function"/> result.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static TResult Fluent<T1, T2, T3, T4, T5, T6, T7, T8, T9, TResult>
     (
@@ -250,31 +250,31 @@ public static partial class CodeExtensions
     }
     
     /// <summary>
-    /// Fluent styled function to call <see cref="Func{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, TResult}"/> in fluent styled code.
+    /// Calls <see cref="Func{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, TResult}"/> in fluent code.
     /// </summary>
-    /// <typeparam name="T1">The type of <paramref name="v1"/> value.</typeparam>
-    /// <typeparam name="T2">The type of <paramref name="v2"/> value.</typeparam>
-    /// <typeparam name="T3">The type of <paramref name="v3"/> value.</typeparam>
-    /// <typeparam name="T4">The type of <paramref name="v4"/> value.</typeparam>
-    /// <typeparam name="T5">The type of <paramref name="v5"/> value.</typeparam>
-    /// <typeparam name="T6">The type of <paramref name="v6"/> value.</typeparam>
-    /// <typeparam name="T7">The type of <paramref name="v7"/> value.</typeparam>
-    /// <typeparam name="T8">The type of <paramref name="v8"/> value.</typeparam>
-    /// <typeparam name="T9">The type of <paramref name="v9"/> value.</typeparam>
-    /// <typeparam name="T10">The type of <paramref name="v10"/> value.</typeparam>
-    /// <typeparam name="TResult">The type of the return value of the <paramref name="function"/>.</typeparam>
-    /// <param name="v1">The value that will be passed to <paramref name="function"/> at position 1.</param>
-    /// <param name="v2">The value that will be passed to <paramref name="function"/> at position 2.</param>
-    /// <param name="v3">The value that will be passed to <paramref name="function"/> at position 3.</param>
-    /// <param name="v4">The value that will be passed to <paramref name="function"/> at position 4.</param>
-    /// <param name="v5">The value that will be passed to <paramref name="function"/> at position 5.</param>
-    /// <param name="v6">The value that will be passed to <paramref name="function"/> at position 6.</param>
-    /// <param name="v7">The value that will be passed to <paramref name="function"/> at position 7.</param>
-    /// <param name="v8">The value that will be passed to <paramref name="function"/> at position 8.</param>
-    /// <param name="v9">The value that will be passed to <paramref name="function"/> at position 9.</param>
-    /// <param name="v10">The value that will be passed to <paramref name="function"/> at position 10.</param>
-    /// <param name="function">The function that will be called.</param>
-    /// <returns>The return value of <paramref name="function"/>.</returns>
+    /// <typeparam name="T1">Type of <paramref name="v1"/> parameter.</typeparam>
+    /// <typeparam name="T2">Type of <paramref name="v2"/> parameter.</typeparam>
+    /// <typeparam name="T3">Type of <paramref name="v3"/> parameter.</typeparam>
+    /// <typeparam name="T4">Type of <paramref name="v4"/> parameter.</typeparam>
+    /// <typeparam name="T5">Type of <paramref name="v5"/> parameter.</typeparam>
+    /// <typeparam name="T6">Type of <paramref name="v6"/> parameter.</typeparam>
+    /// <typeparam name="T7">Type of <paramref name="v7"/> parameter.</typeparam>
+    /// <typeparam name="T8">Type of <paramref name="v8"/> parameter.</typeparam>
+    /// <typeparam name="T9">Type of <paramref name="v9"/> parameter.</typeparam>
+    /// <typeparam name="T10">Type of <paramref name="v10"/> parameter.</typeparam>
+    /// <typeparam name="TResult">Return type of <paramref name="function"/>.</typeparam>
+    /// <param name="v1">Value for <paramref name="function"/>.</param>
+    /// <param name="v2">Value for <paramref name="function"/>.</param>
+    /// <param name="v3">Value for <paramref name="function"/>.</param>
+    /// <param name="v4">Value for <paramref name="function"/>.</param>
+    /// <param name="v5">Value for <paramref name="function"/>.</param>
+    /// <param name="v6">Value for <paramref name="function"/>.</param>
+    /// <param name="v7">Value for <paramref name="function"/>.</param>
+    /// <param name="v8">Value for <paramref name="function"/>.</param>
+    /// <param name="v9">Value for <paramref name="function"/>.</param>
+    /// <param name="v10">Value for <paramref name="function"/>.</param>
+    /// <param name="function">Function to call.</param>
+    /// <returns><paramref name="function"/> result.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static TResult Fluent<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, TResult>
     (
@@ -286,33 +286,33 @@ public static partial class CodeExtensions
     }
     
     /// <summary>
-    /// Fluent styled function to call <see cref="Func{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, TResult}"/> in fluent styled code.
+    /// Calls <see cref="Func{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, TResult}"/> in fluent code.
     /// </summary>
-    /// <typeparam name="T1">The type of <paramref name="v1"/> value.</typeparam>
-    /// <typeparam name="T2">The type of <paramref name="v2"/> value.</typeparam>
-    /// <typeparam name="T3">The type of <paramref name="v3"/> value.</typeparam>
-    /// <typeparam name="T4">The type of <paramref name="v4"/> value.</typeparam>
-    /// <typeparam name="T5">The type of <paramref name="v5"/> value.</typeparam>
-    /// <typeparam name="T6">The type of <paramref name="v6"/> value.</typeparam>
-    /// <typeparam name="T7">The type of <paramref name="v7"/> value.</typeparam>
-    /// <typeparam name="T8">The type of <paramref name="v8"/> value.</typeparam>
-    /// <typeparam name="T9">The type of <paramref name="v9"/> value.</typeparam>
-    /// <typeparam name="T10">The type of <paramref name="v10"/> value.</typeparam>
-    /// <typeparam name="T11">The type of <paramref name="v11"/> value.</typeparam>
-    /// <typeparam name="TResult">The type of the return value of the <paramref name="function"/>.</typeparam>
-    /// <param name="v1">The value that will be passed to <paramref name="function"/> at position 1.</param>
-    /// <param name="v2">The value that will be passed to <paramref name="function"/> at position 2.</param>
-    /// <param name="v3">The value that will be passed to <paramref name="function"/> at position 3.</param>
-    /// <param name="v4">The value that will be passed to <paramref name="function"/> at position 4.</param>
-    /// <param name="v5">The value that will be passed to <paramref name="function"/> at position 5.</param>
-    /// <param name="v6">The value that will be passed to <paramref name="function"/> at position 6.</param>
-    /// <param name="v7">The value that will be passed to <paramref name="function"/> at position 7.</param>
-    /// <param name="v8">The value that will be passed to <paramref name="function"/> at position 8.</param>
-    /// <param name="v9">The value that will be passed to <paramref name="function"/> at position 9.</param>
-    /// <param name="v10">The value that will be passed to <paramref name="function"/> at position 10.</param>
-    /// <param name="v11">The value that will be passed to <paramref name="function"/> at position 11.</param>
-    /// <param name="function">The function that will be called.</param>
-    /// <returns>The return value of <paramref name="function"/>.</returns>
+    /// <typeparam name="T1">Type of <paramref name="v1"/> parameter.</typeparam>
+    /// <typeparam name="T2">Type of <paramref name="v2"/> parameter.</typeparam>
+    /// <typeparam name="T3">Type of <paramref name="v3"/> parameter.</typeparam>
+    /// <typeparam name="T4">Type of <paramref name="v4"/> parameter.</typeparam>
+    /// <typeparam name="T5">Type of <paramref name="v5"/> parameter.</typeparam>
+    /// <typeparam name="T6">Type of <paramref name="v6"/> parameter.</typeparam>
+    /// <typeparam name="T7">Type of <paramref name="v7"/> parameter.</typeparam>
+    /// <typeparam name="T8">Type of <paramref name="v8"/> parameter.</typeparam>
+    /// <typeparam name="T9">Type of <paramref name="v9"/> parameter.</typeparam>
+    /// <typeparam name="T10">Type of <paramref name="v10"/> parameter.</typeparam>
+    /// <typeparam name="T11">Type of <paramref name="v11"/> parameter.</typeparam>
+    /// <typeparam name="TResult">Return type of <paramref name="function"/>.</typeparam>
+    /// <param name="v1">Value for <paramref name="function"/>.</param>
+    /// <param name="v2">Value for <paramref name="function"/>.</param>
+    /// <param name="v3">Value for <paramref name="function"/>.</param>
+    /// <param name="v4">Value for <paramref name="function"/>.</param>
+    /// <param name="v5">Value for <paramref name="function"/>.</param>
+    /// <param name="v6">Value for <paramref name="function"/>.</param>
+    /// <param name="v7">Value for <paramref name="function"/>.</param>
+    /// <param name="v8">Value for <paramref name="function"/>.</param>
+    /// <param name="v9">Value for <paramref name="function"/>.</param>
+    /// <param name="v10">Value for <paramref name="function"/>.</param>
+    /// <param name="v11">Value for <paramref name="function"/>.</param>
+    /// <param name="function">Function to call.</param>
+    /// <returns><paramref name="function"/> result.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static TResult Fluent<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, TResult>
     (
@@ -324,35 +324,35 @@ public static partial class CodeExtensions
     }
     
     /// <summary>
-    /// Fluent styled function to call <see cref="Func{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, TResult}"/> in fluent styled code.
+    /// Calls <see cref="Func{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, TResult}"/> in fluent code.
     /// </summary>
-    /// <typeparam name="T1">The type of <paramref name="v1"/> value.</typeparam>
-    /// <typeparam name="T2">The type of <paramref name="v2"/> value.</typeparam>
-    /// <typeparam name="T3">The type of <paramref name="v3"/> value.</typeparam>
-    /// <typeparam name="T4">The type of <paramref name="v4"/> value.</typeparam>
-    /// <typeparam name="T5">The type of <paramref name="v5"/> value.</typeparam>
-    /// <typeparam name="T6">The type of <paramref name="v6"/> value.</typeparam>
-    /// <typeparam name="T7">The type of <paramref name="v7"/> value.</typeparam>
-    /// <typeparam name="T8">The type of <paramref name="v8"/> value.</typeparam>
-    /// <typeparam name="T9">The type of <paramref name="v9"/> value.</typeparam>
-    /// <typeparam name="T10">The type of <paramref name="v10"/> value.</typeparam>
-    /// <typeparam name="T11">The type of <paramref name="v11"/> value.</typeparam>
-    /// <typeparam name="T12">The type of <paramref name="v12"/> value.</typeparam>
-    /// <typeparam name="TResult">The type of the return value of the <paramref name="function"/>.</typeparam>
-    /// <param name="v1">The value that will be passed to <paramref name="function"/> at position 1.</param>
-    /// <param name="v2">The value that will be passed to <paramref name="function"/> at position 2.</param>
-    /// <param name="v3">The value that will be passed to <paramref name="function"/> at position 3.</param>
-    /// <param name="v4">The value that will be passed to <paramref name="function"/> at position 4.</param>
-    /// <param name="v5">The value that will be passed to <paramref name="function"/> at position 5.</param>
-    /// <param name="v6">The value that will be passed to <paramref name="function"/> at position 6.</param>
-    /// <param name="v7">The value that will be passed to <paramref name="function"/> at position 7.</param>
-    /// <param name="v8">The value that will be passed to <paramref name="function"/> at position 8.</param>
-    /// <param name="v9">The value that will be passed to <paramref name="function"/> at position 9.</param>
-    /// <param name="v10">The value that will be passed to <paramref name="function"/> at position 10.</param>
-    /// <param name="v11">The value that will be passed to <paramref name="function"/> at position 11.</param>
-    /// <param name="v12">The value that will be passed to <paramref name="function"/> at position 12.</param>
-    /// <param name="function">The function that will be called.</param>
-    /// <returns>The return value of <paramref name="function"/>.</returns>
+    /// <typeparam name="T1">Type of <paramref name="v1"/> parameter.</typeparam>
+    /// <typeparam name="T2">Type of <paramref name="v2"/> parameter.</typeparam>
+    /// <typeparam name="T3">Type of <paramref name="v3"/> parameter.</typeparam>
+    /// <typeparam name="T4">Type of <paramref name="v4"/> parameter.</typeparam>
+    /// <typeparam name="T5">Type of <paramref name="v5"/> parameter.</typeparam>
+    /// <typeparam name="T6">Type of <paramref name="v6"/> parameter.</typeparam>
+    /// <typeparam name="T7">Type of <paramref name="v7"/> parameter.</typeparam>
+    /// <typeparam name="T8">Type of <paramref name="v8"/> parameter.</typeparam>
+    /// <typeparam name="T9">Type of <paramref name="v9"/> parameter.</typeparam>
+    /// <typeparam name="T10">Type of <paramref name="v10"/> parameter.</typeparam>
+    /// <typeparam name="T11">Type of <paramref name="v11"/> parameter.</typeparam>
+    /// <typeparam name="T12">Type of <paramref name="v12"/> parameter.</typeparam>
+    /// <typeparam name="TResult">Return type of <paramref name="function"/>.</typeparam>
+    /// <param name="v1">Value for <paramref name="function"/>.</param>
+    /// <param name="v2">Value for <paramref name="function"/>.</param>
+    /// <param name="v3">Value for <paramref name="function"/>.</param>
+    /// <param name="v4">Value for <paramref name="function"/>.</param>
+    /// <param name="v5">Value for <paramref name="function"/>.</param>
+    /// <param name="v6">Value for <paramref name="function"/>.</param>
+    /// <param name="v7">Value for <paramref name="function"/>.</param>
+    /// <param name="v8">Value for <paramref name="function"/>.</param>
+    /// <param name="v9">Value for <paramref name="function"/>.</param>
+    /// <param name="v10">Value for <paramref name="function"/>.</param>
+    /// <param name="v11">Value for <paramref name="function"/>.</param>
+    /// <param name="v12">Value for <paramref name="function"/>.</param>
+    /// <param name="function">Function to call.</param>
+    /// <returns><paramref name="function"/> result.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static TResult Fluent<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, TResult>
     (
@@ -364,37 +364,37 @@ public static partial class CodeExtensions
     }
     
     /// <summary>
-    /// Fluent styled function to call <see cref="Func{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, TResult}"/> in fluent styled code.
+    /// Calls <see cref="Func{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, TResult}"/> in fluent code.
     /// </summary>
-    /// <typeparam name="T1">The type of <paramref name="v1"/> value.</typeparam>
-    /// <typeparam name="T2">The type of <paramref name="v2"/> value.</typeparam>
-    /// <typeparam name="T3">The type of <paramref name="v3"/> value.</typeparam>
-    /// <typeparam name="T4">The type of <paramref name="v4"/> value.</typeparam>
-    /// <typeparam name="T5">The type of <paramref name="v5"/> value.</typeparam>
-    /// <typeparam name="T6">The type of <paramref name="v6"/> value.</typeparam>
-    /// <typeparam name="T7">The type of <paramref name="v7"/> value.</typeparam>
-    /// <typeparam name="T8">The type of <paramref name="v8"/> value.</typeparam>
-    /// <typeparam name="T9">The type of <paramref name="v9"/> value.</typeparam>
-    /// <typeparam name="T10">The type of <paramref name="v10"/> value.</typeparam>
-    /// <typeparam name="T11">The type of <paramref name="v11"/> value.</typeparam>
-    /// <typeparam name="T12">The type of <paramref name="v12"/> value.</typeparam>
-    /// <typeparam name="T13">The type of <paramref name="v13"/> value.</typeparam>
-    /// <typeparam name="TResult">The type of the return value of the <paramref name="function"/>.</typeparam>
-    /// <param name="v1">The value that will be passed to <paramref name="function"/> at position 1.</param>
-    /// <param name="v2">The value that will be passed to <paramref name="function"/> at position 2.</param>
-    /// <param name="v3">The value that will be passed to <paramref name="function"/> at position 3.</param>
-    /// <param name="v4">The value that will be passed to <paramref name="function"/> at position 4.</param>
-    /// <param name="v5">The value that will be passed to <paramref name="function"/> at position 5.</param>
-    /// <param name="v6">The value that will be passed to <paramref name="function"/> at position 6.</param>
-    /// <param name="v7">The value that will be passed to <paramref name="function"/> at position 7.</param>
-    /// <param name="v8">The value that will be passed to <paramref name="function"/> at position 8.</param>
-    /// <param name="v9">The value that will be passed to <paramref name="function"/> at position 9.</param>
-    /// <param name="v10">The value that will be passed to <paramref name="function"/> at position 10.</param>
-    /// <param name="v11">The value that will be passed to <paramref name="function"/> at position 11.</param>
-    /// <param name="v12">The value that will be passed to <paramref name="function"/> at position 12.</param>
-    /// <param name="v13">The value that will be passed to <paramref name="function"/> at position 13.</param>
-    /// <param name="function">The function that will be called.</param>
-    /// <returns>The return value of <paramref name="function"/>.</returns>
+    /// <typeparam name="T1">Type of <paramref name="v1"/> parameter.</typeparam>
+    /// <typeparam name="T2">Type of <paramref name="v2"/> parameter.</typeparam>
+    /// <typeparam name="T3">Type of <paramref name="v3"/> parameter.</typeparam>
+    /// <typeparam name="T4">Type of <paramref name="v4"/> parameter.</typeparam>
+    /// <typeparam name="T5">Type of <paramref name="v5"/> parameter.</typeparam>
+    /// <typeparam name="T6">Type of <paramref name="v6"/> parameter.</typeparam>
+    /// <typeparam name="T7">Type of <paramref name="v7"/> parameter.</typeparam>
+    /// <typeparam name="T8">Type of <paramref name="v8"/> parameter.</typeparam>
+    /// <typeparam name="T9">Type of <paramref name="v9"/> parameter.</typeparam>
+    /// <typeparam name="T10">Type of <paramref name="v10"/> parameter.</typeparam>
+    /// <typeparam name="T11">Type of <paramref name="v11"/> parameter.</typeparam>
+    /// <typeparam name="T12">Type of <paramref name="v12"/> parameter.</typeparam>
+    /// <typeparam name="T13">Type of <paramref name="v13"/> parameter.</typeparam>
+    /// <typeparam name="TResult">Return type of <paramref name="function"/>.</typeparam>
+    /// <param name="v1">Value for <paramref name="function"/>.</param>
+    /// <param name="v2">Value for <paramref name="function"/>.</param>
+    /// <param name="v3">Value for <paramref name="function"/>.</param>
+    /// <param name="v4">Value for <paramref name="function"/>.</param>
+    /// <param name="v5">Value for <paramref name="function"/>.</param>
+    /// <param name="v6">Value for <paramref name="function"/>.</param>
+    /// <param name="v7">Value for <paramref name="function"/>.</param>
+    /// <param name="v8">Value for <paramref name="function"/>.</param>
+    /// <param name="v9">Value for <paramref name="function"/>.</param>
+    /// <param name="v10">Value for <paramref name="function"/>.</param>
+    /// <param name="v11">Value for <paramref name="function"/>.</param>
+    /// <param name="v12">Value for <paramref name="function"/>.</param>
+    /// <param name="v13">Value for <paramref name="function"/>.</param>
+    /// <param name="function">Function to call.</param>
+    /// <returns><paramref name="function"/> result.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static TResult Fluent<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, TResult>
     (
@@ -406,39 +406,39 @@ public static partial class CodeExtensions
     }
     
     /// <summary>
-    /// Fluent styled function to call <see cref="Func{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, TResult}"/> in fluent styled code.
+    /// Calls <see cref="Func{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, TResult}"/> in fluent code.
     /// </summary>
-    /// <typeparam name="T1">The type of <paramref name="v1"/> value.</typeparam>
-    /// <typeparam name="T2">The type of <paramref name="v2"/> value.</typeparam>
-    /// <typeparam name="T3">The type of <paramref name="v3"/> value.</typeparam>
-    /// <typeparam name="T4">The type of <paramref name="v4"/> value.</typeparam>
-    /// <typeparam name="T5">The type of <paramref name="v5"/> value.</typeparam>
-    /// <typeparam name="T6">The type of <paramref name="v6"/> value.</typeparam>
-    /// <typeparam name="T7">The type of <paramref name="v7"/> value.</typeparam>
-    /// <typeparam name="T8">The type of <paramref name="v8"/> value.</typeparam>
-    /// <typeparam name="T9">The type of <paramref name="v9"/> value.</typeparam>
-    /// <typeparam name="T10">The type of <paramref name="v10"/> value.</typeparam>
-    /// <typeparam name="T11">The type of <paramref name="v11"/> value.</typeparam>
-    /// <typeparam name="T12">The type of <paramref name="v12"/> value.</typeparam>
-    /// <typeparam name="T13">The type of <paramref name="v13"/> value.</typeparam>
-    /// <typeparam name="T14">The type of <paramref name="v14"/> value.</typeparam>
-    /// <typeparam name="TResult">The type of the return value of the <paramref name="function"/>.</typeparam>
-    /// <param name="v1">The value that will be passed to <paramref name="function"/> at position 1.</param>
-    /// <param name="v2">The value that will be passed to <paramref name="function"/> at position 2.</param>
-    /// <param name="v3">The value that will be passed to <paramref name="function"/> at position 3.</param>
-    /// <param name="v4">The value that will be passed to <paramref name="function"/> at position 4.</param>
-    /// <param name="v5">The value that will be passed to <paramref name="function"/> at position 5.</param>
-    /// <param name="v6">The value that will be passed to <paramref name="function"/> at position 6.</param>
-    /// <param name="v7">The value that will be passed to <paramref name="function"/> at position 7.</param>
-    /// <param name="v8">The value that will be passed to <paramref name="function"/> at position 8.</param>
-    /// <param name="v9">The value that will be passed to <paramref name="function"/> at position 9.</param>
-    /// <param name="v10">The value that will be passed to <paramref name="function"/> at position 10.</param>
-    /// <param name="v11">The value that will be passed to <paramref name="function"/> at position 11.</param>
-    /// <param name="v12">The value that will be passed to <paramref name="function"/> at position 12.</param>
-    /// <param name="v13">The value that will be passed to <paramref name="function"/> at position 13.</param>
-    /// <param name="v14">The value that will be passed to <paramref name="function"/> at position 14.</param>
-    /// <param name="function">The function that will be called.</param>
-    /// <returns>The return value of <paramref name="function"/>.</returns>
+    /// <typeparam name="T1">Type of <paramref name="v1"/> parameter.</typeparam>
+    /// <typeparam name="T2">Type of <paramref name="v2"/> parameter.</typeparam>
+    /// <typeparam name="T3">Type of <paramref name="v3"/> parameter.</typeparam>
+    /// <typeparam name="T4">Type of <paramref name="v4"/> parameter.</typeparam>
+    /// <typeparam name="T5">Type of <paramref name="v5"/> parameter.</typeparam>
+    /// <typeparam name="T6">Type of <paramref name="v6"/> parameter.</typeparam>
+    /// <typeparam name="T7">Type of <paramref name="v7"/> parameter.</typeparam>
+    /// <typeparam name="T8">Type of <paramref name="v8"/> parameter.</typeparam>
+    /// <typeparam name="T9">Type of <paramref name="v9"/> parameter.</typeparam>
+    /// <typeparam name="T10">Type of <paramref name="v10"/> parameter.</typeparam>
+    /// <typeparam name="T11">Type of <paramref name="v11"/> parameter.</typeparam>
+    /// <typeparam name="T12">Type of <paramref name="v12"/> parameter.</typeparam>
+    /// <typeparam name="T13">Type of <paramref name="v13"/> parameter.</typeparam>
+    /// <typeparam name="T14">Type of <paramref name="v14"/> parameter.</typeparam>
+    /// <typeparam name="TResult">Return type of <paramref name="function"/>.</typeparam>
+    /// <param name="v1">Value for <paramref name="function"/>.</param>
+    /// <param name="v2">Value for <paramref name="function"/>.</param>
+    /// <param name="v3">Value for <paramref name="function"/>.</param>
+    /// <param name="v4">Value for <paramref name="function"/>.</param>
+    /// <param name="v5">Value for <paramref name="function"/>.</param>
+    /// <param name="v6">Value for <paramref name="function"/>.</param>
+    /// <param name="v7">Value for <paramref name="function"/>.</param>
+    /// <param name="v8">Value for <paramref name="function"/>.</param>
+    /// <param name="v9">Value for <paramref name="function"/>.</param>
+    /// <param name="v10">Value for <paramref name="function"/>.</param>
+    /// <param name="v11">Value for <paramref name="function"/>.</param>
+    /// <param name="v12">Value for <paramref name="function"/>.</param>
+    /// <param name="v13">Value for <paramref name="function"/>.</param>
+    /// <param name="v14">Value for <paramref name="function"/>.</param>
+    /// <param name="function">Function to call.</param>
+    /// <returns><paramref name="function"/> result.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static TResult Fluent<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, TResult>
     (
@@ -450,41 +450,41 @@ public static partial class CodeExtensions
     }
     
     /// <summary>
-    /// Fluent styled function to call <see cref="Func{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, TResult}"/> in fluent styled code.
+    /// Calls <see cref="Func{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, TResult}"/> in fluent code.
     /// </summary>
-    /// <typeparam name="T1">The type of <paramref name="v1"/> value.</typeparam>
-    /// <typeparam name="T2">The type of <paramref name="v2"/> value.</typeparam>
-    /// <typeparam name="T3">The type of <paramref name="v3"/> value.</typeparam>
-    /// <typeparam name="T4">The type of <paramref name="v4"/> value.</typeparam>
-    /// <typeparam name="T5">The type of <paramref name="v5"/> value.</typeparam>
-    /// <typeparam name="T6">The type of <paramref name="v6"/> value.</typeparam>
-    /// <typeparam name="T7">The type of <paramref name="v7"/> value.</typeparam>
-    /// <typeparam name="T8">The type of <paramref name="v8"/> value.</typeparam>
-    /// <typeparam name="T9">The type of <paramref name="v9"/> value.</typeparam>
-    /// <typeparam name="T10">The type of <paramref name="v10"/> value.</typeparam>
-    /// <typeparam name="T11">The type of <paramref name="v11"/> value.</typeparam>
-    /// <typeparam name="T12">The type of <paramref name="v12"/> value.</typeparam>
-    /// <typeparam name="T13">The type of <paramref name="v13"/> value.</typeparam>
-    /// <typeparam name="T14">The type of <paramref name="v14"/> value.</typeparam>
-    /// <typeparam name="T15">The type of <paramref name="v15"/> value.</typeparam>
-    /// <typeparam name="TResult">The type of the return value of the <paramref name="function"/>.</typeparam>
-    /// <param name="v1">The value that will be passed to <paramref name="function"/> at position 1.</param>
-    /// <param name="v2">The value that will be passed to <paramref name="function"/> at position 2.</param>
-    /// <param name="v3">The value that will be passed to <paramref name="function"/> at position 3.</param>
-    /// <param name="v4">The value that will be passed to <paramref name="function"/> at position 4.</param>
-    /// <param name="v5">The value that will be passed to <paramref name="function"/> at position 5.</param>
-    /// <param name="v6">The value that will be passed to <paramref name="function"/> at position 6.</param>
-    /// <param name="v7">The value that will be passed to <paramref name="function"/> at position 7.</param>
-    /// <param name="v8">The value that will be passed to <paramref name="function"/> at position 8.</param>
-    /// <param name="v9">The value that will be passed to <paramref name="function"/> at position 9.</param>
-    /// <param name="v10">The value that will be passed to <paramref name="function"/> at position 10.</param>
-    /// <param name="v11">The value that will be passed to <paramref name="function"/> at position 11.</param>
-    /// <param name="v12">The value that will be passed to <paramref name="function"/> at position 12.</param>
-    /// <param name="v13">The value that will be passed to <paramref name="function"/> at position 13.</param>
-    /// <param name="v14">The value that will be passed to <paramref name="function"/> at position 14.</param>
-    /// <param name="v15">The value that will be passed to <paramref name="function"/> at position 15.</param>
-    /// <param name="function">The function that will be called.</param>
-    /// <returns>The return value of <paramref name="function"/>.</returns>
+    /// <typeparam name="T1">Type of <paramref name="v1"/> parameter.</typeparam>
+    /// <typeparam name="T2">Type of <paramref name="v2"/> parameter.</typeparam>
+    /// <typeparam name="T3">Type of <paramref name="v3"/> parameter.</typeparam>
+    /// <typeparam name="T4">Type of <paramref name="v4"/> parameter.</typeparam>
+    /// <typeparam name="T5">Type of <paramref name="v5"/> parameter.</typeparam>
+    /// <typeparam name="T6">Type of <paramref name="v6"/> parameter.</typeparam>
+    /// <typeparam name="T7">Type of <paramref name="v7"/> parameter.</typeparam>
+    /// <typeparam name="T8">Type of <paramref name="v8"/> parameter.</typeparam>
+    /// <typeparam name="T9">Type of <paramref name="v9"/> parameter.</typeparam>
+    /// <typeparam name="T10">Type of <paramref name="v10"/> parameter.</typeparam>
+    /// <typeparam name="T11">Type of <paramref name="v11"/> parameter.</typeparam>
+    /// <typeparam name="T12">Type of <paramref name="v12"/> parameter.</typeparam>
+    /// <typeparam name="T13">Type of <paramref name="v13"/> parameter.</typeparam>
+    /// <typeparam name="T14">Type of <paramref name="v14"/> parameter.</typeparam>
+    /// <typeparam name="T15">Type of <paramref name="v15"/> parameter.</typeparam>
+    /// <typeparam name="TResult">Return type of <paramref name="function"/>.</typeparam>
+    /// <param name="v1">Value for <paramref name="function"/>.</param>
+    /// <param name="v2">Value for <paramref name="function"/>.</param>
+    /// <param name="v3">Value for <paramref name="function"/>.</param>
+    /// <param name="v4">Value for <paramref name="function"/>.</param>
+    /// <param name="v5">Value for <paramref name="function"/>.</param>
+    /// <param name="v6">Value for <paramref name="function"/>.</param>
+    /// <param name="v7">Value for <paramref name="function"/>.</param>
+    /// <param name="v8">Value for <paramref name="function"/>.</param>
+    /// <param name="v9">Value for <paramref name="function"/>.</param>
+    /// <param name="v10">Value for <paramref name="function"/>.</param>
+    /// <param name="v11">Value for <paramref name="function"/>.</param>
+    /// <param name="v12">Value for <paramref name="function"/>.</param>
+    /// <param name="v13">Value for <paramref name="function"/>.</param>
+    /// <param name="v14">Value for <paramref name="function"/>.</param>
+    /// <param name="v15">Value for <paramref name="function"/>.</param>
+    /// <param name="function">Function to call.</param>
+    /// <returns><paramref name="function"/> result.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static TResult Fluent<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, TResult>
     (
@@ -496,43 +496,43 @@ public static partial class CodeExtensions
     }
     
     /// <summary>
-    /// Fluent styled function to call <see cref="Func{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, TResult}"/> in fluent styled code.
+    /// Calls <see cref="Func{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, TResult}"/> in fluent code.
     /// </summary>
-    /// <typeparam name="T1">The type of <paramref name="v1"/> value.</typeparam>
-    /// <typeparam name="T2">The type of <paramref name="v2"/> value.</typeparam>
-    /// <typeparam name="T3">The type of <paramref name="v3"/> value.</typeparam>
-    /// <typeparam name="T4">The type of <paramref name="v4"/> value.</typeparam>
-    /// <typeparam name="T5">The type of <paramref name="v5"/> value.</typeparam>
-    /// <typeparam name="T6">The type of <paramref name="v6"/> value.</typeparam>
-    /// <typeparam name="T7">The type of <paramref name="v7"/> value.</typeparam>
-    /// <typeparam name="T8">The type of <paramref name="v8"/> value.</typeparam>
-    /// <typeparam name="T9">The type of <paramref name="v9"/> value.</typeparam>
-    /// <typeparam name="T10">The type of <paramref name="v10"/> value.</typeparam>
-    /// <typeparam name="T11">The type of <paramref name="v11"/> value.</typeparam>
-    /// <typeparam name="T12">The type of <paramref name="v12"/> value.</typeparam>
-    /// <typeparam name="T13">The type of <paramref name="v13"/> value.</typeparam>
-    /// <typeparam name="T14">The type of <paramref name="v14"/> value.</typeparam>
-    /// <typeparam name="T15">The type of <paramref name="v15"/> value.</typeparam>
-    /// <typeparam name="T16">The type of <paramref name="v16"/> value.</typeparam>
-    /// <typeparam name="TResult">The type of the return value of the <paramref name="function"/>.</typeparam>
-    /// <param name="v1">The value that will be passed to <paramref name="function"/> at position 1.</param>
-    /// <param name="v2">The value that will be passed to <paramref name="function"/> at position 2.</param>
-    /// <param name="v3">The value that will be passed to <paramref name="function"/> at position 3.</param>
-    /// <param name="v4">The value that will be passed to <paramref name="function"/> at position 4.</param>
-    /// <param name="v5">The value that will be passed to <paramref name="function"/> at position 5.</param>
-    /// <param name="v6">The value that will be passed to <paramref name="function"/> at position 6.</param>
-    /// <param name="v7">The value that will be passed to <paramref name="function"/> at position 7.</param>
-    /// <param name="v8">The value that will be passed to <paramref name="function"/> at position 8.</param>
-    /// <param name="v9">The value that will be passed to <paramref name="function"/> at position 9.</param>
-    /// <param name="v10">The value that will be passed to <paramref name="function"/> at position 10.</param>
-    /// <param name="v11">The value that will be passed to <paramref name="function"/> at position 11.</param>
-    /// <param name="v12">The value that will be passed to <paramref name="function"/> at position 12.</param>
-    /// <param name="v13">The value that will be passed to <paramref name="function"/> at position 13.</param>
-    /// <param name="v14">The value that will be passed to <paramref name="function"/> at position 14.</param>
-    /// <param name="v15">The value that will be passed to <paramref name="function"/> at position 15.</param>
-    /// <param name="v16">The value that will be passed to <paramref name="function"/> at position 16.</param>
-    /// <param name="function">The function that will be called.</param>
-    /// <returns>The return value of <paramref name="function"/>.</returns>
+    /// <typeparam name="T1">Type of <paramref name="v1"/> parameter.</typeparam>
+    /// <typeparam name="T2">Type of <paramref name="v2"/> parameter.</typeparam>
+    /// <typeparam name="T3">Type of <paramref name="v3"/> parameter.</typeparam>
+    /// <typeparam name="T4">Type of <paramref name="v4"/> parameter.</typeparam>
+    /// <typeparam name="T5">Type of <paramref name="v5"/> parameter.</typeparam>
+    /// <typeparam name="T6">Type of <paramref name="v6"/> parameter.</typeparam>
+    /// <typeparam name="T7">Type of <paramref name="v7"/> parameter.</typeparam>
+    /// <typeparam name="T8">Type of <paramref name="v8"/> parameter.</typeparam>
+    /// <typeparam name="T9">Type of <paramref name="v9"/> parameter.</typeparam>
+    /// <typeparam name="T10">Type of <paramref name="v10"/> parameter.</typeparam>
+    /// <typeparam name="T11">Type of <paramref name="v11"/> parameter.</typeparam>
+    /// <typeparam name="T12">Type of <paramref name="v12"/> parameter.</typeparam>
+    /// <typeparam name="T13">Type of <paramref name="v13"/> parameter.</typeparam>
+    /// <typeparam name="T14">Type of <paramref name="v14"/> parameter.</typeparam>
+    /// <typeparam name="T15">Type of <paramref name="v15"/> parameter.</typeparam>
+    /// <typeparam name="T16">Type of <paramref name="v16"/> parameter.</typeparam>
+    /// <typeparam name="TResult">Return type of <paramref name="function"/>.</typeparam>
+    /// <param name="v1">Value for <paramref name="function"/>.</param>
+    /// <param name="v2">Value for <paramref name="function"/>.</param>
+    /// <param name="v3">Value for <paramref name="function"/>.</param>
+    /// <param name="v4">Value for <paramref name="function"/>.</param>
+    /// <param name="v5">Value for <paramref name="function"/>.</param>
+    /// <param name="v6">Value for <paramref name="function"/>.</param>
+    /// <param name="v7">Value for <paramref name="function"/>.</param>
+    /// <param name="v8">Value for <paramref name="function"/>.</param>
+    /// <param name="v9">Value for <paramref name="function"/>.</param>
+    /// <param name="v10">Value for <paramref name="function"/>.</param>
+    /// <param name="v11">Value for <paramref name="function"/>.</param>
+    /// <param name="v12">Value for <paramref name="function"/>.</param>
+    /// <param name="v13">Value for <paramref name="function"/>.</param>
+    /// <param name="v14">Value for <paramref name="function"/>.</param>
+    /// <param name="v15">Value for <paramref name="function"/>.</param>
+    /// <param name="v16">Value for <paramref name="function"/>.</param>
+    /// <param name="function">Function to call.</param>
+    /// <returns><paramref name="function"/> result.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static TResult Fluent<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, TResult>
     (

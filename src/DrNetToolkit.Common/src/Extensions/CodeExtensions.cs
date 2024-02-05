@@ -7,8 +7,7 @@ using System.Runtime.CompilerServices;
 namespace DrNetToolkit.HighPerformance.Coding;
 
 /// <summary>
-/// Provides methods that allow you to writing of beautiful, compact code and bypass some limitations of the C#
-/// language.
+/// Extension methods for writing elegant, concise code and overcoming the limitations of C#.
 /// </summary>
 public static partial class CodeExtensions
 {

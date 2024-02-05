@@ -7,9 +7,12 @@
 
   <PropertyGroup>
     <Title>DrNet Toolkit - Diagnostics</Title>
-    <Description>This package includes .NET helpers such as:
-— ThrowHelper: Helper methods to efficiently throw exceptions.    </Description>
-    <PackageTags>Diagnostics;ThrowHelper;Extensions;Helpers</PackageTags>
+    <Description>
+      This package provides next APIs:
+      — Guard: Helper methods for checking conditions and protecting code.
+      — ThrowHelper: Helper methods to efficiently throw exceptions.
+    </Description>
+    <PackageTags>Diagnostics;Guard;ThrowHelper;Extensions;Helpers</PackageTags>
   </PropertyGroup>
 
   <!-- Necessary polyfills -->
