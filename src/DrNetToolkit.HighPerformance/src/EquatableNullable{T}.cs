@@ -5,11 +5,10 @@
 using System;
 using System.Runtime.CompilerServices;
 
+using DrNetToolkit.Runtime;
+
 namespace DrNetToolkit.HighPerformance;
 
-#if !NETSTANDARD2_1_OR_GREATER
-#pragma warning disable CS1574 // XML comment has cref attribute that could not be resolved
-#endif
 /// <summary>
 /// Represents a value type that can be assigned <see langword="null"/> and supports <see cref="IEquatable{T}"/> and
 /// <see cref="IComparable{T}"/> interfaces.
@@ -31,9 +30,6 @@ namespace DrNetToolkit.HighPerformance;
 /// Initializes a new instance of the <see cref="EquatableNullable{T}"/> structure to the specified
 /// <see cref="Nullable{T}"/> value.
 /// </remarks>
-#if !NETSTANDARD2_1_OR_GREATER
-#pragma warning restore CS1574 // XML comment has cref attribute that could not be resolved
-#endif
 [method: MethodImpl(MethodImplOptions.AggressiveInlining)]
 public readonly struct EquatableNullable<T>(T? value) :
     IEquatable<EquatableNullable<T>>, IComparable<EquatableNullable<T>>
@@ -312,8 +308,6 @@ public readonly struct EquatableNullable<T>(T? value) :
         => Nullable.Compare(left.NullableValue, right.NullableValue) >= 0;
 }
 
-#if NETSTANDARD2_1_OR_GREATER
-
 public static partial class SpanExtensions
 {
     /// <summary>
@@ -329,7 +323,7 @@ public static partial class SpanExtensions
     /// </returns>
     public static Span<EquatableNullable<T>> AsEquatable<T>(this Span<T?> source)
         where T : struct
-        => MemoryMarshaling.Cast<T, EquatableNullable<T>>(source);
+        => MemoryHelpers.Cast<T, EquatableNullable<T>>(source);
 
     /// <summary>
     /// Creates a <see cref="ReadOnlySpan{T}"/> with <see cref="EquatableNullable{T}"/> elements that support the 
@@ -344,7 +338,7 @@ public static partial class SpanExtensions
     /// </returns>
     public static ReadOnlySpan<EquatableNullable<T>> AsEquatable<T>(this ReadOnlySpan<T?> source)
         where T : struct
-        => MemoryMarshaling.Cast<T, EquatableNullable<T>>(source);
+        => MemoryHelpers.Cast<T, EquatableNullable<T>>(source);
 
     /// <summary>
     /// Creates a <see cref="Span{T}"/> with <see cref="EquatableNullable{T}"/> elements that support the 
@@ -359,7 +353,7 @@ public static partial class SpanExtensions
     /// </returns>
     public static Span<T?> AsNullable<T>(this Span<EquatableNullable<T>> source)
         where T : struct
-        => MemoryMarshaling.CastToNullable<EquatableNullable<T>, T>(source);
+        => MemoryHelpers.CastToNullable<EquatableNullable<T>, T>(source);
 
 
     /// <summary>
@@ -375,7 +369,5 @@ public static partial class SpanExtensions
     /// </returns>
     public static ReadOnlySpan<T?> AsNullable<T>(this ReadOnlySpan<EquatableNullable<T>> source)
         where T : struct
-        => MemoryMarshaling.CastToNullable<EquatableNullable<T>, T>(source);
+        => MemoryHelpers.CastToNullable<EquatableNullable<T>, T>(source);
 }
-
-#endif

@@ -6,6 +6,8 @@ using BenchmarkDotNet.Attributes;
 
 #if NETSTANDARD2_1_OR_GREATER
 using RTHelpers = System.Runtime.CompilerServices.RuntimeHelpers;
+#else
+using RTHelpers = DrNetToolkit.Runtime.RuntimeHelpers;
 #endif
 
 namespace DrNetToolkit.Runtime.Benchmarks;
@@ -28,11 +30,7 @@ public class IsReference_Benchmarks<T>
     {
         for (int i = 0; i < Count; i++)
         {
-#if NETSTANDARD2_1_OR_GREATER
             _value = RTHelpers.IsReferenceOrContainsReferences<T>();
-#else
-            _value = RuntimeHelpers.IsReferenceOrContainsReferences<T>();
-#endif
         }
     }
 
@@ -52,16 +50,6 @@ public class IsReference_Benchmarks<T>
         {
             _value = RuntimeHelpers.IsReferenceOrContainsReferences(s_type);
         }
-    }
-
-    private struct StructWithReference
-    {
-        public (int i, (int i, (int i, (int i, (int i, object obj))))) value;
-    }
-
-    private struct StructWithoutReference
-    {
-        public (int i, (int i, (int i, (int i, (int i, int obj))))) value;
     }
 }
 

@@ -2,6 +2,8 @@
 // The "DrNet Tips&Tricks" licenses this file to you under the MIT license.
 // See the License.md file in the project root for more information.
 
+using System.Runtime.CompilerServices;
+
 #if NETSTANDARD2_1_OR_GREATER
 using RTHelpers = System.Runtime.CompilerServices.RuntimeHelpers;
 #endif
@@ -22,10 +24,17 @@ public static class TypeInfo<T>
     /// <see langword="true"/> if the given type is reference type or value type that contains references; otherwise,
     /// <see langword="false"/>.
     /// </returns>
-    public static readonly bool IsReferenceOrContainsReferences =
 #if NETSTANDARD2_1_OR_GREATER
-        RTHelpers.IsReferenceOrContainsReferences<T>();
+    public static bool IsReferenceOrContainsReferences
+    {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        get => RTHelpers.IsReferenceOrContainsReferences<T>();
+    }
 #else
-        RuntimeHelpers.IsReferenceOrContainsReferences(typeof(T));
+    public static bool IsReferenceOrContainsReferences
+    {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        get;
+    } = RuntimeHelpers.IsReferenceOrContainsReferences(typeof(T));
 #endif
 }

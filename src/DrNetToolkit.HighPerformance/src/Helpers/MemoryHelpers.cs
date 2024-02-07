@@ -2,10 +2,13 @@
 // The "DrNet Tips&Tricks" licenses this file to you under the MIT license.
 // See the License.md file in the project root for more information.
 
-namespace DrNetToolkit.Diagnostics;
+using System;
+
+namespace DrNetToolkit.Runtime;
 
 /// <summary>
-/// Helper methods for checking conditions and protecting code.
+/// Provides methods to interoperate with <see cref="Memory{T}"/>, <see cref="ReadOnlyMemory{T}"/>,
+/// <see cref="Span{T}"/>, <see cref="ReadOnlySpan{T}"/>.
 /// </summary>
-public static partial class Guard
+public static partial class MemoryHelpers
 { }

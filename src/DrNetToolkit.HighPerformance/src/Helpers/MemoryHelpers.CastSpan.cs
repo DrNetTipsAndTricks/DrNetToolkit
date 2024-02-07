@@ -8,13 +8,9 @@ using System.Runtime.InteropServices;
 
 using DrNetToolkit.Diagnostics;
 
-namespace DrNetToolkit.HighPerformance;
+namespace DrNetToolkit.Runtime;
 
-/// <summary>
-/// Provides methods to interoperate with <see cref="Memory{T}"/>, <see cref="ReadOnlyMemory{T}"/>,
-/// <see cref="Span{T}"/>, <see cref="ReadOnlySpan{T}"/>.
-/// </summary>
-public static partial class MemoryMarshaling
+public static partial class MemoryHelpers
 {
     /// <summary>
     /// Casts a Span of one primitive type <typeparamref name="TFrom"/>? to another primitive type
@@ -66,7 +62,7 @@ public static partial class MemoryMarshaling
             toLength = checked((int)toLengthUInt64);
         }
 
-        return MemoryMarshal.CreateSpan(ref Unsafe.As<TFrom?, TTo>(ref MemoryMarshal.GetReference(span)), toLength);
+        return CreateSpan(ref Unsafe.As<TFrom?, TTo>(ref MemoryMarshal.GetReference(span)), toLength);
     }
 
     /// <summary>
@@ -119,8 +115,7 @@ public static partial class MemoryMarshaling
             toLength = checked((int)toLengthUInt64);
         }
 
-        return MemoryMarshal.CreateReadOnlySpan(ref Unsafe.As<TFrom?, TTo>(ref MemoryMarshal.GetReference(span)),
-            toLength);
+        return CreateReadOnlySpan(ref Unsafe.As<TFrom?, TTo>(ref MemoryMarshal.GetReference(span)), toLength);
     }
 
     /// <summary>
@@ -173,7 +168,7 @@ public static partial class MemoryMarshaling
             toLength = checked((int)toLengthUInt64);
         }
 
-        return MemoryMarshal.CreateSpan(ref Unsafe.As<TFrom, TTo?>(ref MemoryMarshal.GetReference(span)), toLength);
+        return CreateSpan(ref Unsafe.As<TFrom, TTo?>(ref MemoryMarshal.GetReference(span)), toLength);
     }
 
     /// <summary>
@@ -226,8 +221,7 @@ public static partial class MemoryMarshaling
             toLength = checked((int)toLengthUInt64);
         }
 
-        return MemoryMarshal.CreateReadOnlySpan(ref Unsafe.As<TFrom, TTo?>(ref MemoryMarshal.GetReference(span)),
-            toLength);
+        return CreateReadOnlySpan(ref Unsafe.As<TFrom, TTo?>(ref MemoryMarshal.GetReference(span)), toLength);
     }
 
     /// <summary>
@@ -280,7 +274,7 @@ public static partial class MemoryMarshaling
             toLength = checked((int)toLengthUInt64);
         }
 
-        return MemoryMarshal.CreateSpan(ref Unsafe.As<TFrom?, TTo?>(ref MemoryMarshal.GetReference(span)), toLength);
+        return CreateSpan(ref Unsafe.As<TFrom?, TTo?>(ref MemoryMarshal.GetReference(span)), toLength);
     }
 
     /// <summary>
@@ -333,7 +327,6 @@ public static partial class MemoryMarshaling
             toLength = checked((int)toLengthUInt64);
         }
 
-        return MemoryMarshal.CreateReadOnlySpan(ref Unsafe.As<TFrom?, TTo?>(ref MemoryMarshal.GetReference(span)),
-            toLength);
+        return CreateReadOnlySpan(ref Unsafe.As<TFrom?, TTo?>(ref MemoryMarshal.GetReference(span)), toLength);
     }
 }

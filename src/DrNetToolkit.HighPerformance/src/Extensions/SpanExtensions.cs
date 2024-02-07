@@ -5,6 +5,7 @@
 using System;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using DrNetToolkit.Runtime;
 
 namespace DrNetToolkit.HighPerformance;
 
@@ -29,20 +30,20 @@ public static partial class SpanExtensions
     /// <param name="span">The readonly span to cast to a <see cref="Span{T}"/>.</param>
     /// <returns>A <see cref="Span{T}"/> that corresponds to specified readonly <paramref name="span"/>.</returns>
     public static Span<T> DangerousAsSpan<T>(this ReadOnlySpan<T> span)
-        => MemoryMarshal.CreateSpan(ref MemoryMarshal.GetReference(span), span.Length);
+        => MemoryHelpers.CreateSpan(ref MemoryMarshal.GetReference(span), span.Length);
 
     public static Span<T> DangerousSlice<T>(this Span<T> span, int start)
-        => MemoryMarshal.CreateSpan(ref Unsafe.Add(ref MemoryMarshal.GetReference(span), start), span.Length - start);
+        => MemoryHelpers.CreateSpan(ref Unsafe.Add(ref MemoryMarshal.GetReference(span), start), span.Length - start);
 
     public static ReadOnlySpan<T> DangerousSlice<T>(this ReadOnlySpan<T> span, int start)
-        => MemoryMarshal.CreateReadOnlySpan(ref Unsafe.Add(ref MemoryMarshal.GetReference(span), start),
+        => MemoryHelpers.CreateReadOnlySpan(ref Unsafe.Add(ref MemoryMarshal.GetReference(span), start),
             span.Length - start);
 
     public static Span<T> DangerousSlice<T>(this Span<T> span, int start, int length)
-        => MemoryMarshal.CreateSpan(ref Unsafe.Add(ref MemoryMarshal.GetReference(span), start), length);
+        => MemoryHelpers.CreateSpan(ref Unsafe.Add(ref MemoryMarshal.GetReference(span), start), length);
 
     public static ReadOnlySpan<T> DangerousSlice<T>(this ReadOnlySpan<T> span, int start, int length)
-        => MemoryMarshal.CreateReadOnlySpan(ref Unsafe.Add(ref MemoryMarshal.GetReference(span), start), length);
+        => MemoryHelpers.CreateReadOnlySpan(ref Unsafe.Add(ref MemoryMarshal.GetReference(span), start), length);
 
 }
 

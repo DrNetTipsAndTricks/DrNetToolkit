@@ -24,4 +24,8 @@
     </PolySharpIncludeGeneratedTypes>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\DrNetToolkit.Core\src\DrNetToolkit.Core.csproj" />
+  </ItemGroup>
+
 </Project>

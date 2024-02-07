@@ -6,7 +6,7 @@ using System;
 using System.Buffers;
 using System.Runtime.CompilerServices;
 
-namespace DrNetToolkit.HighPerformance.EnumerableS;
+namespace DrNetToolkit.HighPerformance.Enumerables;
 
 /// <summary>
 /// Helper class for <see cref="SpanCustomTokenizer{T}"/> structure.
@@ -211,11 +211,6 @@ public static class SpanCustomTokenizer
         throw new NotImplementedException();
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="token"></param>
-    /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static (int Start, int End) Trim(ReadOnlySpan<char> token)
     {

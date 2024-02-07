@@ -6,6 +6,10 @@ using System;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 
+#if NETSTANDARD2_1_OR_GREATER
+using RTHelpers = System.Runtime.CompilerServices.RuntimeHelpers;
+#endif
+
 namespace DrNetToolkit.Runtime;
 
 /// <summary>
@@ -24,7 +28,11 @@ public static class RuntimeHelpers
     /// </returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool IsReferenceOrContainsReferences<T>()
+#if NETSTANDARD2_1_OR_GREATER
+        => RTHelpers.IsReferenceOrContainsReferences<T>();
+#else
         => TypeInfo<T>.IsReferenceOrContainsReferences;
+#endif
 
     /// <summary>
     /// Returns a value that indicates whether the specified type is a reference type or a value type that contains

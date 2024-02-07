@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
-using static DrNetToolkit.HighPerformance.EnumerableS.SpanCustomTokenizer;
+using static DrNetToolkit.HighPerformance.Enumerables.SpanCustomTokenizer;
 
 #if NETSTANDARD2_1_OR_GREATER
 using Range = System.Range;
@@ -15,7 +15,7 @@ using Range = System.Range;
 using Range = (int Start, int End);
 #endif
 
-namespace DrNetToolkit.HighPerformance.EnumerableS;
+namespace DrNetToolkit.HighPerformance.Enumerables;
 
 /// <summary>
 /// <see langword="ref"/> <see langword="struct"/> that tokenizes a given <see cref="Span{T}"/> or <see cref="ReadOnlySpan{T}"/> source.
