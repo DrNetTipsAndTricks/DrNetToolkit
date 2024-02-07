@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
+    <!--<TargetFrameworks>netstandard2.0;netstandard2.1;net6.0;net7.0;net8.0</TargetFrameworks>-->
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Title>DrNet Toolkit - Core</Title>
+    <Description>
+      This package provides next APIs:
+      — TypeInfo: Retrieves and caches type information.
+      - RuntimeHelpers: Low-level utility methods and polyfills for .NET Standard 2.0.
+    </Description>
+    <PackageTags>Type;Information;Runtime;Helpers;Polyfills;NetStandard2.0;Core</PackageTags>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <PolySharpIncludeGeneratedTypes>
+      System.Runtime.CompilerServices.SkipLocalsInitAttribute;
+    </PolySharpIncludeGeneratedTypes>
+  </PropertyGroup>
+
+</Project>

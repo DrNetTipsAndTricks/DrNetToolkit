@@ -2,8 +2,6 @@
 // The "DrNet Tips&Tricks" licenses this file to you under the MIT license.
 // See the License.md file in the project root for more information.
 
-#if NETSTANDARD2_1_OR_GREATER
-
 using System;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -48,4 +46,3 @@ public static partial class SpanExtensions
 
 }
 
-#endif

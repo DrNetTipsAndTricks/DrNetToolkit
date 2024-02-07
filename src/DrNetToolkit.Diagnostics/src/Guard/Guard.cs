@@ -8,4 +8,6 @@ namespace DrNetToolkit.Diagnostics;
 /// Helper methods for checking conditions and protecting code.
 /// </summary>
 public static partial class Guard
-{ }
+{
+    IsReferenceOrContainsReferences
+}

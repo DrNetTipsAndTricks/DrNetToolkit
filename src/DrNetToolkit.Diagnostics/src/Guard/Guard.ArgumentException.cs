@@ -10,8 +10,6 @@ namespace DrNetToolkit.Diagnostics;
 
 public static partial class Guard
 {
-#if NETSTANDARD2_1_OR_GREATER
-
     /// <summary>
     /// Asserts that the specified type is not a reference type and not a value type that contains references.
     /// </summary>
@@ -27,6 +25,4 @@ public static partial class Guard
         if (RuntimeHelpers.IsReferenceOrContainsReferences<T>())
             ThrowHelper.ThrowInvalidTypeWithPointersNotSupported(typeof(T), name);
     }
-
-#endif
 }

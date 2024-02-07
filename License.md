@@ -34,7 +34,8 @@ rights not expressly granted herein, whether by implication, estoppel or otherwi
 ### .NET Foundation and Contributors
 
 1. 	[Various pieces of code from .NET Runtime](https://github.com/dotnet/runtime).
-1. 	[Box&lt;T&gt; included](https://github.com/CommunityToolkit/dotnet/blob/7b53ae23dfc6a7fb12d0fc058b89b6e948f48448/src/CommunityToolkit.HighPerformance/Box%7BT%7D.cs).
+2. 	[Box&lt;T&gt;](https://github.com/CommunityToolkit/dotnet/blob/main/src/CommunityToolkit.HighPerformance/Box%7BT%7D.cs).
+3.  [TypeInfo&lt;T&gt;](https://github.com/CommunityToolkit/dotnet/blob/main/src/CommunityToolkit.HighPerformance/Helpers/Internals/RuntimeHelpers.cs).
 
 #### License
 Copyright © .NET Foundation and Contributors

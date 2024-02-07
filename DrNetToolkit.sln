@@ -49,7 +49,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Nuget", "Nuget", "{F055D268
 		version.json = version.json
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DrNetToolkit.Common", "src\DrNetToolkit.Common\src\DrNetToolkit.Common.csproj", "{0B3C2D9E-D2DE-443B-B18D-3D9728D085C4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DrNetToolkit.Common", "src\DrNetToolkit.Common\src\DrNetToolkit.Common.csproj", "{0B3C2D9E-D2DE-443B-B18D-3D9728D085C4}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DrNetToolkit.Core", "src\DrNetToolkit.Core\src\DrNetToolkit.Core.csproj", "{FED06A90-9B9D-49EB-90BA-180048694699}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DrNetToolkit.Core.Benchmarks", "src\DrNetToolkit.Core\benchmarks\DrNetToolkit.Core.Benchmarks.csproj", "{F1941FC7-B155-472B-8E11-A628C2592469}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -77,6 +81,14 @@ Global
 		{0B3C2D9E-D2DE-443B-B18D-3D9728D085C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0B3C2D9E-D2DE-443B-B18D-3D9728D085C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0B3C2D9E-D2DE-443B-B18D-3D9728D085C4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FED06A90-9B9D-49EB-90BA-180048694699}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FED06A90-9B9D-49EB-90BA-180048694699}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FED06A90-9B9D-49EB-90BA-180048694699}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FED06A90-9B9D-49EB-90BA-180048694699}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F1941FC7-B155-472B-8E11-A628C2592469}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F1941FC7-B155-472B-8E11-A628C2592469}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F1941FC7-B155-472B-8E11-A628C2592469}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F1941FC7-B155-472B-8E11-A628C2592469}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
