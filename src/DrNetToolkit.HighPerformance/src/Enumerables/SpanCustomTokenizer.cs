@@ -59,7 +59,7 @@ public static class SpanCustomTokenizer
     /// </returns>
     public static (NextToken<T> nextToken, Trimmer<T>? trimmer)
         CreateTokenizerFunctions<T>(StringSplitOptions options, params T[] separator)
-            where T : IEquatable<T>
+            where T : IEquatable<T>?
     {
         return (CreateNextTokenFunc(options, separator), CreateTrimmer<T>(options));
     }
@@ -79,7 +79,7 @@ public static class SpanCustomTokenizer
     /// </returns>
     /// <exception cref="NotImplementedException">When the required function is not yet implemented.</exception>
     public static NextToken<T> CreateNextTokenFunc<T>(StringSplitOptions options, params T[] separator)
-        where T : IEquatable<T>
+        where T : IEquatable<T>?
     {
         if (!options.HasFlag(StringSplitOptions.RemoveEmptyEntries))
         {
@@ -139,7 +139,7 @@ public static class SpanCustomTokenizer
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static ((int Start, int End) Token, (int Start, int End) Untokenized)
         NextTokenForwardSkipEmpty<T>(ReadOnlySpan<T> source, SearchValues<T> separator)
-            where T : IEquatable<T>
+            where T : IEquatable<T>?
     {
         int start = source.IndexOfAnyExcept(separator);
         if (start < 0)
@@ -169,7 +169,7 @@ public static class SpanCustomTokenizer
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static ((int Start, int End) Token, (int Start, int End) Untokenized)
         NextTokenForwardNotSkipEmpty<T>(ReadOnlySpan<T> source, SearchValues<T> separator)
-            where T : IEquatable<T>
+            where T : IEquatable<T>?
     {
         int index = source.IndexOfAny(separator);
         if (index < 0)
@@ -194,7 +194,7 @@ public static class SpanCustomTokenizer
     /// <returns>A <see cref="Trimmer{T}"/> function necessary to make the <see cref="SpanCustomTokenizer{T}"/> to trim tokens.</returns>
     /// <exception cref="NotImplementedException">When the required function is not yet implemented.</exception>
     public static Trimmer<T>? CreateTrimmer<T>(StringSplitOptions options)
-        where T : IEquatable<T?>
+        where T : IEquatable<T>?
 #if NET5_0_OR_GREATER
     {
         if (!options.HasFlag(StringSplitOptions.TrimEntries))
@@ -250,7 +250,7 @@ public static class SpanCustomTokenizer
     /// </returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static (int Start, int End) TrimDefault<T>(ReadOnlySpan<T?> span)
-        where T : IEquatable<T?>
+        where T : IEquatable<T>?
     {
         int start = span.IndexOf(default(T));
         if (start < 0)

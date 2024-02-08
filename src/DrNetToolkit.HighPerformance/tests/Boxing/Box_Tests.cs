@@ -19,7 +19,7 @@ public class Box_Tests
     public void Box_Valid()
     {
         Test(true, false);
-        Test<byte>(27, 254);
+        Test(27, 254);
         Test('a', '$');
         Test(4221124, 1241241);
         Test(3.14f, 2342.222f);
@@ -165,19 +165,19 @@ public class Box_Tests
     private static void Test<T>(T value, T test)
         where T : struct
     {
-        // Null
+        // From Null
         object? obj = null;
         {
-            //Assert.Null(BoxBase.AsBox<T, Box<T>>(obj));
-            //Assert.Null(BoxBase.TryAsBox<T, Box<T>>(obj));
+            Assert.Null(BoxBase.AsBox<T, Box<T>>(obj));
+            Assert.Null(BoxBase.TryAsBox<T, Box<T>>(obj));
             Assert.Null(BoxBase.DangerousAsBox<T, Box<T>>(obj));
 
-            //Assert.Null(obj.AsBox<T>());
-            //Assert.Null(obj.TryAsBox<T>());
+            Assert.Null(obj.AsBox<T>());
+            Assert.Null(obj.TryAsBox<T>());
             Assert.Null(Box.DangerousAsBox<T>(obj));
         }
 
-        // Not null
+        // Not null, Not null
         obj = value;
 
         Box<T>? box;
@@ -379,8 +379,8 @@ public class Box_Tests
 
         public readonly bool Equals(TestStruct other) =>
             Number == other.Number &&
-                Character == other.Character &&
-                Text == other.Text;
+            Character == other.Character &&
+            Text == other.Text;
     }
 
 #pragma warning restore CA1067 // Override Object.Equals(object) when implementing IEquatable<T>

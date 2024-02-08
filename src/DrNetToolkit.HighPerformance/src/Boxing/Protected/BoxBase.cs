@@ -32,10 +32,13 @@ public static class BoxBase
     /// </exception>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     [return: NotNullIfNotNull(nameof(obj))]
-    public static TBox AsBox<T, TBox>(object obj)
+    public static TBox? AsBox<T, TBox>(object? obj)
         where T : struct
         where TBox : BoxBase<T>
     {
+        if (obj == null)
+            return null;
+
         Guard.CastToTheSameType<T>(obj.GetType());
         return Unsafe.As<TBox>(obj);
     }
@@ -55,10 +58,10 @@ public static class BoxBase
     /// of specified type.
     /// </returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static TBox? TryAsBox<T, TBox>(object obj)
+    public static TBox? TryAsBox<T, TBox>(object? obj)
         where T : struct
         where TBox : BoxBase<T>
-        => obj.GetType() == typeof(T) ? Unsafe.As<TBox>(obj) : null;
+        => obj?.GetType() == typeof(T) ? Unsafe.As<TBox>(obj) : null;
 
     /// <summary>Casts the given boxed value to the box of specified type.</summary>
     /// <typeparam name="T">

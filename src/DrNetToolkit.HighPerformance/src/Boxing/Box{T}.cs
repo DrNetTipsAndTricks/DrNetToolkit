@@ -15,7 +15,7 @@ namespace DrNetToolkit.HighPerformance.Boxing;
 #pragma warning disable CA1067 // Override Object.Equals(object) when implementing IEquatable<T>
 
 /// <inheritdoc/>
-public sealed class Box<T> : BoxBase<T>, IEquatable<Box<T>>, IComparable<Box<T>>
+public sealed class Box<T> : BoxBase<T>, IEquatable<Box<T>?>, IComparable<Box<T>?>
     where T : struct
 {
     /// <inheritdoc/>
@@ -47,8 +47,8 @@ public sealed class Box<T> : BoxBase<T>, IEquatable<Box<T>>, IComparable<Box<T>>
     /// <returns><see langword="true"/> if the current boxed value is equal to the other boxed value OR both boxes are
     /// <see langword="null"/>; otherwise, <see langword="false"/>.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool operator ==(Box<T> left, Box<T> right)
-        => left.Equals(right);
+    public static bool operator ==(Box<T>? left, Box<T>? right)
+        => left is null ? right is null : left.Equals(right);
 
     /// <summary>
     /// Indicates whether the one boxed value is not equal to another boxed value.
@@ -60,7 +60,7 @@ public sealed class Box<T> : BoxBase<T>, IEquatable<Box<T>>, IComparable<Box<T>>
     /// boxes are <see langword="null"/>; otherwise, <see langword="false"/>.
     /// </returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool operator !=(Box<T> left, Box<T> right)
+    public static bool operator !=(Box<T>? left, Box<T>? right)
         => !(left == right);
 
     /// <summary>
@@ -104,8 +104,8 @@ public sealed class Box<T> : BoxBase<T>, IEquatable<Box<T>>, IComparable<Box<T>>
     /// boxed value; <see langword="false"/> otherwise.
     /// </returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool operator <(Box<T> left, Box<T> right)
-        => left.CompareTo(right) < 0;
+    public static bool operator <(Box<T>? left, Box<T>? right)
+        => left is null ? right is not null : left.CompareTo(right) < 0;
 
     /// <summary>
     /// Indicates whether the <paramref name="left"/> boxed value is greater then the <paramref name="right"/> boxed
@@ -118,8 +118,8 @@ public sealed class Box<T> : BoxBase<T>, IEquatable<Box<T>>, IComparable<Box<T>>
     /// boxed value; <see langword="false"/> otherwise.
     /// </returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool operator >(Box<T> left, Box<T> right)
-        => left.CompareTo(right) > 0;
+    public static bool operator >(Box<T>? left, Box<T>? right)
+        => left is not null && left.CompareTo(right) > 0;
 
     /// <summary>
     /// Indicates whether the <paramref name="left"/> boxed value is less then or equal to the <paramref name="right"/>
@@ -132,8 +132,8 @@ public sealed class Box<T> : BoxBase<T>, IEquatable<Box<T>>, IComparable<Box<T>>
     /// <paramref name="right"/> boxed value; <see langword="false"/> otherwise.
     /// </returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool operator <=(Box<T> left, Box<T> right)
-        => left.CompareTo(right) <= 0;
+    public static bool operator <=(Box<T>? left, Box<T>? right)
+        => left is null || left.CompareTo(right) <= 0;
 
     /// <summary>
     /// Indicates whether the <paramref name="left"/> boxed value is greater then or equal to the
@@ -146,6 +146,6 @@ public sealed class Box<T> : BoxBase<T>, IEquatable<Box<T>>, IComparable<Box<T>>
     /// <paramref name="right"/> boxed value; <see langword="false"/> otherwise.
     /// </returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool operator >=(Box<T> left, Box<T> right)
-        => left.CompareTo(right) >= 0;
+    public static bool operator >=(Box<T>? left, Box<T>? right)
+        => left is null ? right is null : left.CompareTo(right) >= 0;
 }
