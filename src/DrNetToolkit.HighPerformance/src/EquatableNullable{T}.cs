@@ -323,7 +323,7 @@ public static partial class SpanExtensions
     /// </returns>
     public static Span<EquatableNullable<T>> AsEquatable<T>(this Span<T?> source)
         where T : struct
-        => MemoryHelpers.Cast<T, EquatableNullable<T>>(source);
+        => MemoryHelpers.Cast<T?, EquatableNullable<T>>(source);
 
     /// <summary>
     /// Creates a <see cref="ReadOnlySpan{T}"/> with <see cref="EquatableNullable{T}"/> elements that support the 
@@ -338,7 +338,7 @@ public static partial class SpanExtensions
     /// </returns>
     public static ReadOnlySpan<EquatableNullable<T>> AsEquatable<T>(this ReadOnlySpan<T?> source)
         where T : struct
-        => MemoryHelpers.Cast<T, EquatableNullable<T>>(source);
+        => MemoryHelpers.Cast<T?, EquatableNullable<T>>(source);
 
     /// <summary>
     /// Creates a <see cref="Span{T}"/> with <see cref="EquatableNullable{T}"/> elements that support the 
@@ -353,7 +353,7 @@ public static partial class SpanExtensions
     /// </returns>
     public static Span<T?> AsNullable<T>(this Span<EquatableNullable<T>> source)
         where T : struct
-        => MemoryHelpers.CastToNullable<EquatableNullable<T>, T>(source);
+        => MemoryHelpers.Cast<EquatableNullable<T>, T?>(source);
 
 
     /// <summary>
@@ -369,5 +369,5 @@ public static partial class SpanExtensions
     /// </returns>
     public static ReadOnlySpan<T?> AsNullable<T>(this ReadOnlySpan<EquatableNullable<T>> source)
         where T : struct
-        => MemoryHelpers.CastToNullable<EquatableNullable<T>, T>(source);
+        => MemoryHelpers.Cast<EquatableNullable<T>, T?>(source);
 }

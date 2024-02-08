@@ -7,7 +7,7 @@ using System.Linq;
 using Bogus;
 using Xunit;
 
-namespace DrNetToolkit.HighPerformance.UnitTests;
+namespace DrNetToolkit.Runtime.UnitTests;
 
 public class MemoryMarshaling_Tests
 {
@@ -36,10 +36,10 @@ public class MemoryMarshaling_Tests
 
             Span<byte?> nBytesSpan = nBytes.AsSpan(range).ToArray();
 
-            Span<long?> nLongsSpan = MemoryMarshaling.CastToNullable<byte, long>(nBytesSpan);
+            Span<long?> nLongsSpan = MemoryHelpers.Cast<byte?, long?>(nBytesSpan);
             Assert.Equal(nBytesSpan.Length * sizeof(byte?) / sizeof(long?), nLongsSpan.Length);
 
-            Span<byte?> span = MemoryMarshaling.CastToNullable<long, byte>(nLongsSpan);
+            Span<byte?> span = MemoryHelpers.Cast<long?, byte?>(nLongsSpan);
             Assert.Equal(nLongsSpan.Length * sizeof(long?) / sizeof(byte?), span.Length);
             Assert.Equal(nBytesSpan.Slice(0, span.Length).ToArray(), span.ToArray());
         }
@@ -53,10 +53,10 @@ public class MemoryMarshaling_Tests
 
             Span<byte?> nBytesSpan = nBytes.AsSpan(range).ToArray();
 
-            Span<long> longsSpan = MemoryMarshaling.Cast<byte, long>(nBytesSpan);
+            Span<long> longsSpan = MemoryHelpers.Cast<byte?, long>(nBytesSpan);
             Assert.Equal(nBytesSpan.Length * sizeof(byte?) / sizeof(long), longsSpan.Length);
 
-            Span<byte?> span = MemoryMarshaling.CastToNullable<long, byte>(longsSpan);
+            Span<byte?> span = MemoryHelpers.Cast<long, byte?>(longsSpan);
             Assert.Equal(longsSpan.Length * sizeof(long) / sizeof(byte?), span.Length);
             Assert.Equal(nBytesSpan.Slice(0, span.Length).ToArray(), span.ToArray());
         }
@@ -70,10 +70,10 @@ public class MemoryMarshaling_Tests
 
             Span<byte> bytesSpan = bytes.AsSpan(range).ToArray();
 
-            Span<long?> nLongsSpan = MemoryMarshaling.CastToNullable<byte, long>(bytesSpan);
+            Span<long?> nLongsSpan = MemoryHelpers.Cast<byte, long?>(bytesSpan);
             Assert.Equal(bytesSpan.Length * sizeof(byte) / sizeof(long?), nLongsSpan.Length);
 
-            Span<byte> span = MemoryMarshaling.Cast<long, byte>(nLongsSpan);
+            Span<byte> span = MemoryHelpers.Cast<long?, byte>(nLongsSpan);
             Assert.Equal(nLongsSpan.Length * sizeof(long?) / sizeof(byte), span.Length);
             Assert.Equal(bytesSpan.Slice(0, span.Length), span);
         }
@@ -102,10 +102,10 @@ public class MemoryMarshaling_Tests
 
             ReadOnlySpan<byte?> nBytesSpan = nBytes.AsSpan(range).ToArray();
 
-            ReadOnlySpan<long?> nLongsSpan = MemoryMarshaling.CastToNullable<byte, long>(nBytesSpan);
+            ReadOnlySpan<long?> nLongsSpan = MemoryHelpers.Cast<byte?, long?>(nBytesSpan);
             Assert.Equal(nBytesSpan.Length * sizeof(byte?) / sizeof(long?), nLongsSpan.Length);
 
-            ReadOnlySpan<byte?> span = MemoryMarshaling.CastToNullable<long, byte>(nLongsSpan);
+            ReadOnlySpan<byte?> span = MemoryHelpers.Cast<long?, byte?>(nLongsSpan);
             Assert.Equal(nLongsSpan.Length * sizeof(long?) / sizeof(byte?), span.Length);
             Assert.Equal(nBytesSpan.Slice(0, span.Length).ToArray(), span.ToArray());
         }
@@ -119,10 +119,10 @@ public class MemoryMarshaling_Tests
 
             ReadOnlySpan<byte?> nBytesSpan = nBytes.AsSpan(range).ToArray();
 
-            ReadOnlySpan<long> longsSpan = MemoryMarshaling.Cast<byte, long>(nBytesSpan);
+            ReadOnlySpan<long> longsSpan = MemoryHelpers.Cast<byte?, long>(nBytesSpan);
             Assert.Equal(nBytesSpan.Length * sizeof(byte?) / sizeof(long), longsSpan.Length);
 
-            ReadOnlySpan<byte?> span = MemoryMarshaling.CastToNullable<long, byte>(longsSpan);
+            ReadOnlySpan<byte?> span = MemoryHelpers.Cast<long, byte?>(longsSpan);
             Assert.Equal(longsSpan.Length * sizeof(long) / sizeof(byte?), span.Length);
             Assert.Equal(nBytesSpan.Slice(0, span.Length).ToArray(), span.ToArray());
         }
@@ -136,10 +136,10 @@ public class MemoryMarshaling_Tests
 
             ReadOnlySpan<byte> bytesSpan = bytes.AsSpan(range).ToArray();
 
-            ReadOnlySpan<long?> nLongsSpan = MemoryMarshaling.CastToNullable<byte, long>(bytesSpan);
+            ReadOnlySpan<long?> nLongsSpan = MemoryHelpers.Cast<byte, long?>(bytesSpan);
             Assert.Equal(bytesSpan.Length * sizeof(byte) / sizeof(long?), nLongsSpan.Length);
 
-            ReadOnlySpan<byte> span = MemoryMarshaling.Cast<long, byte>(nLongsSpan);
+            ReadOnlySpan<byte> span = MemoryHelpers.Cast<long?, byte>(nLongsSpan);
             Assert.Equal(nLongsSpan.Length * sizeof(long?) / sizeof(byte), span.Length);
             Assert.Equal(bytesSpan.Slice(0, span.Length), span);
         }

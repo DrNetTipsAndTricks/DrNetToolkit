@@ -35,13 +35,13 @@ public static class SpanCustomTokenizer
     /// <summary>
     /// Defines a delegate for trimming operations that remove leading and trailing elements from a span of elements.
     /// </summary>
-    /// <typeparam name="T">The type of elements in the <paramref name="source"/> span.</typeparam>
-    /// <param name="source">The <see cref="ReadOnlySpan{T}"/> instance to trim.</param>
+    /// <typeparam name="T">The type of elements in the <paramref name="span"/>.</typeparam>
+    /// <param name="span">The readonly span to trim.</param>
     /// <returns>
     /// A tuple of two indices (int `Start`, int `End`) that represent the first inclusive and last exclusive elements
-    /// of the trimmed span part.
+    /// of the trimmed <paramref name="span"/> part.
     /// </returns>
-    public delegate (int Start, int End) Trimmer<T>(ReadOnlySpan<T> source);
+    public delegate (int Start, int End) Trimmer<T>(ReadOnlySpan<T> span);
 
     /// <summary>
     /// Creates the necessary functions for the <see cref="SpanCustomTokenizer{T}"/> to operate with the specified
@@ -194,47 +194,69 @@ public static class SpanCustomTokenizer
     /// <returns>A <see cref="Trimmer{T}"/> function necessary to make the <see cref="SpanCustomTokenizer{T}"/> to trim tokens.</returns>
     /// <exception cref="NotImplementedException">When the required function is not yet implemented.</exception>
     public static Trimmer<T>? CreateTrimmer<T>(StringSplitOptions options)
-    {
+        where T : IEquatable<T?>
 #if NET5_0_OR_GREATER
+    {
         if (!options.HasFlag(StringSplitOptions.TrimEntries))
-        {
             return null;
-        }
 
         if (typeof(T) == typeof(char))
         {
             Trimmer<char> func = Trim;
             return Unsafe.As<Trimmer<char>, Trimmer<T>>(ref func);
         }
-#endif
+
+        {
+            Trimmer<T> func = TrimDefault<T>;
+            return func;
+        }
 
         throw new NotImplementedException();
     }
+#else
+        => null;
+#endif
 
+    /// <summary>
+    /// Removes all leading and trailing whitespace characters from a read-only character span.
+    /// </summary>
+    /// <param name="span">The readonly span to trim.</param>
+    /// <returns>
+    /// A tuple of two indices (int `Start`, int `End`) that represent the first inclusive and last exclusive elements
+    /// of the trimmed <paramref name="span"/> part.
+    /// </returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static (int Start, int End) Trim(ReadOnlySpan<char> token)
+    public static (int Start, int End) Trim(ReadOnlySpan<char> span)
     {
-        ReadOnlySpan<char> trimmed = token.Trim();
+        ReadOnlySpan<char> trimmed = span.Trim();
         if (trimmed.IsEmpty)
-        {
-            return (token.Length, token.Length);
-        }
+            return (span.Length, span.Length);
 
         int start = (int)Unsafe.ByteOffset(
-            ref Unsafe.AsRef(in token.GetPinnableReference()),
-            ref Unsafe.AsRef(in trimmed.GetPinnableReference())) / sizeof(char);
+                ref Unsafe.AsRef(in span.GetPinnableReference()),
+                ref Unsafe.AsRef(in trimmed.GetPinnableReference()))
+            / sizeof(char);
+
         return (start, start + trimmed.Length);
     }
 
-    public static (int Start, int End) TrimDefault<T>(ReadOnlySpan<T?> token)
+    /// <summary>
+    /// Removes all leading and trailing default values from a read-only span.
+    /// </summary>
+    /// <param name="span">The readonly span to trim.</param>
+    /// <returns>
+    /// A tuple of two indices (int `Start`, int `End`) that represent the first inclusive and last exclusive elements
+    /// of the trimmed <paramref name="span"/> part.
+    /// </returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static (int Start, int End) TrimDefault<T>(ReadOnlySpan<T?> span)
         where T : IEquatable<T?>
     {
-        int start = token.IndexOf(default(T));
+        int start = span.IndexOf(default(T));
         if (start < 0)
-            return (token.Length, token.Length);
+            return (span.Length, span.Length);
 
-        int end = token.LastIndexOf(default(T));
-
+        int end = span.IndexOf(default(T));
         return (start, end + 1);
     }
 
