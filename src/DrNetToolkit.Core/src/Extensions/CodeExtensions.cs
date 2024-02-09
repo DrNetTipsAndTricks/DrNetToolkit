@@ -4,7 +4,7 @@
 
 using System.Runtime.CompilerServices;
 
-namespace DrNetToolkit.HighPerformance.Coding;
+namespace DrNetToolkit.Coding;
 
 /// <summary>
 /// Extension methods for writing elegant, concise code and overcoming the limitations of C#.

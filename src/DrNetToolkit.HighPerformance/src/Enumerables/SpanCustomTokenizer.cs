@@ -249,7 +249,7 @@ public static class SpanCustomTokenizer
     /// of the trimmed <paramref name="span"/> part.
     /// </returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static (int Start, int End) TrimDefault<T>(ReadOnlySpan<T?> span)
+    public static (int Start, int End) TrimDefault<T>(ReadOnlySpan<T> span)
         where T : IEquatable<T>?
     {
         int start = span.IndexOf(default(T));

@@ -4,11 +4,12 @@
 
 using System;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 
 using DrNetToolkit.Diagnostics;
 
-namespace DrNetToolkit.HighPerformance.Boxing.Protected;
+namespace DrNetToolkit.HighPerformance.Boxing.Base;
 
 /// <summary>
 /// A <see langword="class"/> that represents a boxed <typeparamref name="T"/> value on the managed heap. This is a
@@ -115,5 +116,6 @@ public abstract class BoxBase<T>
     /// </summary>
     /// <param name="box">The <see cref="BoxBase{T}"/>? boxed value.</param>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [return: NotNullIfNotNull(nameof(box))]
     public static implicit operator T?(BoxBase<T>? box) => box?._value;
 }

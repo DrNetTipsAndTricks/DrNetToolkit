@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
-using DrNetToolkit.HighPerformance.Boxing.Protected;
+using DrNetToolkit.HighPerformance.Boxing.Base;
 
 namespace DrNetToolkit.HighPerformance.Boxing;
 

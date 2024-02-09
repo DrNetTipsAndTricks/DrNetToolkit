@@ -9,6 +9,7 @@
     <Title>DrNet Toolkit - Core</Title>
     <Description>
       This package provides next APIs:
+      — CodeExtensions: Extension methods for writing elegant, concise code and overcoming the limitations of C#.
       — TypeInfo: Retrieves and caches type information.
       - RuntimeHelpers: Low-level utility methods and polyfills for .NET Standard 2.0.
     </Description>
@@ -20,5 +21,34 @@
       System.Runtime.CompilerServices.SkipLocalsInitAttribute;
     </PolySharpIncludeGeneratedTypes>
   </PropertyGroup>
+
+  <!-- T4 service -->
+  <ItemGroup>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Extensions\Generated\CodeExtensions.Fluent.Action.g.cs">
+      <DependentUpon>CodeExtensions.Fluent.Action.tt</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Extensions\Generated\CodeExtensions.Fluent.Func.g.cs">
+      <DependentUpon>CodeExtensions.Fluent.Func.tt</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+  </ItemGroup>
+
+  <!-- T4 templates -->
+  <ItemGroup>
+    <None Update="Extensions\Generated\CodeExtensions.Fluent.Action.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>CodeExtensions.Fluent.Action.g.cs</LastGenOutput>
+    </None>
+    <None Update="Extensions\Generated\CodeExtensions.Fluent.Func.tt">
+      <LastGenOutput>CodeExtensions.Fluent.Func.g.cs</LastGenOutput>
+      <Generator>TextTemplatingFileGenerator</Generator>
+    </None>
+  </ItemGroup>
 
 </Project>

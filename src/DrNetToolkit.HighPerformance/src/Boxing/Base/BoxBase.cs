@@ -8,14 +8,13 @@ using System.Runtime.CompilerServices;
 
 using DrNetToolkit.Diagnostics;
 
-namespace DrNetToolkit.HighPerformance.Boxing.Protected;
+namespace DrNetToolkit.HighPerformance.Boxing.Base;
 
 /// <summary>
 /// Helper methods for <see cref="BoxBase{T}"/> class.
 /// </summary>
 public static class BoxBase
 {
-
     /// <summary>Casts the given boxed value to the box of specified type.</summary>
     /// <typeparam name="T">
     /// The type of the given boxed value. Where <typeparamref name="T"/> : <see langword="struct"/>.
@@ -36,7 +35,7 @@ public static class BoxBase
         where T : struct
         where TBox : BoxBase<T>
     {
-        if (obj == null)
+        if (obj is null)
             return null;
 
         Guard.CastToTheSameType<T>(obj.GetType());
