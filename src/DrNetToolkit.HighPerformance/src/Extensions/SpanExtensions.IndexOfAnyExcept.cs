@@ -4,11 +4,46 @@
 
 using System;
 using System.Runtime.CompilerServices;
+
+#if !NET7_0_OR_GREATER
 using System.Runtime.InteropServices;
+using DrNetToolkit.HighPerformance.Dangerous;
+#endif
 
 namespace DrNetToolkit.HighPerformance;
 
 public static partial class SpanExtensions
 {
+    /// <summary>Searches for the first index of any value other than the specified <paramref name="value"/>.</summary>
+    /// <typeparam name="T">The type of the span and values.</typeparam>
+    /// <param name="span">The span to search.</param>
+    /// <param name="value">A value to avoid.</param>
+    /// <returns>
+    /// The index in the span of the first occurrence of any value other than <paramref name="value"/>.
+    /// If all of the values are <paramref name="value"/>, returns -1.
+    /// </returns>
+    public static int IndexOfAnyExcept<T>(this Span<T> span, T value) where T : IEquatable<T>? =>
+        IndexOfAnyExcept((ReadOnlySpan<T>)span, value);
+
+
+    /// <summary>Searches for the first index of any value other than the specified <paramref name="value"/>.</summary>
+    /// <typeparam name="T">The type of the span and values.</typeparam>
+    /// <param name="span">The span to search.</param>
+    /// <param name="value">A value to avoid.</param>
+    /// <returns>
+    /// The index in the span of the first occurrence of any value other than <paramref name="value"/>.
+    /// If all of the values are <paramref name="value"/>, returns -1.
+    /// </returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static int IndexOfAnyExcept<T>(this ReadOnlySpan<T> span, T value) where T : IEquatable<T>?
+    {
+#if NET7_0_OR_GREATER
+        return MemoryExtensions.IndexOfAnyExcept(span, value);
+#else
+
+        return DangerousSpanHelpers.IndexOfAnyExcept(ref MemoryMarshal.GetReference(span), value, span.Length);
+#endif
+    }
+
 }
 

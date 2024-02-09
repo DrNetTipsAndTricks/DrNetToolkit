@@ -83,43 +83,39 @@ public static class SpanCustomTokenizer
     {
         if (!options.HasFlag(StringSplitOptions.RemoveEmptyEntries))
         {
+#if NET8_0_OR_GREATER
             if (typeof(T) == typeof(char) || typeof(T) == typeof(short) || typeof(T) == typeof(ushort))
             {
-#if NET8_0_OR_GREATER
                 SearchValues<char> searchValues = SearchValues.Create(Unsafe.As<T[], char[]>(ref separator));
                 NextToken<char> func = (ReadOnlySpan<char> source) => NextTokenForwardSkipEmpty(source, searchValues);
                 return Unsafe.As<NextToken<char>, NextToken<T>>(ref func);
-#endif
             }
 
             if (typeof(T) == typeof(byte) || typeof(T) == typeof(sbyte))
             {
-#if NET8_0_OR_GREATER
                 SearchValues<byte> searchValues = SearchValues.Create(Unsafe.As<T[], byte[]>(ref separator));
                 NextToken<byte> func = (ReadOnlySpan<byte> source) => NextTokenForwardSkipEmpty(source, searchValues);
                 return Unsafe.As<NextToken<byte>, NextToken<T>>(ref func);
-#endif
             }
+#endif
         }
         else
         {
+#if NET8_0_OR_GREATER
             if (typeof(T) == typeof(char) || typeof(T) == typeof(short) || typeof(T) == typeof(ushort))
             {
-#if NET8_0_OR_GREATER
                 SearchValues<char> searchValues = SearchValues.Create(Unsafe.As<T[], char[]>(ref separator));
                 NextToken<char> func = (ReadOnlySpan<char> source) => NextTokenForwardNotSkipEmpty(source, searchValues);
                 return Unsafe.As<NextToken<char>, NextToken<T>>(ref func);
-#endif
             }
 
             if (typeof(T) == typeof(byte) || typeof(T) == typeof(sbyte))
             {
-#if NET8_0_OR_GREATER
                 SearchValues<byte> searchValues = SearchValues.Create(Unsafe.As<T[], byte[]>(ref separator));
                 NextToken<byte> func = (ReadOnlySpan<byte> source) => NextTokenForwardNotSkipEmpty(source, searchValues);
                 return Unsafe.As<NextToken<byte>, NextToken<T>>(ref func);
-#endif
             }
+#endif
         }
 
         throw new NotImplementedException();
@@ -252,12 +248,20 @@ public static class SpanCustomTokenizer
     public static (int Start, int End) TrimDefault<T>(ReadOnlySpan<T> span)
         where T : IEquatable<T>?
     {
-        int start = span.IndexOf(default(T));
+#if NET6_0
+#pragma warning disable CS8631 // The type cannot be used as type parameter in the generic type or method. Nullability of type argument doesn't match constraint type.
+#endif
+
+        int start = span.IndexOf(default(T)!);
         if (start < 0)
             return (span.Length, span.Length);
 
-        int end = span.IndexOf(default(T));
+        int end = span.IndexOf(default(T)!);
         return (start, end + 1);
+
+#if NET6_0
+#pragma warning restore CS8631 // The type cannot be used as type parameter in the generic type or method. Nullability of type argument doesn't match constraint type.
+#endif
     }
 
     #endregion

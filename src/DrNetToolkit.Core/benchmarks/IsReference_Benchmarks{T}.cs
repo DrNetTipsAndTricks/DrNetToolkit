@@ -48,7 +48,9 @@ public class IsReference_Benchmarks<T>
     {
         for (int i = 0; i < Count; i++)
         {
+#pragma warning disable IL2077 // Target parameter argument does not satisfy 'DynamicallyAccessedMembersAttribute' in call to target method. The source field does not have matching annotations.
             _value = RuntimeHelpers.IsReferenceOrContainsReferences(s_type);
+#pragma warning restore IL2077 // Target parameter argument does not satisfy 'DynamicallyAccessedMembersAttribute' in call to target method. The source field does not have matching annotations.
         }
     }
 }
