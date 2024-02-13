@@ -3,15 +3,16 @@
 // See the License.md file in the project root for more information.
 
 using System.Runtime.CompilerServices;
-using DrNetToolkit.Polyfills.Internals;
+using DrNetToolkit.Polyfills.Impls;
 
-namespace DrNetToolkit.Polyfills.Impls;
+namespace System;
 
 /// <summary>
-/// Implementations of <see cref="RuntimeHelpers"/> methods.
+/// Polyfills of <see cref="RuntimeHelpers"/>.
 /// </summary>
-public static partial class RuntimeHelpersImpls
+public static class RuntimeHelpersPolyfills
 {
+#if !NETSTANDARD2_1_OR_GREATER
     /// <summary>
     /// Indicates whether the specified type is a reference type or a value type that contains references.
     /// </summary>
@@ -21,11 +22,7 @@ public static partial class RuntimeHelpersImpls
     /// <see langword="false"/>.
     /// </returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-#if NETSTANDARD2_1_OR_GREATER
     public static bool IsReferenceOrContainsReferences<T>()
-        => RuntimeHelpers.IsReferenceOrContainsReferences<T>();
-#else
-    public static bool IsReferenceOrContainsReferences<T>()
-        => TypeInfo<T>.IsReferenceOrContainsReferences;
+        => RuntimeHelpersImpls.IsReferenceOrContainsReferences<T>();
 #endif
 }

@@ -11,7 +11,7 @@
       This package provides next APIs:
       — CodeExtensions: Extension methods for writing elegant, concise code and overcoming the limitations of C#.
     </Description>
-    <PackageTags>Code;Extension;Core</PackageTags>
+    <PackageTags>Code;Extensions;Core</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>

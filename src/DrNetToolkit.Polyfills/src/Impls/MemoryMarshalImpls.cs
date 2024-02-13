@@ -117,25 +117,6 @@ public static class MemoryMarshalImpls
 #endif
 
 #if NETSTANDARD1_1_OR_GREATER
-    /// <summary>Creates a <see cref="Memory{T}"/> from a <see cref="ReadOnlyMemory{T}"/>.</summary>
-    /// <param name="memory">The <see cref="ReadOnlyMemory{T}"/>.</param>
-    /// <returns>A <see cref="Memory{T}"/> representing the same memory as the <see cref="ReadOnlyMemory{T}"/>, but writable.</returns>
-    /// <remarks>
-    /// <see cref="AsMemory{T}(ReadOnlyMemory{T})"/> must be used with extreme caution.  <see cref="ReadOnlyMemory{T}"/> is used
-    /// to represent immutable data and other memory that is not meant to be written to; <see cref="Memory{T}"/> instances created
-    /// by <see cref="AsMemory{T}(ReadOnlyMemory{T})"/> should not be written to.  The method exists to enable variables typed
-    /// as <see cref="Memory{T}"/> but only used for reading to store a <see cref="ReadOnlyMemory{T}"/>.
-    /// </remarks>
-#if NETCOREAPP2_1_OR_GREATER
-    public static Memory<T> AsMemory<T>(ReadOnlyMemory<T> memory) =>
-        MemoryMarshal.AsMemory(memory);
-#else
-    public static Memory<T> AsMemory<T>(ReadOnlyMemory<T> memory) =>
-        Unsafe.As<ReadOnlyMemory<T>, Memory<T>>(ref memory);
-#endif
-#endif
-
-#if NETSTANDARD1_1_OR_GREATER
     /// <summary>
     /// Casts a Span of one primitive type <typeparamref name="TFrom"/> to another primitive type <typeparamref name="TTo"/>.
     /// These types may not contain pointers or references. This is checked at runtime in order to preserve type safety.
@@ -202,8 +183,6 @@ public static class MemoryMarshalImpls
     /// </exception>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static ReadOnlySpan<TTo> Cast<TFrom, TTo>(ReadOnlySpan<TFrom> span)
-        where TFrom : struct
-        where TTo : struct
     {
         if (RuntimeHelpersImpls.IsReferenceOrContainsReferences<TFrom>())
             ThrowHelper.ThrowInvalidTypeWithPointersNotSupported(typeof(TFrom));
@@ -307,5 +286,4 @@ public static class MemoryMarshalImpls
         => value != null ? new ReadOnlySpan<char>(value, StringImplsHidden.wcslen(value)) : default;
 #endif
 #endif
-
 }

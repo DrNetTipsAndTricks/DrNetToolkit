@@ -8,10 +8,8 @@
   <PropertyGroup>
     <Title>DrNet Toolkit - Common</Title>
     <Description>
-      This package provides next APIs:
-      — CodeExtensions: Extension methods for writing elegant, concise code and overcoming the limitations of C#.
     </Description>
-    <PackageTags>Common;CodeExtensions;Extensions;Helpers</PackageTags>
+    <PackageTags>Common</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>

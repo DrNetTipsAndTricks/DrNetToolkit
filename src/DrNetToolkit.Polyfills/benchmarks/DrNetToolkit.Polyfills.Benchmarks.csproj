@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\src\DrNetToolkit.Core.csproj" />
+    <ProjectReference Include="..\src\DrNetToolkit.Polyfills.csproj" />
   </ItemGroup>
 
 </Project>

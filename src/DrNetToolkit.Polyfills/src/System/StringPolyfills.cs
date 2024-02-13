@@ -20,5 +20,4 @@ public static class StringPolyfills
     public static unsafe ref readonly char GetPinnableReference(this string text)
         => ref StringImpls.GetPinnableReference(text);
 #endif
-
 }
