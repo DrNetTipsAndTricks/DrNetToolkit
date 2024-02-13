@@ -14,10 +14,8 @@
     <PackageTags>Common;CodeExtensions;Extensions;Helpers</PackageTags>
   </PropertyGroup>
 
-  <PropertyGroup>
-    <PolySharpIncludeGeneratedTypes>
-      System.Runtime.CompilerServices.SkipLocalsInitAttribute;
-    </PolySharpIncludeGeneratedTypes>
-  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\DrNetToolkit.Polyfills\src\DrNetToolkit.Polyfills.csproj" />
+  </ItemGroup>
 
 </Project>

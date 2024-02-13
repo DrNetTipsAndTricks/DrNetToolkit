@@ -15,17 +15,4 @@
     <PackageTags>Diagnostics;Guard;ThrowHelper;Extensions;Helpers</PackageTags>
   </PropertyGroup>
 
-  <!-- Necessary polyfills -->
-  <PropertyGroup>
-    <PolySharpIncludeGeneratedTypes>
-      System.Diagnostics.CodeAnalysis.DoesNotReturnAttribute;
-      System.Diagnostics.StackTraceHiddenAttribute;
-      System.Runtime.CompilerServices.SkipLocalsInitAttribute;
-    </PolySharpIncludeGeneratedTypes>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\DrNetToolkit.Core\src\DrNetToolkit.Core.csproj" />
-  </ItemGroup>
-
 </Project>

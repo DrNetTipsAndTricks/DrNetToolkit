@@ -3,8 +3,11 @@
 // See the License.md file in the project root for more information.
 
 using System;
-using System.Buffers;
 using System.Runtime.CompilerServices;
+
+#if NET8_0_OR_GREATER
+using System.Buffers;
+#endif
 
 namespace DrNetToolkit.HighPerformance.Enumerables;
 

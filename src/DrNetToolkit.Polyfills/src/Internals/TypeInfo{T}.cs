@@ -3,18 +3,15 @@
 // See the License.md file in the project root for more information.
 
 using System.Runtime.CompilerServices;
+using DrNetToolkit.Polyfills.Impls.Hidden;
 
-#if NETSTANDARD2_1_OR_GREATER
-using RTHelpers = System.Runtime.CompilerServices.RuntimeHelpers;
-#endif
-
-namespace DrNetToolkit.Runtime;
+namespace DrNetToolkit.Polyfills.Internals;
 
 /// <summary>
 /// Retrieves and caches type information.
 /// </summary>
 /// <typeparam name="T">The type.</typeparam>
-public static class TypeInfo<T>
+internal static class TypeInfo<T>
 {
     /// <summary>
     /// Indicates whether the specified type is a reference type or a value type that contains references.
@@ -23,17 +20,18 @@ public static class TypeInfo<T>
     /// <see langword="true"/> if the given type is reference type or value type that contains references; otherwise,
     /// <see langword="false"/>.
     /// </returns>
-    public static bool IsReferenceOrContainsReferences
 #if NETSTANDARD2_1_OR_GREATER
+    public static bool IsReferenceOrContainsReferences
     {
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        get => RTHelpers.IsReferenceOrContainsReferences<T>();
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        get => RuntimeHelpers.IsReferenceOrContainsReferences<T>();
     }
 #else
+    public static bool IsReferenceOrContainsReferences
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         get;
-    } = RuntimeHelpers.IsReferenceOrContainsReferences(typeof(T));
+    } = RuntimeHelpersImplsHidden.IsReferenceOrContainsReferences(typeof(T));
 #endif
 
     /// <summary>
@@ -49,6 +47,5 @@ public static class TypeInfo<T>
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         get;
-    } = RuntimeHelpers.IsBitwiseEquatable(typeof(T));
-
+    } = RuntimeHelpersImplsHidden.IsBitwiseEquatable(typeof(T));
 }

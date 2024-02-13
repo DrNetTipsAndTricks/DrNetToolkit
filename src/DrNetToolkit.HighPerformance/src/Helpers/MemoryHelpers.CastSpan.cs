@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 
 using DrNetToolkit.Diagnostics;
 
-namespace DrNetToolkit.Runtime;
+namespace DrNetToolkit.HighPerformance;
 
 public static partial class MemoryHelpers
 {

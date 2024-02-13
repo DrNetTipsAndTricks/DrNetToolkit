@@ -7,12 +7,10 @@ using System.Linq;
 using Bogus;
 using Xunit;
 
-namespace DrNetToolkit.Runtime.UnitTests;
+namespace DrNetToolkit.HighPerformance.UnitTests;
 
 public class MemoryMarshaling_Tests
 {
-#if NETSTANDARD2_1_OR_GREATER
-
     [Fact]
     public unsafe void MemoryMarshaling_CastFromToNullable_Span()
     {
@@ -144,6 +142,4 @@ public class MemoryMarshaling_Tests
             Assert.Equal(bytesSpan.Slice(0, span.Length), span);
         }
     }
-
-#endif
 }

@@ -1,0 +1,79 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netstandard1.0;netstandard1.1;netstandard2.0;netstandard2.1;net6.0;net7.0;net8.0</TargetFrameworks>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Title>DrNet Toolkit - Polyfills</Title>
+    <Description>
+    </Description>
+    <PackageTags></PackageTags>
+  </PropertyGroup>
+
+  <!-- .NET Standard 1.0 -->
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.0'">
+    <!-- .NET Standard 1.0 doesn't have the Span<T>, HashCode, ValueTask and Unsafe. -->
+    <!--<PackageReference Include="Microsoft.Bcl.HashCode" Version="1.1.1" />-->
+    <!--<PackageReference Include="System.Memory" Version="4.5.5" />-->
+    <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.5.4" />
+    <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="4.7.1" />
+  </ItemGroup>
+
+  <!-- .NET Standard 1.1 -->
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.1'">
+    <!-- .NET Standard 1.0 doesn't have the Span<T>, HashCode, ValueTask and Unsafe. -->
+    <!--<PackageReference Include="Microsoft.Bcl.HashCode" Version="1.1.1" />-->
+    <PackageReference Include="System.Memory" Version="4.5.5" />
+    <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.5.4" />
+    <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="4.7.1" />
+  </ItemGroup>
+
+  <!-- .NET Standard 2.0 -->
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+    <!-- .NET Standard 2.0 doesn't have the Span<T>, HashCode, ValueTask and Unsafe. -->
+    <PackageReference Include="Microsoft.Bcl.HashCode" Version="1.1.1" />
+    <PackageReference Include="System.Memory" Version="4.5.5" />
+    <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.5.4" />
+    <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.0.0" />
+  </ItemGroup>
+
+  <!-- .NET Standard 2.1 -->
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.1'">
+    <!-- .NET Standard 2.1 doesn't have the Unsafe type -->
+    <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.0.0" />
+  </ItemGroup>
+
+  <!-- Include PolySharp to generate polyfills for all projects (on their .NET Standard 2.x targets) -->
+  <ItemGroup>
+    <PackageReference Include="PolySharp" Version="1.*">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>build; analyzers</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <!-- .NET Standard 1.0 -->
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.0'">
+    <!-- .NET Standard 1.0 doesn't have the ValueTuple<T>, Index, and Range. -->
+    <PackageReference Include="System.ValueTuple" Version="4.5.0" />
+  </ItemGroup>
+
+  <!-- .NET Standard 1.1 -->
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.1'">
+    <!-- .NET Standard 1.0 doesn't have the ValueTuple<T>, Index, and Range. -->
+    <PackageReference Include="System.ValueTuple" Version="4.5.0" />
+  </ItemGroup>
+
+  <!-- .NET Standard 2.0 -->
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+    <!-- .NET Standard 2.0 doesn't have the ValueTuple<T>, Index, and Range. -->
+    <PackageReference Include="System.ValueTuple" Version="4.5.0" />
+  </ItemGroup>
+
+  <!-- Necessary polyfills -->
+  <PropertyGroup>
+    <PolySharpIncludeRuntimeSupportedAttributes>true</PolySharpIncludeRuntimeSupportedAttributes>
+    <PolySharpUsePublicAccessibilityForGeneratedTypes>true</PolySharpUsePublicAccessibilityForGeneratedTypes>
+  </PropertyGroup>
+  
+</Project>

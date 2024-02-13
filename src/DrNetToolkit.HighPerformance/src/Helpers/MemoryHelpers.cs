@@ -4,7 +4,7 @@
 
 using System;
 
-namespace DrNetToolkit.Runtime;
+namespace DrNetToolkit.HighPerformance;
 
 /// <summary>
 /// Provides methods to interoperate with <see cref="Memory{T}"/>, <see cref="ReadOnlyMemory{T}"/>,
