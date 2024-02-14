@@ -5,12 +5,7 @@
 using System;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
-
-#if NETSTANDARD2_1_OR_GREATER
-using RTHelpers = System.Runtime.CompilerServices.RuntimeHelpers;
-#else
-using RTHelpers = DrNetToolkit.Runtime.RuntimeHelpers;
-#endif 
+using DrNetToolkit.Polyfills.Impls;
 
 namespace DrNetToolkit.Diagnostics;
 
@@ -28,7 +23,7 @@ public static partial class Guard
     [StackTraceHidden]
     public static void IsNotReferenceAndNotContainsReferences<T>(string name = "")
     {
-        if (RTHelpers.IsReferenceOrContainsReferences<T>())
+        if (RuntimeHelpersImpls.IsReferenceOrContainsReferences<T>())
             ThrowHelper.ThrowInvalidTypeWithPointersNotSupported(typeof(T), name);
     }
 }

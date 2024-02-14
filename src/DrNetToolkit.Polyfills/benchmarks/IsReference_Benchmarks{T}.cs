@@ -4,6 +4,7 @@
 
 using BenchmarkDotNet.Attributes;
 using System.Runtime.CompilerServices;
+using System.Diagnostics.CodeAnalysis;
 using DrNetToolkit.Polyfills.Impls;
 using DrNetToolkit.Polyfills.Impls.Hidden;
 
@@ -48,6 +49,7 @@ public class IsReference_Benchmarks<T>
     }
 
     [Benchmark]
+    [RequiresUnreferencedCode("This functionality is not compatible with trimming.")]
     public void RuntimeHelpersImplsHidden_Type()
     {
         for (int i = 0; i < Count; i++)

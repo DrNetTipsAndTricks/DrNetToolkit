@@ -30,12 +30,8 @@ public static partial class RuntimeHelpersImplsHidden
     /// <see langword="false"/>.
     /// </returns>
 #if NETSTANDARD2_0_OR_GREATER
-    public static bool IsReferenceOrContainsReferences(
-        [DynamicallyAccessedMembers(
-            DynamicallyAccessedMemberTypes.PublicFields |
-            DynamicallyAccessedMemberTypes.NonPublicFields
-        )]
-        Type type)
+    [RequiresUnreferencedCode("This functionality is not compatible with trimming.")]
+    public static bool IsReferenceOrContainsReferences(Type type)
     {
         // Common case, for primitive types
         if (type.IsPrimitive)
@@ -58,9 +54,13 @@ public static partial class RuntimeHelpersImplsHidden
             return false;
 
         // Complex struct, recursively inspect all fields
-        foreach (FieldInfo field in type.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance))
-            if (IsReferenceOrContainsReferences(field.FieldType))
+        FieldInfo[] fields = type.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+        foreach (FieldInfo field in fields)
+        {
+            Type fieldType = field.FieldType;
+            if (IsReferenceOrContainsReferences(fieldType))
                 return true;
+        }
 
         return false;
     }
@@ -535,12 +535,12 @@ public unsafe struct TypeHandle
 
     /// <inheritdoc/>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-#if NET6_0_OR_GREATER
-#pragma warning disable IDE0290 // Use primary constructor
+#if NET8_0_OR_GREATER
+//#pragma warning disable IDE0290 // Use primary constructor
 #endif
     public TypeHandle(void* tAddr)
-#if NET6_0_OR_GREATER
-#pragma warning restore IDE0290 // Use primary constructor
+#if NET8_0_OR_GREATER
+//#pragma warning restore IDE0290 // Use primary constructor
 #endif
     {
         m_asTAddr = tAddr;
@@ -560,13 +560,9 @@ public unsafe struct TypeHandle
     public bool IsTypeDesc
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-#if NETSTANDARD1_1_OR_GREATER
 #pragma warning disable IDE0251 // Make member 'readonly'
-#endif
         get => ((nint)m_asTAddr & 2) != 0;
-#if NETSTANDARD1_1_OR_GREATER
 #pragma warning restore IDE0251 // Make member 'readonly'
-#endif
     }
 
     /// <summary>

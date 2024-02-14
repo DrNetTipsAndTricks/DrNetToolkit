@@ -15,4 +15,8 @@
     <PackageTags>Diagnostics;Guard;ThrowHelper;Extensions;Helpers</PackageTags>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\DrNetToolkit.Polyfills\src\DrNetToolkit.Polyfills.csproj" />
+  </ItemGroup>
+
 </Project>
