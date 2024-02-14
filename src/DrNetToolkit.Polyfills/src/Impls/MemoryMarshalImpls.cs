@@ -3,10 +3,16 @@
 // See the License.md file in the project root for more information.
 
 using System;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using DrNetToolkit.Polyfills.Impls.Hidden;
 using DrNetToolkit.Polyfills.Internals;
+using System.Collections.Generic;
+
+#if NETSTANDARD1_1_OR_GREATER
+using System.Buffers;
+#endif
 
 namespace DrNetToolkit.Polyfills.Impls;
 
@@ -89,9 +95,7 @@ public static class MemoryMarshalImpls
             checked(span.Length * sizeof(T)));
 #pragma warning restore CS8500 // This takes the address of, gets the size of, or declares a pointer to a managed type
     }
-#endif
 
-#if NETSTANDARD1_1_OR_GREATER
     /// <summary>
     /// Casts a ReadOnlySpan of one primitive type <typeparamref name="T"/> to ReadOnlySpan of bytes.
     /// That type may not contain pointers or references. This is checked at runtime in order to preserve type safety.
@@ -114,9 +118,7 @@ public static class MemoryMarshalImpls
             checked(span.Length * sizeof(T)));
 #pragma warning restore CS8500 // This takes the address of, gets the size of, or declares a pointer to a managed type
     }
-#endif
 
-#if NETSTANDARD1_1_OR_GREATER
     /// <summary>
     /// Casts a Span of one primitive type <typeparamref name="TFrom"/> to another primitive type <typeparamref name="TTo"/>.
     /// These types may not contain pointers or references. This is checked at runtime in order to preserve type safety.
@@ -167,9 +169,7 @@ public static class MemoryMarshalImpls
 
         return CreateSpan(ref Unsafe.As<TFrom, TTo>(ref MemoryMarshal.GetReference(span)), toLength);
     }
-#endif
 
-#if NETSTANDARD1_1_OR_GREATER
     /// <summary>
     /// Casts a ReadOnlySpan of one primitive type <typeparamref name="TFrom"/> to another primitive type <typeparamref name="TTo"/>.
     /// These types may not contain pointers or references. This is checked at runtime in order to preserve type safety.
@@ -221,9 +221,7 @@ public static class MemoryMarshalImpls
         return CreateReadOnlySpan(ref Unsafe.As<TFrom, TTo>(ref MemoryMarshal.GetReference(span)),
             toLength);
     }
-#endif
 
-#if NETSTANDARD1_1_OR_GREATER
     /// <summary>
     /// Creates a new span over a portion of a regular managed object. This can be useful
     /// if part of a managed object represents a "fixed array." This is dangerous because the
@@ -245,9 +243,7 @@ public static class MemoryMarshalImpls
     public static unsafe Span<T> CreateSpan<T>(scoped ref T reference, int length)
         => new (Unsafe.AsPointer(ref reference), length);
 #endif
-#endif
 
-#if NETSTANDARD1_1_OR_GREATER
     /// <summary>
     /// Creates a new read-only span over a portion of a regular managed object. This can be useful
     /// if part of a managed object represents a "fixed array." This is dangerous because the
@@ -269,9 +265,7 @@ public static class MemoryMarshalImpls
     public static unsafe ReadOnlySpan<T> CreateReadOnlySpan<T>(scoped ref readonly T reference, int length)
         => new(Unsafe.AsPointer(ref Unsafe.AsRef(in reference)), length);
 #endif
-#endif
 
-#if NETSTANDARD1_1_OR_GREATER
     /// <summary>Creates a new read-only span for a null-terminated string.</summary>
     /// <param name="value">The pointer to the null-terminated string of characters.</param>
     /// <returns>A read-only span representing the specified null-terminated string, or an empty span if the pointer is null.</returns>
@@ -284,6 +278,92 @@ public static class MemoryMarshalImpls
 #else
     public static unsafe ReadOnlySpan<char> CreateReadOnlySpanFromNullTerminated(char* value)
         => value != null ? new ReadOnlySpan<char>(value, StringImplsHidden.wcslen(value)) : default;
+#endif
+
+    /// <summary>Creates a new read-only span for a null-terminated UTF-8 string.</summary>
+    /// <param name="value">The pointer to the null-terminated string of bytes.</param>
+    /// <returns>A read-only span representing the specified null-terminated string, or an empty span if the pointer is null.</returns>
+    /// <remarks>The returned span does not include the null terminator, nor does it validate the well-formedness of the UTF-8 data.</remarks>
+    /// <exception cref="ArgumentException">The string is longer than <see cref="int.MaxValue"/>.</exception>
+    [CLSCompliant(false)]
+#if NET6_0_OR_GREATER
+    public static unsafe ReadOnlySpan<byte> CreateReadOnlySpanFromNullTerminated(byte* value)
+        => MemoryMarshal.CreateReadOnlySpanFromNullTerminated(value);
+#else
+    public static unsafe ReadOnlySpan<byte> CreateReadOnlySpanFromNullTerminated(byte* value)
+        => value != null ? new ReadOnlySpan<byte>(value, StringImplsHidden.strlen(value)) : default;
+#endif
+
+    /// <summary>
+    /// Writes a structure of type T into a span of bytes.
+    /// </summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#if NET8_0_OR_GREATER
+    public static unsafe void Write<T>(Span<byte> destination, in T value)
+        where T : struct
+        => MemoryMarshal.Write(destination, in value);
+#else
+    public static unsafe void Write<T>(Span<byte> destination, in T value)
+        where T : struct
+        => MemoryMarshal.Write(destination, ref Unsafe.AsRef(in value));
+#endif
+
+    /// <summary>
+    /// Re-interprets a span of bytes as a reference to structure of type T.
+    /// The type may not contain pointers or references. This is checked at runtime in order to preserve type safety.
+    /// </summary>
+    /// <remarks>
+    /// Supported only for platforms that support misaligned memory access or when the memory block is aligned by other means.
+    /// </remarks>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#if NETCOREAPP3_0_OR_GREATER
+    public static unsafe ref T AsRef<T>(Span<byte> span)
+        where T : struct
+        => ref MemoryMarshal.AsRef<T>(span);
+#else
+#pragma warning disable CS8500 // This takes the address of, gets the size of, or declares a pointer to a managed type
+    public static unsafe ref T AsRef<T>(Span<byte> span)
+        where T : struct
+    {
+        if (RuntimeHelpersImpls.IsReferenceOrContainsReferences<T>())
+            ThrowHelper.ThrowInvalidTypeWithPointersNotSupported(typeof(T));
+
+        if (sizeof(T) > (uint)span.Length)
+            ThrowHelper.ThrowArgumentOutOfRangeException(ThrowHelper.ExceptionArgument.length);
+
+        return ref Unsafe.As<byte, T>(ref MemoryMarshal.GetReference(span));
+    }
+#pragma warning restore CS8500 // This takes the address of, gets the size of, or declares a pointer to a managed type
+#endif
+
+    /// <summary>
+    /// Re-interprets a span of bytes as a reference to structure of type T.
+    /// The type may not contain pointers or references. This is checked at runtime in order to preserve type safety.
+    /// </summary>
+    /// <remarks>
+    /// Supported only for platforms that support misaligned memory access or when the memory block is aligned by other means.
+    /// </remarks>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#if NETCOREAPP3_0_OR_GREATER
+    public static unsafe ref readonly T AsRef<T>(ReadOnlySpan<byte> span)
+        where T : struct
+        => ref MemoryMarshal.AsRef<T>(span);
+#else
+#pragma warning disable CS8500 // This takes the address of, gets the size of, or declares a pointer to a managed type
+    public static unsafe ref readonly T AsRef<T>(ReadOnlySpan<byte> span)
+        where T : struct
+    {
+        if (RuntimeHelpersImpls.IsReferenceOrContainsReferences<T>())
+        {
+            ThrowHelper.ThrowInvalidTypeWithPointersNotSupported(typeof(T));
+        }
+        if (sizeof(T) > (uint)span.Length)
+        {
+            ThrowHelper.ThrowArgumentOutOfRangeException(ThrowHelper.ExceptionArgument.length);
+        }
+        return ref Unsafe.As<byte, T>(ref MemoryMarshal.GetReference(span));
+    }
+#pragma warning restore CS8500 // This takes the address of, gets the size of, or declares a pointer to a managed type
 #endif
 #endif
 }

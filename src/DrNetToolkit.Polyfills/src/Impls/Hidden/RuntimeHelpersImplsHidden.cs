@@ -232,6 +232,27 @@ public static partial class RuntimeHelpersImplsHidden
     }
 
     /// <summary>
+    /// Returns true iff the object has a component size;
+    /// i.e., is variable length like System.String or Array.
+    /// Callers are required to keep obj alive
+    /// </summary>
+    /// <param name="obj">The object.</param>
+    /// <returns>true iff the object has a component size.</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static unsafe bool ObjectHasComponentSize(object obj)
+    {
+        return GetMethodTable(obj)->HasComponentSize;
+    }
+
+    /// <summary>
+    /// GetRawData
+    /// </summary>
+    /// <param name="obj">The object.</param>
+    /// <returns>ref to object data.</returns>
+    public static ref byte GetRawData(object obj) =>
+        ref Unsafe.As<RawData>(obj).Data;
+
+    /// <summary>
     /// Given an object reference, returns its MethodTable*.
     ///
     /// WARNING: The caller has to ensure that MethodTable* does not get unloaded. The most robust way to achieve this
@@ -252,13 +273,8 @@ public static partial class RuntimeHelpersImplsHidden
         // The body of this function will be replaced by the EE with unsafe code
         // See getILIntrinsicImplementationForRuntimeHelpers for how this happens.
 
-        return (MethodTable*)Unsafe.Add(ref Unsafe.As<byte, IntPtr>(ref obj.GetRawData()), -1);
+        return (MethodTable*)Unsafe.Add(ref Unsafe.As<byte, IntPtr>(ref GetRawData(obj)), -1);
     }
-
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-    public static ref byte GetRawData(this object obj) =>
-        ref Unsafe.As<RawData>(obj).Data;
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 }
 
 /// <summary>

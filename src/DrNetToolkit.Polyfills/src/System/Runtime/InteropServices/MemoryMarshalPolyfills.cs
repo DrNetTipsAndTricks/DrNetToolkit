@@ -66,9 +66,7 @@ public static class MemoryMarshalPolyfills
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static unsafe Span<byte> AsBytes<T>(Span<T> span)
         => MemoryMarshalImpls.AsBytes(span);
-#endif
 
-#if NETSTANDARD1_1_OR_GREATER
     /// <summary>
     /// Casts a ReadOnlySpan of one primitive type <typeparamref name="T"/> to ReadOnlySpan of bytes.
     /// That type may not contain pointers or references. This is checked at runtime in order to preserve type safety.
@@ -83,9 +81,7 @@ public static class MemoryMarshalPolyfills
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static unsafe ReadOnlySpan<byte> AsBytes<T>(ReadOnlySpan<T> span)
         => MemoryMarshalImpls.AsBytes(span);
-#endif
 
-#if NETSTANDARD1_1_OR_GREATER
     /// <summary>
     /// Casts a Span of one primitive type <typeparamref name="TFrom"/> to another primitive type <typeparamref name="TTo"/>.
     /// These types may not contain pointers or references. This is checked at runtime in order to preserve type safety.
@@ -100,9 +96,7 @@ public static class MemoryMarshalPolyfills
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Span<TTo> Cast<TFrom, TTo>(Span<TFrom> span)
         => MemoryMarshalImpls.Cast<TFrom, TTo>(span);
-#endif
 
-#if NETSTANDARD1_1_OR_GREATER
     /// <summary>
     /// Casts a ReadOnlySpan of one primitive type <typeparamref name="TFrom"/> to another primitive type <typeparamref name="TTo"/>.
     /// These types may not contain pointers or references. This is checked at runtime in order to preserve type safety.
@@ -117,9 +111,7 @@ public static class MemoryMarshalPolyfills
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static ReadOnlySpan<TTo> Cast<TFrom, TTo>(ReadOnlySpan<TFrom> span)
         => MemoryMarshalImpls.Cast<TFrom, TTo>(span);
-#endif
 
-#if NETSTANDARD1_1_OR_GREATER
 #if !NETSTANDARD2_1_OR_GREATER
     /// <summary>
     /// Creates a new span over a portion of a regular managed object. This can be useful
@@ -138,9 +130,7 @@ public static class MemoryMarshalPolyfills
     public static unsafe Span<T> CreateSpan<T>(scoped ref T reference, int length)
         => MemoryMarshalImpls.CreateSpan(ref reference, length);
 #endif
-#endif
 
-#if NETSTANDARD1_1_OR_GREATER
 #if !NETSTANDARD2_1_OR_GREATER
     /// <summary>
     /// Creates a new read-only span over a portion of a regular managed object. This can be useful
@@ -159,9 +149,7 @@ public static class MemoryMarshalPolyfills
     public static ReadOnlySpan<T> CreateReadOnlySpan<T>(scoped ref readonly T reference, int length)
         => MemoryMarshalImpls.CreateReadOnlySpan(in reference, length);
 #endif
-#endif
 
-#if NETSTANDARD1_1_OR_GREATER
 #if !NET6_0_OR_GREATER
     /// <summary>Creates a new read-only span for a null-terminated string.</summary>
     /// <param name="value">The pointer to the null-terminated string of characters.</param>
@@ -171,6 +159,55 @@ public static class MemoryMarshalPolyfills
     [CLSCompliant(false)]
     public static unsafe ReadOnlySpan<char> CreateReadOnlySpanFromNullTerminated(char* value)
         => MemoryMarshalImpls.CreateReadOnlySpanFromNullTerminated(value);
+#endif
+
+#if !NET6_0_OR_GREATER
+    /// <summary>Creates a new read-only span for a null-terminated UTF-8 string.</summary>
+    /// <param name="value">The pointer to the null-terminated string of bytes.</param>
+    /// <returns>A read-only span representing the specified null-terminated string, or an empty span if the pointer is null.</returns>
+    /// <remarks>The returned span does not include the null terminator, nor does it validate the well-formedness of the UTF-8 data.</remarks>
+    /// <exception cref="ArgumentException">The string is longer than <see cref="int.MaxValue"/>.</exception>
+    [CLSCompliant(false)]
+    public static unsafe ReadOnlySpan<byte> CreateReadOnlySpanFromNullTerminated(byte* value)
+        => MemoryMarshalImpls.CreateReadOnlySpanFromNullTerminated(value);
+#endif
+
+#if !NET8_0_OR_GREATER
+    /// <summary>
+    /// Writes a structure of type T into a span of bytes.
+    /// </summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static unsafe void Write<T>(Span<byte> destination, in T value)
+        where T : struct
+        => MemoryMarshalImpls.Write(destination, in value);
+#endif
+
+#if !NETCOREAPP3_0_OR_GREATER
+    /// <summary>
+    /// Re-interprets a span of bytes as a reference to structure of type T.
+    /// The type may not contain pointers or references. This is checked at runtime in order to preserve type safety.
+    /// </summary>
+    /// <remarks>
+    /// Supported only for platforms that support misaligned memory access or when the memory block is aligned by other means.
+    /// </remarks>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static unsafe ref T AsRef<T>(Span<byte> span)
+        where T : struct
+        => ref MemoryMarshalImpls.AsRef<T>(span);
+#endif
+
+#if !NETCOREAPP3_0_OR_GREATER
+    /// <summary>
+    /// Re-interprets a span of bytes as a reference to structure of type T.
+    /// The type may not contain pointers or references. This is checked at runtime in order to preserve type safety.
+    /// </summary>
+    /// <remarks>
+    /// Supported only for platforms that support misaligned memory access or when the memory block is aligned by other means.
+    /// </remarks>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static unsafe ref readonly T AsRef<T>(ReadOnlySpan<byte> span)
+        where T : struct
+        => ref MemoryMarshalImpls.AsRef<T>(span);
 #endif
 #endif
 }

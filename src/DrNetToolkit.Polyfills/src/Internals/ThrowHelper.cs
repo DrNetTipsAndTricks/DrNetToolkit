@@ -127,8 +127,8 @@ internal static class ThrowHelper
             //    return "comparable";
             //case ExceptionArgument.source:
             //    return "source";
-            //case ExceptionArgument.length:
-            //    return "length";
+            case ExceptionArgument.length:
+                return "length";
             //case ExceptionArgument.comparisonType:
             //    return "comparisonType";
             //case ExceptionArgument.manager:
@@ -294,7 +294,7 @@ internal static class ThrowHelper
         //comparer,
         //comparable,
         //source,
-        //length,
+        length,
         //comparisonType,
         //manager,
         //sourceBytesToCopy,
