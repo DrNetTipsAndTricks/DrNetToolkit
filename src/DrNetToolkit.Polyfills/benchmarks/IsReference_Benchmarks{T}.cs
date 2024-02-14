@@ -3,11 +3,15 @@
 // See the License.md file in the project root for more information.
 
 using BenchmarkDotNet.Attributes;
+using System.Runtime.CompilerServices;
+using DrNetToolkit.Polyfills.Impls;
+using DrNetToolkit.Polyfills.Impls.Hidden;
+
 
 #if NETSTANDARD2_1_OR_GREATER
 using RTHelpers = System.Runtime.CompilerServices.RuntimeHelpers;
 #else
-using RTHelpers = DrNetToolkit.Runtime.RuntimeHelpers;
+using RTHelpers = System.Runtime.CompilerServices.RuntimeHelpersPolyfills;
 #endif
 
 namespace DrNetToolkit.Runtime.Benchmarks;
@@ -26,7 +30,7 @@ public class IsReference_Benchmarks<T>
     private static readonly Type s_type = typeof(T);
 
     [Benchmark(Baseline = true)]
-    public void RuntimeLib()
+    public void RuntimeHelpers_T()
     {
         for (int i = 0; i < Count; i++)
         {
@@ -35,22 +39,20 @@ public class IsReference_Benchmarks<T>
     }
 
     [Benchmark]
-    public void OurTypeInfo()
+    public void RuntimeHelpersImpls_T()
     {
         for (int i = 0; i < Count; i++)
         {
-            _value = TypeInfo<T>.IsReferenceOrContainsReferences;
+            _value = RuntimeHelpersImpls.IsReferenceOrContainsReferences<T>();
         }
     }
 
     [Benchmark]
-    public void OurTypeOf()
+    public void RuntimeHelpersImplsHidden_Type()
     {
         for (int i = 0; i < Count; i++)
         {
-#pragma warning disable IL2077 // Target parameter argument does not satisfy 'DynamicallyAccessedMembersAttribute' in call to target method. The source field does not have matching annotations.
-            _value = RuntimeHelpers.IsReferenceOrContainsReferences(s_type);
-#pragma warning restore IL2077 // Target parameter argument does not satisfy 'DynamicallyAccessedMembersAttribute' in call to target method. The source field does not have matching annotations.
+            _value = RuntimeHelpersImplsHidden.IsReferenceOrContainsReferences(s_type);
         }
     }
 }

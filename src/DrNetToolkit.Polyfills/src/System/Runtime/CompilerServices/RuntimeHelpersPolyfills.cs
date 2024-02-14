@@ -2,10 +2,9 @@
 // The "DrNet Tips&Tricks" licenses this file to you under the MIT license.
 // See the License.md file in the project root for more information.
 
-using System.Runtime.CompilerServices;
 using DrNetToolkit.Polyfills.Impls;
 
-namespace System;
+namespace System.Runtime.CompilerServices;
 
 /// <summary>
 /// Polyfills of <see cref="RuntimeHelpers"/>.
