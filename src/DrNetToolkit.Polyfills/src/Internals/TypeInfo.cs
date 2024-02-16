@@ -79,7 +79,7 @@ internal sealed class TypeInfo(Type type)
 
     #region IsReferenceOrContainsReferences
 
-#if NETSTANDARD2_0_OR_GREATER
+#if NET6_0_OR_GREATER
     [RequiresUnreferencedCode("This functionality is not compatible with trimming.")]
 #endif
     public static bool IsReferenceOrContainsReferences(Type type)
@@ -88,13 +88,13 @@ internal sealed class TypeInfo(Type type)
     private bool? _isReferenceOrContainsReferences;
     private bool IsReferenceOrContainsReferencesProp
     {
-#if NETSTANDARD2_0_OR_GREATER
+#if NET6_0_OR_GREATER
         [RequiresUnreferencedCode("This functionality is not compatible with trimming.")]
 #endif
         get => _isReferenceOrContainsReferences ??= IsReferenceOrContainsReferencesImpl(type);
     }
 
-#if NETSTANDARD2_0_OR_GREATER
+#if NET6_0_OR_GREATER
     [RequiresUnreferencedCode("This functionality is not compatible with trimming.")]
 #endif
     private static bool IsReferenceOrContainsReferencesImpl(Type type)

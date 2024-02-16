@@ -27,7 +27,7 @@ public static partial class RuntimeHelpersImplsHidden
     /// <see langword="true"/> if the given type is reference type or value type that contains references; otherwise,
     /// <see langword="false"/>.
     /// </returns>
-#if NETSTANDARD2_0_OR_GREATER
+#if NET6_0_OR_GREATER
     [RequiresUnreferencedCode("This functionality is not compatible with trimming.")]
 #endif
     public static bool IsReferenceOrContainsReferences(Type type)
