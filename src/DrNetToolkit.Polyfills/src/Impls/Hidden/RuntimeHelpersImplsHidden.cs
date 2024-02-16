@@ -7,17 +7,15 @@
 using System;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
-using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
-using System.Text;
 using DrNetToolkit.Polyfills.Internals;
 
 namespace DrNetToolkit.Polyfills.Impls.Hidden;
 
 /// <summary>
-/// Implementations of <see cref="RuntimeHelpers"/> methods.
+/// Implementations of <see cref="RuntimeHelpers"/> hidden methods.
 /// </summary>
 public static partial class RuntimeHelpersImplsHidden
 {
@@ -31,63 +29,9 @@ public static partial class RuntimeHelpersImplsHidden
     /// </returns>
 #if NETSTANDARD2_0_OR_GREATER
     [RequiresUnreferencedCode("This functionality is not compatible with trimming.")]
-    public static bool IsReferenceOrContainsReferences(Type type)
-    {
-        // Common case, for primitive types
-        if (type.IsPrimitive)
-            return false;
-
-        // Check for value types
-        if (!type.IsValueType)
-        {
-            if (type.IsPointer)
-                return false;
-            return true;
-        }
-
-        // Check if the type is Nullable<T>
-        if (Nullable.GetUnderlyingType(type) is Type nullableType)
-            type = nullableType;
-
-        // Common case, for primitive types
-        if (type.IsPrimitive || type.IsEnum)
-            return false;
-
-        // Complex struct, recursively inspect all fields
-        FieldInfo[] fields = type.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
-        foreach (FieldInfo field in fields)
-        {
-            Type fieldType = field.FieldType;
-            if (IsReferenceOrContainsReferences(fieldType))
-                return true;
-        }
-
-        return false;
-    }
-#else
-    public static bool IsReferenceOrContainsReferences(Type type)
-    {
-        if (Nullable.GetUnderlyingType(type) is Type nullableType)
-            type = nullableType;
-
-        TypeInfo typeInfo = type.GetTypeInfo();
-        if (!typeInfo.IsSubclassOf(typeof(ValueType)))
-        {
-            if (type.IsPointer)
-                return false;
-            return true;
-        }
-
-        if (typeInfo.IsSubclassOf(typeof(Enum)))
-            return false;
-
-        foreach (FieldInfo field in typeInfo.DeclaredFields)
-            if (IsReferenceOrContainsReferences(field.FieldType))
-                return true;
-
-        return false;
-    }
 #endif
+    public static bool IsReferenceOrContainsReferences(Type type)
+        => TypeInfo.IsReferenceOrContainsReferences(type);
 
     /// <summary>
     /// Indicates whether the specified type is bitwise equatable (memcmp can be used for equality checking).
@@ -100,7 +44,7 @@ public static partial class RuntimeHelpersImplsHidden
     /// Only use the result of this for Equals() comparison, not for CompareTo() comparison.
     /// </remarks>
     public static bool IsBitwiseEquatable<T>()
-        => TypeInfo<T>.IsBitwiseEquatable;
+        => TypeInfo.IsBitwiseEquatable(typeof(T));
 
     /// <summary>
     /// Indicates whether the specified type is bitwise equatable (memcmp can be used for equality checking).
@@ -114,122 +58,7 @@ public static partial class RuntimeHelpersImplsHidden
     /// </remarks>
     public static bool IsBitwiseEquatable(
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.Interfaces)] Type type)
-    {
-        // Ideally we could detect automatically whether a type is trivially equatable
-        // (i.e., its operator == could be implemented via memcmp). But for now we'll
-        // do the simple thing and hardcode the list of types we know fulfill this contract.
-        // n.b. This doesn't imply that the type's CompareTo method can be memcmp-implemented,
-        // as a method like CompareTo may need to take a type's signedness into account.
-
-#if NETSTANDARD2_0_OR_GREATER
-        if (!type.IsValueType)
-        {
-            if (type.IsPointer)
-                return true;
-
-            return false;
-        }
-
-        if (Nullable.GetUnderlyingType(type) is Type nullableType)
-            type = nullableType;
-
-        // Common case, for primitive types
-        if (type.IsPrimitive)
-        {
-            if (type == typeof(bool)    ||
-                type == typeof(byte)    || type == typeof(sbyte) ||
-                type == typeof(char)    ||
-                type == typeof(ushort)  || type == typeof(short) ||
-                type == typeof(uint)    || type == typeof(int)   ||
-                type == typeof(ulong)   || type == typeof(ulong) ||
-                type == typeof(UIntPtr) || type == typeof(IntPtr))
-            {
-                return true;
-            }
-
-            return false;
-        }
-
-        if (type.IsEnum)
-            return true;
-
-#if NETCOREAPP3_0_OR_GREATER
-        if (type == typeof(Rune))
-            return true;
-#endif
-
-        return false;
-#else
-        if (Nullable.GetUnderlyingType(type) is Type nullableType)
-            type = nullableType;
-
-        if (type == typeof(bool)    ||
-            type == typeof(byte)    || type == typeof(sbyte) ||
-            type == typeof(char)    ||
-            type == typeof(ushort)  || type == typeof(short) ||
-            type == typeof(uint)    || type == typeof(int)   ||
-            type == typeof(ulong)   || type == typeof(ulong) ||
-            type == typeof(UIntPtr) || type == typeof(IntPtr))
-        {
-            return true;
-        }
-
-        TypeInfo typeInfo = type.GetTypeInfo();
-        if (!typeInfo.IsSubclassOf(typeof(ValueType)))
-        {
-            if (type.IsPointer)
-                return true;
-            return false;
-        }
-
-        if (typeInfo.IsSubclassOf(typeof(Enum)))
-            return true;
-
-        return false;
-#endif
-
-        //switch (elementType.UnderlyingType.Category)
-        //{
-        //    case TypeFlags.Boolean:
-        //    case TypeFlags.Byte:
-        //    case TypeFlags.SByte:
-        //    case TypeFlags.Char:
-        //    case TypeFlags.UInt16:
-        //    case TypeFlags.Int16:
-        //    case TypeFlags.UInt32:
-        //    case TypeFlags.Int32:
-        //    case TypeFlags.UInt64:
-        //    case TypeFlags.Int64:
-        //    case TypeFlags.IntPtr:
-        //    case TypeFlags.UIntPtr:
-        //        result = true;
-        //        break;
-        //    default:
-        //        result = false;
-        //        if (elementType is MetadataType mdType)
-        //        {
-        //            if (mdType.Module == mdType.Context.SystemModule &&
-        //                mdType.Namespace == "System.Text" &&
-        //                mdType.Name == "Rune")
-        //            {
-        //                result = true;
-        //            }
-        //            else if (mdType.IsValueType)
-        //            {
-        //                bool? equatable = ComparerIntrinsics.ImplementsIEquatable(mdType.GetTypeDefinition());
-        //                if (equatable.HasValue && !equatable.Value)
-        //                {
-        //                    // Value type that can use memcmp and that doesn't override object.Equals or implement IEquatable<T>.Equals.
-        //                    MethodDesc objectEquals = mdType.Context.GetWellKnownType(WellKnownType.Object).GetMethod("Equals", null);
-        //                    result =
-        //                        mdType.FindVirtualFunctionTargetMethodOnObjectType(objectEquals).OwningType != mdType &&
-        //                        ComparerIntrinsics.CanCompareValueTypeBits(mdType, objectEquals);
-        //                }
-        //            }
-        //        }
-        //        break;
-        //}
-    }
+        => TypeInfo.IsBitwiseEquatable(type);
 
     /// <summary>
     /// Returns true iff the object has a component size;

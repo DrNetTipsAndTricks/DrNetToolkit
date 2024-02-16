@@ -8,7 +8,7 @@ using System.Runtime.CompilerServices;
 namespace DrNetToolkit.Polyfills.Impls.Hidden;
 
 /// <summary>
-/// Implementations of string methods.
+/// Implementations of <see cref="string"/> hidden methods.
 /// </summary>
 public static class StringImplsHidden
 {

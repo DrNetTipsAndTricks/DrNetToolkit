@@ -5,17 +5,21 @@
 namespace System;
 
 /// <summary>
-/// ArraySegment polyfills.
+/// <see cref="ArraySegment{T}"/> polyfills.
 /// </summary>
 /// <typeparam name="T">The type of the elements in the array segment.</typeparam>
 public static class ArraySegmentPolyfills<T>
 {
-#if !NETSTANDARD2_1_OR_GREATER
     /// <summary>
     /// Represents the empty array segment.This field is read-only.
     /// </summary>
 #pragma warning disable IDE0300 // Simplify collection initialization
-    public static ArraySegment<T> Empty { get; } = new(new T[0]);
-#pragma warning restore IDE0300 // Simplify collection initialization
+#if NETSTANDARD2_0_OR_GREATER
+#pragma warning disable CA1825 // Avoid zero-length array allocations
 #endif
+    public static ArraySegment<T> Empty { get; } = new(new T[0]);
+#if NETSTANDARD2_0_OR_GREATER
+#pragma warning restore CA1825 // Avoid zero-length array allocations
+#endif
+#pragma warning restore IDE0300 // Simplify collection initialization
 }

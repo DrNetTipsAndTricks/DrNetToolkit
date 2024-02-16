@@ -26,6 +26,6 @@ public static partial class RuntimeHelpersImpls
         => RuntimeHelpers.IsReferenceOrContainsReferences<T>();
 #else
     public static bool IsReferenceOrContainsReferences<T>()
-        => TypeInfo<T>.IsReferenceOrContainsReferences;
+        => TypeInfo.IsReferenceOrContainsReferences(typeof(T));
 #endif
 }

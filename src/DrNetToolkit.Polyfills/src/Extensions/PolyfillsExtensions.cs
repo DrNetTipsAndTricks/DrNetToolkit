@@ -14,38 +14,6 @@ namespace DrNetToolkit.Polyfills;
 ///// </summary>
 //public static partial class PolyfillsExtensions
 //{
-//#if NETSTANDARD1_1_OR_GREATER
-
-//#if !NETSTANDARD2_1_OR_GREATER
-//    /// <summary>
-//    /// Creates a new span over the portion of the target array.
-//    /// </summary>
-//    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-//    public static Span<T> AsSpan<T>(this T[]? array, Index startIndex)
-//    {
-//        if (array == null)
-//        {
-//            if (!startIndex.Equals(Index.Start))
-//                ThrowHelper.ThrowArgumentNullException(ThrowHelper.ExceptionArgument.array);
-
-//            return default;
-//        }
-
-//#if NETSTANDARD2_0_OR_GREATER
-//        if (!typeof(T).IsValueType && array.GetType() != typeof(T[]))
-//#else
-//        if (array.GetType() != typeof(T[]))
-//#endif
-//            ThrowHelper.ThrowArrayTypeMismatchException();
-
-//        int actualIndex = startIndex.GetOffset(array.Length);
-//        if ((uint)actualIndex > (uint)array.Length)
-//            ThrowHelper.ThrowArgumentOutOfRangeException();
-
-//        return MemoryHelpers.CreateSpan(ref Unsafe.Add(ref MemoryHelpers.GetArrayDataReference(array), (nint)(uint)actualIndex /* force zero-extension */), array.Length - actualIndex);
-//    }
-//#endif
-
 //#if !NETSTANDARD2_1_OR_GREATER
 //    /// <summary>
 //    /// Creates a new span over the portion of the target array.

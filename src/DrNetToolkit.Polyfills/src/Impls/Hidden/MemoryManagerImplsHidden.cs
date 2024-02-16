@@ -11,7 +11,7 @@ using System.Runtime.CompilerServices;
 namespace DrNetToolkit.Polyfills.Impls.Hidden;
 
 /// <summary>
-/// Implementations of <see cref="MemoryManager{T}"/> methods.
+/// Implementations of <see cref="MemoryManager{T}"/> hidden methods.
 /// </summary>
 ///
 public static class MemoryManagerImplsHidden

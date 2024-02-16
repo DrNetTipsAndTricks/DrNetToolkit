@@ -87,7 +87,11 @@ public static class MemoryMarshalImpls
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static unsafe Span<byte> AsBytes<T>(Span<T> span)
     {
-        if (RuntimeHelpersImpls.IsReferenceOrContainsReferences<T>())
+#if NETSTANDARD2_1_OR_GREATER
+        if (RuntimeHelpers.IsReferenceOrContainsReferences<T>())
+#else
+        if (RuntimeHelpersPolyfills.IsReferenceOrContainsReferences<T>())
+#endif
             ThrowHelper.ThrowInvalidTypeWithPointersNotSupported(typeof(T));
 
 #pragma warning disable CS8500 // This takes the address of, gets the size of, or declares a pointer to a managed type
@@ -110,7 +114,11 @@ public static class MemoryMarshalImpls
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static unsafe ReadOnlySpan<byte> AsBytes<T>(ReadOnlySpan<T> span)
     {
-        if (RuntimeHelpersImpls.IsReferenceOrContainsReferences<T>())
+#if NETSTANDARD2_1_OR_GREATER
+        if (RuntimeHelpers.IsReferenceOrContainsReferences<T>())
+#else
+        if (RuntimeHelpersPolyfills.IsReferenceOrContainsReferences<T>())
+#endif
             ThrowHelper.ThrowInvalidTypeWithPointersNotSupported(typeof(T));
 
 #pragma warning disable CS8500 // This takes the address of, gets the size of, or declares a pointer to a managed type
@@ -133,9 +141,18 @@ public static class MemoryMarshalImpls
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Span<TTo> Cast<TFrom, TTo>(Span<TFrom> span)
     {
-        if (RuntimeHelpersImpls.IsReferenceOrContainsReferences<TFrom>())
+#if NETSTANDARD2_1_OR_GREATER
+        if (RuntimeHelpers.IsReferenceOrContainsReferences<TFrom>())
+#else
+        if (RuntimeHelpersPolyfills.IsReferenceOrContainsReferences<TFrom>())
+#endif
             ThrowHelper.ThrowInvalidTypeWithPointersNotSupported(typeof(TFrom));
-        if (RuntimeHelpersImpls.IsReferenceOrContainsReferences<TTo>())
+
+#if NETSTANDARD2_1_OR_GREATER
+        if (RuntimeHelpers.IsReferenceOrContainsReferences<TTo>())
+#else
+        if (RuntimeHelpersPolyfills.IsReferenceOrContainsReferences<TTo>())
+#endif
             ThrowHelper.ThrowInvalidTypeWithPointersNotSupported(typeof(TTo));
 
         // Use unsigned integers - unsigned division by constant (especially by power of 2)
@@ -184,9 +201,18 @@ public static class MemoryMarshalImpls
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static ReadOnlySpan<TTo> Cast<TFrom, TTo>(ReadOnlySpan<TFrom> span)
     {
-        if (RuntimeHelpersImpls.IsReferenceOrContainsReferences<TFrom>())
+#if NETSTANDARD2_1_OR_GREATER
+        if (RuntimeHelpers.IsReferenceOrContainsReferences<TFrom>())
+#else
+        if (RuntimeHelpersPolyfills.IsReferenceOrContainsReferences<TFrom>())
+#endif
             ThrowHelper.ThrowInvalidTypeWithPointersNotSupported(typeof(TFrom));
-        if (RuntimeHelpersImpls.IsReferenceOrContainsReferences<TTo>())
+
+#if NETSTANDARD2_1_OR_GREATER
+        if (RuntimeHelpers.IsReferenceOrContainsReferences<TTo>())
+#else
+        if (RuntimeHelpersPolyfills.IsReferenceOrContainsReferences<TTo>())
+#endif
             ThrowHelper.ThrowInvalidTypeWithPointersNotSupported(typeof(TTo));
 
         // Use unsigned integers - unsigned division by constant (especially by power of 2)
@@ -325,7 +351,11 @@ public static class MemoryMarshalImpls
     public static unsafe ref T AsRef<T>(Span<byte> span)
         where T : struct
     {
-        if (RuntimeHelpersImpls.IsReferenceOrContainsReferences<T>())
+#if NETSTANDARD2_1_OR_GREATER
+        if (RuntimeHelpers.IsReferenceOrContainsReferences<T>())
+#else
+        if (RuntimeHelpersPolyfills.IsReferenceOrContainsReferences<T>())
+#endif
             ThrowHelper.ThrowInvalidTypeWithPointersNotSupported(typeof(T));
 
         if (sizeof(T) > (uint)span.Length)
@@ -336,14 +366,14 @@ public static class MemoryMarshalImpls
 #pragma warning restore CS8500 // This takes the address of, gets the size of, or declares a pointer to a managed type
 #endif
 
-    /// <summary>
-    /// Re-interprets a span of bytes as a reference to structure of type T.
-    /// The type may not contain pointers or references. This is checked at runtime in order to preserve type safety.
-    /// </summary>
-    /// <remarks>
-    /// Supported only for platforms that support misaligned memory access or when the memory block is aligned by other means.
-    /// </remarks>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        /// <summary>
+        /// Re-interprets a span of bytes as a reference to structure of type T.
+        /// The type may not contain pointers or references. This is checked at runtime in order to preserve type safety.
+        /// </summary>
+        /// <remarks>
+        /// Supported only for platforms that support misaligned memory access or when the memory block is aligned by other means.
+        /// </remarks>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
 #if NETCOREAPP3_0_OR_GREATER
     public static unsafe ref readonly T AsRef<T>(ReadOnlySpan<byte> span)
         where T : struct
@@ -353,17 +383,19 @@ public static class MemoryMarshalImpls
     public static unsafe ref readonly T AsRef<T>(ReadOnlySpan<byte> span)
         where T : struct
     {
-        if (RuntimeHelpersImpls.IsReferenceOrContainsReferences<T>())
-        {
+#if NETSTANDARD2_1_OR_GREATER
+        if (RuntimeHelpers.IsReferenceOrContainsReferences<T>())
+#else
+        if (RuntimeHelpersPolyfills.IsReferenceOrContainsReferences<T>())
+#endif
             ThrowHelper.ThrowInvalidTypeWithPointersNotSupported(typeof(T));
-        }
+
         if (sizeof(T) > (uint)span.Length)
-        {
             ThrowHelper.ThrowArgumentOutOfRangeException(ThrowHelper.ExceptionArgument.length);
-        }
+
         return ref Unsafe.As<byte, T>(ref MemoryMarshal.GetReference(span));
     }
 #pragma warning restore CS8500 // This takes the address of, gets the size of, or declares a pointer to a managed type
 #endif
 #endif
-}
+    }

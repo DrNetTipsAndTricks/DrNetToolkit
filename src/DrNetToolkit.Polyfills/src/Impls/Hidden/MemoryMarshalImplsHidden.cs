@@ -11,7 +11,7 @@ namespace DrNetToolkit.Polyfills.Impls.Hidden;
 
 #if NETSTANDARD1_1_OR_GREATER
 /// <summary>
-/// Implementations of <see cref="MemoryMarshal"/> methods.
+/// Implementations of <see cref="MemoryMarshal"/> hidden methods.
 /// </summary>
 #else
 /// <summary>
