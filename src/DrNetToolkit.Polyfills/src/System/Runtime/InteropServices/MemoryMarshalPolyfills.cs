@@ -3,8 +3,12 @@
 // See the License.md file in the project root for more information.
 
 using System.Runtime.CompilerServices;
-using DrNetToolkit.Polyfills.Impls;
+using DrNetToolkit.Polyfills.Hidden;
 using DrNetToolkit.Polyfills.Internals;
+
+#if NETSTANDARD1_1_OR_GREATER
+using System.Buffers;
+#endif
 
 namespace System.Runtime.InteropServices;
 
@@ -19,7 +23,6 @@ namespace System.Runtime.InteropServices;
 #endif
 public static class MemoryMarshalPolyfills
 {
-#if !NET5_0_OR_GREATER
     /// <summary>
     /// Returns a reference to the 0th element of <paramref name="array"/>. If the array is empty, returns a reference to where the 0th element
     /// would have been stored. Such a reference may be used for pinning but must never be dereferenced.
@@ -30,11 +33,14 @@ public static class MemoryMarshalPolyfills
     /// if the caller wishes to write to the returned reference.
     /// </remarks>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#if NET5_0_OR_GREATER
     public static ref T GetArrayDataReference<T>(T[] array)
-        => ref MemoryMarshalImpls.GetArrayDataReference(array);
+        => ref MemoryMarshal.GetArrayDataReference(array);
+#else
+    public static ref T GetArrayDataReference<T>(T[] array)
+        => ref Unsafe.AsRef(in array[0]);
 #endif
 
-#if !NET6_0_OR_GREATER
     /// <summary>
     /// Returns a reference to the 0th element of <paramref name="array"/>. If the array is empty, returns a reference to where the 0th element
     /// would have been stored. Such a reference may be used for pinning but must never be dereferenced.
@@ -47,8 +53,19 @@ public static class MemoryMarshalPolyfills
     /// if the caller wishes to write to the returned reference.
     /// </remarks>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#if NET6_0_OR_GREATER
+    public static ref byte GetArrayDataReference(Array array)
+        => ref MemoryMarshal.GetArrayDataReference(array);
+#else
     public static unsafe ref byte GetArrayDataReference(Array array)
-        => ref MemoryMarshalImpls.GetArrayDataReference(array);
+    {
+        // If needed, we can save one or two instructions per call by marking this method as intrinsic and asking the JIT
+        // to special-case arrays of known type and dimension.
+
+        // See comment on RawArrayData (in RuntimeHelpers.CoreCLR.cs) for details
+        return ref Unsafe.AddByteOffset(ref Unsafe.As<RawData>(array).Data,
+            (IntPtr)RuntimeHelpersHidden.GetMethodTable(array)->BaseSize - (2 * sizeof(IntPtr)));
+    }
 #endif
 
 #if NETSTANDARD1_1_OR_GREATER
@@ -65,7 +82,15 @@ public static class MemoryMarshalPolyfills
     /// </exception>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static unsafe Span<byte> AsBytes<T>(Span<T> span)
-        => MemoryMarshalImpls.AsBytes(span);
+    {
+        if (RuntimeHelpersPolyfills.IsReferenceOrContainsReferences<T>())
+            ThrowHelper.ThrowInvalidTypeWithPointersNotSupported(typeof(T));
+
+#pragma warning disable CS8500 // This takes the address of, gets the size of, or declares a pointer to a managed type
+        return CreateSpan(ref Unsafe.As<T, byte>(ref MemoryMarshal.GetReference(span)),
+            checked(span.Length * sizeof(T)));
+#pragma warning restore CS8500 // This takes the address of, gets the size of, or declares a pointer to a managed type
+    }
 
     /// <summary>
     /// Casts a ReadOnlySpan of one primitive type <typeparamref name="T"/> to ReadOnlySpan of bytes.
@@ -80,7 +105,15 @@ public static class MemoryMarshalPolyfills
     /// </exception>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static unsafe ReadOnlySpan<byte> AsBytes<T>(ReadOnlySpan<T> span)
-        => MemoryMarshalImpls.AsBytes(span);
+    {
+        if (RuntimeHelpersPolyfills.IsReferenceOrContainsReferences<T>())
+            ThrowHelper.ThrowInvalidTypeWithPointersNotSupported(typeof(T));
+
+#pragma warning disable CS8500 // This takes the address of, gets the size of, or declares a pointer to a managed type
+        return CreateReadOnlySpan(ref Unsafe.As<T, byte>(ref MemoryMarshal.GetReference(span)),
+            checked(span.Length * sizeof(T)));
+#pragma warning restore CS8500 // This takes the address of, gets the size of, or declares a pointer to a managed type
+    }
 
     /// <summary>
     /// Casts a Span of one primitive type <typeparamref name="TFrom"/> to another primitive type <typeparamref name="TTo"/>.
@@ -95,7 +128,44 @@ public static class MemoryMarshalPolyfills
     /// </exception>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Span<TTo> Cast<TFrom, TTo>(Span<TFrom> span)
-        => MemoryMarshalImpls.Cast<TFrom, TTo>(span);
+    {
+        if (RuntimeHelpersPolyfills.IsReferenceOrContainsReferences<TFrom>())
+            ThrowHelper.ThrowInvalidTypeWithPointersNotSupported(typeof(TFrom));
+
+        if (RuntimeHelpersPolyfills.IsReferenceOrContainsReferences<TTo>())
+            ThrowHelper.ThrowInvalidTypeWithPointersNotSupported(typeof(TTo));
+
+        // Use unsigned integers - unsigned division by constant (especially by power of 2)
+        // and checked casts are faster and smaller.
+        uint fromSize = (uint)Unsafe.SizeOf<TFrom>();
+        uint toSize = (uint)Unsafe.SizeOf<TTo>();
+        uint fromLength = (uint)span.Length;
+        int toLength;
+        if (fromSize == toSize)
+        {
+            // Special case for same size types - `(ulong)fromLength * (ulong)fromSize / (ulong)toSize`
+            // should be optimized to just `length` but the JIT doesn't do that today.
+            toLength = (int)fromLength;
+        }
+        else if (fromSize == 1)
+        {
+            // Special case for byte sized TFrom - `(ulong)fromLength * (ulong)fromSize / (ulong)toSize`
+            // becomes `(ulong)fromLength / (ulong)toSize` but the JIT can't narrow it down to `int`
+            // and can't eliminate the checked cast. This also avoids a 32 bit specific issue,
+            // the JIT can't eliminate long multiply by 1.
+            toLength = (int)(fromLength / toSize);
+        }
+        else
+        {
+            // Ensure that casts are done in such a way that the JIT is able to "see"
+            // the uint->ulong casts and the multiply together so that on 32 bit targets
+            // 32x32to64 multiplication is used.
+            ulong toLengthUInt64 = (ulong)fromLength * (ulong)fromSize / (ulong)toSize;
+            toLength = checked((int)toLengthUInt64);
+        }
+
+        return CreateSpan(ref Unsafe.As<TFrom, TTo>(ref MemoryMarshal.GetReference(span)), toLength);
+    }
 
     /// <summary>
     /// Casts a ReadOnlySpan of one primitive type <typeparamref name="TFrom"/> to another primitive type <typeparamref name="TTo"/>.
@@ -110,9 +180,46 @@ public static class MemoryMarshalPolyfills
     /// </exception>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static ReadOnlySpan<TTo> Cast<TFrom, TTo>(ReadOnlySpan<TFrom> span)
-        => MemoryMarshalImpls.Cast<TFrom, TTo>(span);
+    {
+        if (RuntimeHelpersPolyfills.IsReferenceOrContainsReferences<TFrom>())
+            ThrowHelper.ThrowInvalidTypeWithPointersNotSupported(typeof(TFrom));
 
-#if !NETSTANDARD2_1_OR_GREATER
+        if (RuntimeHelpersPolyfills.IsReferenceOrContainsReferences<TTo>())
+            ThrowHelper.ThrowInvalidTypeWithPointersNotSupported(typeof(TTo));
+
+        // Use unsigned integers - unsigned division by constant (especially by power of 2)
+        // and checked casts are faster and smaller.
+        uint fromSize = (uint)Unsafe.SizeOf<TFrom>();
+        uint toSize = (uint)Unsafe.SizeOf<TTo>();
+        uint fromLength = (uint)span.Length;
+        int toLength;
+        if (fromSize == toSize)
+        {
+            // Special case for same size types - `(ulong)fromLength * (ulong)fromSize / (ulong)toSize`
+            // should be optimized to just `length` but the JIT doesn't do that today.
+            toLength = (int)fromLength;
+        }
+        else if (fromSize == 1)
+        {
+            // Special case for byte sized TFrom - `(ulong)fromLength * (ulong)fromSize / (ulong)toSize`
+            // becomes `(ulong)fromLength / (ulong)toSize` but the JIT can't narrow it down to `int`
+            // and can't eliminate the checked cast. This also avoids a 32 bit specific issue,
+            // the JIT can't eliminate long multiply by 1.
+            toLength = (int)(fromLength / toSize);
+        }
+        else
+        {
+            // Ensure that casts are done in such a way that the JIT is able to "see"
+            // the uint->ulong casts and the multiply together so that on 32 bit targets
+            // 32x32to64 multiplication is used.
+            ulong toLengthUInt64 = (ulong)fromLength * (ulong)fromSize / (ulong)toSize;
+            toLength = checked((int)toLengthUInt64);
+        }
+
+        return CreateReadOnlySpan(ref Unsafe.As<TFrom, TTo>(ref MemoryMarshal.GetReference(span)),
+            toLength);
+    }
+
     /// <summary>
     /// Creates a new span over a portion of a regular managed object. This can be useful
     /// if part of a managed object represents a "fixed array." This is dangerous because the
@@ -127,11 +234,14 @@ public static class MemoryMarshalPolyfills
     /// of the returned span will not be validated for safety, even by span-aware languages.
     /// </remarks>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#if NETSTANDARD2_1_OR_GREATER
+    public static Span<T> CreateSpan<T>(scoped ref T reference, int length)
+        => MemoryMarshal.CreateSpan(ref reference, length);
+#else
     public static unsafe Span<T> CreateSpan<T>(scoped ref T reference, int length)
-        => MemoryMarshalImpls.CreateSpan(ref reference, length);
+        => new(Unsafe.AsPointer(ref reference), length);
 #endif
 
-#if !NETSTANDARD2_1_OR_GREATER
     /// <summary>
     /// Creates a new read-only span over a portion of a regular managed object. This can be useful
     /// if part of a managed object represents a "fixed array." This is dangerous because the
@@ -146,43 +256,44 @@ public static class MemoryMarshalPolyfills
     /// of the returned span will not be validated for safety, even by span-aware languages.
     /// </remarks>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#if NETSTANDARD2_1_OR_GREATER
     public static ReadOnlySpan<T> CreateReadOnlySpan<T>(scoped ref readonly T reference, int length)
-        => MemoryMarshalImpls.CreateReadOnlySpan(in reference, length);
+        => MemoryMarshal.CreateReadOnlySpan(ref Unsafe.AsRef(in reference), length);
+#else
+    public static unsafe ReadOnlySpan<T> CreateReadOnlySpan<T>(scoped ref readonly T reference, int length)
+        => new(Unsafe.AsPointer(ref Unsafe.AsRef(in reference)), length);
 #endif
 
-#if !NET6_0_OR_GREATER
     /// <summary>Creates a new read-only span for a null-terminated string.</summary>
     /// <param name="value">The pointer to the null-terminated string of characters.</param>
     /// <returns>A read-only span representing the specified null-terminated string, or an empty span if the pointer is null.</returns>
     /// <remarks>The returned span does not include the null terminator.</remarks>
     /// <exception cref="ArgumentException">The string is longer than <see cref="int.MaxValue"/>.</exception>
     [CLSCompliant(false)]
+#if NET6_0_OR_GREATER
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static unsafe ReadOnlySpan<char> CreateReadOnlySpanFromNullTerminated(char* value)
-        => MemoryMarshalImpls.CreateReadOnlySpanFromNullTerminated(value);
+        => MemoryMarshal.CreateReadOnlySpanFromNullTerminated(value);
+#else
+    public static unsafe ReadOnlySpan<char> CreateReadOnlySpanFromNullTerminated(char* value)
+        => value != null ? new ReadOnlySpan<char>(value, StringHidden.wcslen(value)) : default;
 #endif
 
-#if !NET6_0_OR_GREATER
     /// <summary>Creates a new read-only span for a null-terminated UTF-8 string.</summary>
     /// <param name="value">The pointer to the null-terminated string of bytes.</param>
     /// <returns>A read-only span representing the specified null-terminated string, or an empty span if the pointer is null.</returns>
     /// <remarks>The returned span does not include the null terminator, nor does it validate the well-formedness of the UTF-8 data.</remarks>
     /// <exception cref="ArgumentException">The string is longer than <see cref="int.MaxValue"/>.</exception>
     [CLSCompliant(false)]
+#if NET6_0_OR_GREATER
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static unsafe ReadOnlySpan<byte> CreateReadOnlySpanFromNullTerminated(byte* value)
-        => MemoryMarshalImpls.CreateReadOnlySpanFromNullTerminated(value);
+        => MemoryMarshal.CreateReadOnlySpanFromNullTerminated(value);
+#else
+    public static unsafe ReadOnlySpan<byte> CreateReadOnlySpanFromNullTerminated(byte* value)
+        => value != null ? new ReadOnlySpan<byte>(value, StringHidden.strlen(value)) : default;
 #endif
 
-#if !NET8_0_OR_GREATER
-    /// <summary>
-    /// Writes a structure of type T into a span of bytes.
-    /// </summary>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static unsafe void Write<T>(Span<byte> destination, in T value)
-        where T : struct
-        => MemoryMarshalImpls.Write(destination, in value);
-#endif
-
-#if !NETCOREAPP3_0_OR_GREATER
     /// <summary>
     /// Re-interprets a span of bytes as a reference to structure of type T.
     /// The type may not contain pointers or references. This is checked at runtime in order to preserve type safety.
@@ -191,12 +302,24 @@ public static class MemoryMarshalPolyfills
     /// Supported only for platforms that support misaligned memory access or when the memory block is aligned by other means.
     /// </remarks>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static unsafe ref T AsRef<T>(Span<byte> span)
-        where T : struct
-        => ref MemoryMarshalImpls.AsRef<T>(span);
+#if NETCOREAPP3_0_OR_GREATER
+    public static unsafe ref T AsRef<T>(Span<byte> span) where T : struct
+        => ref MemoryMarshal.AsRef<T>(span);
+#else
+#pragma warning disable CS8500 // This takes the address of, gets the size of, or declares a pointer to a managed type
+    public static unsafe ref T AsRef<T>(Span<byte> span) where T : struct
+    {
+        if (RuntimeHelpersPolyfills.IsReferenceOrContainsReferences<T>())
+            ThrowHelper.ThrowInvalidTypeWithPointersNotSupported(typeof(T));
+
+        if (sizeof(T) > (uint)span.Length)
+            ThrowHelper.ThrowArgumentOutOfRangeException(ThrowHelper.ExceptionArgument.length);
+
+        return ref Unsafe.As<byte, T>(ref MemoryMarshal.GetReference(span));
+    }
+#pragma warning restore CS8500 // This takes the address of, gets the size of, or declares a pointer to a managed type
 #endif
 
-#if !NETCOREAPP3_0_OR_GREATER
     /// <summary>
     /// Re-interprets a span of bytes as a reference to structure of type T.
     /// The type may not contain pointers or references. This is checked at runtime in order to preserve type safety.
@@ -205,9 +328,22 @@ public static class MemoryMarshalPolyfills
     /// Supported only for platforms that support misaligned memory access or when the memory block is aligned by other means.
     /// </remarks>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static unsafe ref readonly T AsRef<T>(ReadOnlySpan<byte> span)
-        where T : struct
-        => ref MemoryMarshalImpls.AsRef<T>(span);
+#if NETCOREAPP3_0_OR_GREATER
+    public static unsafe ref readonly T AsRef<T>(ReadOnlySpan<byte> span) where T : struct
+        => ref MemoryMarshal.AsRef<T>(span);
+#else
+#pragma warning disable CS8500 // This takes the address of, gets the size of, or declares a pointer to a managed type
+    public static unsafe ref readonly T AsRef<T>(ReadOnlySpan<byte> span) where T : struct
+    {
+        if (RuntimeHelpersPolyfills.IsReferenceOrContainsReferences<T>())
+            ThrowHelper.ThrowInvalidTypeWithPointersNotSupported(typeof(T));
+
+        if (sizeof(T) > (uint)span.Length)
+            ThrowHelper.ThrowArgumentOutOfRangeException(ThrowHelper.ExceptionArgument.length);
+
+        return ref Unsafe.As<byte, T>(ref MemoryMarshal.GetReference(span));
+    }
+#pragma warning restore CS8500 // This takes the address of, gets the size of, or declares a pointer to a managed type
 #endif
 #endif
 }

@@ -8,13 +8,13 @@ using System;
 using System.Buffers;
 using System.Runtime.CompilerServices;
 
-namespace DrNetToolkit.Polyfills.Impls.Hidden;
+namespace DrNetToolkit.Polyfills.Hidden;
 
 /// <summary>
 /// Implementations of <see cref="MemoryManager{T}"/> hidden methods.
 /// </summary>
 ///
-public static class MemoryManagerImplsHidden
+public static class MemoryManagerHidden
 {
     /// <summary>
     /// Try to get array segment.

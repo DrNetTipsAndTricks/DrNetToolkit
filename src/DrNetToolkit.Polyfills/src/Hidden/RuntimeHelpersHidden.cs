@@ -12,12 +12,12 @@ using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 using DrNetToolkit.Polyfills.Internals;
 
-namespace DrNetToolkit.Polyfills.Impls.Hidden;
+namespace DrNetToolkit.Polyfills.Hidden;
 
 /// <summary>
 /// Implementations of <see cref="RuntimeHelpers"/> hidden methods.
 /// </summary>
-public static partial class RuntimeHelpersImplsHidden
+public static partial class RuntimeHelpersHidden
 {
     /// <summary>
     /// Indicates whether the specified type is a reference type or a value type that contains references.

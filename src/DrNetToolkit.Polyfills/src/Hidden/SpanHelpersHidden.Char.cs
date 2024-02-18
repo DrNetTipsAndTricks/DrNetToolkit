@@ -13,9 +13,9 @@ using System.Runtime.CompilerServices;
 using System.Runtime.Intrinsics;
 #endif
 
-namespace DrNetToolkit.Polyfills.Impls.Hidden;
+namespace DrNetToolkit.Polyfills.Hidden;
 
-public static partial class SpanHelpersImplsHidden // .Char
+public static partial class SpanHelpersHidden // .Char
 {
     /// <summary>
     /// IndexOfNullCharacter processes memory in aligned chunks, and thus it won't crash even if it accesses memory

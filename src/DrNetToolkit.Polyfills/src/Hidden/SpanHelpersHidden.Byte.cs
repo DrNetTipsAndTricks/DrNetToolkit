@@ -12,9 +12,9 @@ using DrNetToolkit.Polyfills.Internals;
 using System.Runtime.Intrinsics;
 #endif
 
-namespace DrNetToolkit.Polyfills.Impls.Hidden;
+namespace DrNetToolkit.Polyfills.Hidden;
 
-public static partial class SpanHelpersImplsHidden // .Byte
+public static partial class SpanHelpersHidden // .Byte
 {
     [DoesNotReturn]
     private static void ThrowMustBeNullTerminatedString()

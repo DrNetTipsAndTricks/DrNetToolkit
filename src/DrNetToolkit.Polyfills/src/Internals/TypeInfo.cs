@@ -273,12 +273,14 @@ internal sealed class TypeInfo(Type type)
         return otherTypeInfo;
     }
 
+#if !NETSTANDARD2_0_OR_GREATER
     /// <summary>
     /// Retrieves and caches type information.
     /// </summary>
     private sealed class OtherTypeInfo(Type type, Type other)
     {
         #region IsSubclassOf
+
 #if !NETSTANDARD2_0_OR_GREATER
         private bool? _isSubclassOf;
         public bool IsSubclassOf { get => _isSubclassOf ??= IsSubclassOfImpl(type, other); }
@@ -294,9 +296,11 @@ internal sealed class TypeInfo(Type type)
             return false;
         }
 #endif
-#endregion
+
+        #endregion
     }
+#endif
 
 #endif
-#endregion
+    #endregion
 }

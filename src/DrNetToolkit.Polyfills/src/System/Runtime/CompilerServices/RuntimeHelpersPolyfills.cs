@@ -2,8 +2,6 @@
 // The "DrNet Tips&Tricks" licenses this file to you under the MIT license.
 // See the License.md file in the project root for more information.
 
-using DrNetToolkit.Polyfills.Impls;
-
 namespace System.Runtime.CompilerServices;
 
 /// <summary>
@@ -11,7 +9,6 @@ namespace System.Runtime.CompilerServices;
 /// </summary>
 public static class RuntimeHelpersPolyfills
 {
-#if !NETSTANDARD2_1_OR_GREATER
     /// <summary>
     /// Indicates whether the specified type is a reference type or a value type that contains references.
     /// </summary>
@@ -21,7 +18,11 @@ public static class RuntimeHelpersPolyfills
     /// <see langword="false"/>.
     /// </returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#if NETSTANDARD2_1_OR_GREATER
     public static bool IsReferenceOrContainsReferences<T>()
-        => RuntimeHelpersImpls.IsReferenceOrContainsReferences<T>();
+        => RuntimeHelpers.IsReferenceOrContainsReferences<T>();
+#else
+    public static bool IsReferenceOrContainsReferences<T>()
+        => TypeInfo.IsReferenceOrContainsReferences(typeof(T));
 #endif
 }

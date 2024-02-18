@@ -6,8 +6,7 @@ using System.Runtime.CompilerServices;
 using System;
 using System.Runtime.InteropServices;
 
-namespace DrNetToolkit.Polyfills.Impls.Hidden;
-
+namespace DrNetToolkit.Polyfills.Hidden;
 
 #if NETSTANDARD1_1_OR_GREATER
 /// <summary>
@@ -18,7 +17,7 @@ namespace DrNetToolkit.Polyfills.Impls.Hidden;
 /// Implementations of MemoryMarshal methods.
 /// </summary>
 #endif
-public static class MemoryMarshalImplsHidden
+public static class MemoryMarshalHidden
 {
 #if NETSTANDARD1_1_OR_GREATER
 

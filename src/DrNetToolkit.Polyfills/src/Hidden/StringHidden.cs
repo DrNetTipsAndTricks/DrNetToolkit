@@ -5,12 +5,12 @@
 using System;
 using System.Runtime.CompilerServices;
 
-namespace DrNetToolkit.Polyfills.Impls.Hidden;
+namespace DrNetToolkit.Polyfills.Hidden;
 
 /// <summary>
 /// Implementations of <see cref="string"/> hidden methods.
 /// </summary>
-public static class StringImplsHidden
+public static class StringHidden
 {
     /// <summary>
     /// Length of null terminated UTF-16 string.
@@ -18,7 +18,7 @@ public static class StringImplsHidden
     /// <param name="ptr">Null terminated UTF-16 string.</param>
     /// <returns>Length of null terminated UTF-16 string.</returns>
     [CLSCompliant(false)]
-    public static unsafe int wcslen(char* ptr) => SpanHelpersImplsHidden.IndexOfNullCharacter(ptr);
+    public static unsafe int wcslen(char* ptr) => SpanHelpersHidden.IndexOfNullCharacter(ptr);
 
     /// <summary>
     /// Length of null terminated UTF-8 string.
@@ -26,5 +26,5 @@ public static class StringImplsHidden
     /// <param name="ptr">Null terminated UTF-8 string.</param>
     /// <returns>Length of null terminated UTF-8 string.</returns>
     [CLSCompliant(false)]
-    public static unsafe int strlen(byte* ptr) => SpanHelpersImplsHidden.IndexOfNullByte(ptr);
+    public static unsafe int strlen(byte* ptr) => SpanHelpersHidden.IndexOfNullByte(ptr);
 }
