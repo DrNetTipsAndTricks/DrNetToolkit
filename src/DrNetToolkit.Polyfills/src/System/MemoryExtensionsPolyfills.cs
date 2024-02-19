@@ -206,7 +206,7 @@ public static partial class MemoryExtensionsPolyfills
         => MemoryExtensions.Contains(span, value);
 #elif NET6_0_OR_GREATER
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static unsafe bool Contains<T>(Span<T> span, T value) where T : IEquatable<T>? // It should be without this here!
+    public static unsafe bool Contains<T>(Span<T> span, T value) where T : IEquatable<T>? // There should be no this here!
         => SpanHelpersHidden.Contains(ref MemoryMarshal.GetReference(span), value, span.Length);
 #else
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -226,7 +226,7 @@ public static partial class MemoryExtensionsPolyfills
         => MemoryExtensions.Contains(span, value);
 #elif NET6_0_OR_GREATER
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static unsafe bool Contains<T>(ReadOnlySpan<T> span, T value) where T : IEquatable<T>? // It should be without this here!
+    public static unsafe bool Contains<T>(ReadOnlySpan<T> span, T value) where T : IEquatable<T>? // There should be no this here!
         => SpanHelpersHidden.Contains(ref MemoryMarshal.GetReference(span), value, span.Length);
 #else
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -496,47 +496,63 @@ public static partial class MemoryExtensionsPolyfills
         => MemoryExtensionsPolyfills.IndexOfAnyExceptInRange(span, lowInclusive, highInclusive) >= 0;
 #endif
 
-#if NET6_0
     /// <summary>
     /// Searches for the specified value and returns the index of its first occurrence. If not found, returns -1. Values are compared using IEquatable{T}.Equals(T).
     /// </summary>
     /// <param name="span">The span to search.</param>
     /// <param name="value">The value to search for.</param>
+#if !NET6_0
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static unsafe int IndexOf<T>(Span<T> span, T value) where T : IEquatable<T>? // It should be without this here!
+    public static unsafe int IndexOf<T>(Span<T> span, T value) where T : IEquatable<T>?
+        => MemoryExtensions.IndexOf(span, value);
+#else
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static unsafe int IndexOf<T>(Span<T> span, T value) where T : IEquatable<T>? // There should be no this here!
         => SpanHelpersHidden.IndexOf(ref MemoryMarshal.GetReference(span), value, span.Length);
 #endif
 
-#if NET6_0
     /// <summary>
     /// Searches for the specified sequence and returns the index of its first occurrence. If not found, returns -1. Values are compared using IEquatable{T}.Equals(T).
     /// </summary>
     /// <param name="span">The span to search.</param>
     /// <param name="value">The sequence to search for.</param>
+#if !NET6_0
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static unsafe int IndexOf<T>(Span<T> span, ReadOnlySpan<T> value) where T : IEquatable<T>? // It should be without this here!
+    public static unsafe int IndexOf<T>(Span<T> span, ReadOnlySpan<T> value) where T : IEquatable<T>?
+        => MemoryExtensions.IndexOf(span, value);
+#else
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static unsafe int IndexOf<T>(Span<T> span, ReadOnlySpan<T> value) where T : IEquatable<T>? // There should be no this here!
         => SpanHelpersHidden.IndexOf(ref MemoryMarshal.GetReference(span), span.Length, ref MemoryMarshal.GetReference(value), value.Length);
 #endif
 
-#if NET6_0
     /// <summary>
     /// Searches for the specified value and returns the index of its last occurrence. If not found, returns -1. Values are compared using IEquatable{T}.Equals(T).
     /// </summary>
     /// <param name="span">The span to search.</param>
     /// <param name="value">The value to search for.</param>
+#if !NET6_0
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static unsafe int LastIndexOf<T>(Span<T> span, T value) where T : IEquatable<T>? // It should be without this here!
+    public static unsafe int LastIndexOf<T>(Span<T> span, T value) where T : IEquatable<T>?
+        => MemoryExtensions.LastIndexOf(span, value);
+#else
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static unsafe int LastIndexOf<T>(Span<T> span, T value) where T : IEquatable<T>? // There should be no this here!
         => SpanHelpersHidden.LastIndexOf(ref MemoryMarshal.GetReference(span), value, span.Length);
 #endif
 
-#if NET6_0
     /// <summary>
     /// Searches for the specified sequence and returns the index of its last occurrence. If not found, returns -1. Values are compared using IEquatable{T}.Equals(T).
     /// </summary>
     /// <param name="span">The span to search.</param>
     /// <param name="value">The sequence to search for.</param>
+#if !NET6_0_OR_GREATER || NET10_0_OR_GREATER
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static unsafe int LastIndexOf<T>(Span<T> span, ReadOnlySpan<T> value) where T : IEquatable<T>? // It should be without this here!
+    public static unsafe int LastIndexOf<T>(Span<T> span, ReadOnlySpan<T> value) where T : IEquatable<T>?
+        => MemoryExtensions.LastIndexOf(span, value);
+#else
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static unsafe int LastIndexOf<T>(Span<T> span, ReadOnlySpan<T> value) where T : IEquatable<T>? // There should be no this here!
         => SpanHelpersHidden.LastIndexOf(ref MemoryMarshal.GetReference(span), span.Length, ref MemoryMarshal.GetReference(value), value.Length);
 #endif
 
@@ -1059,6 +1075,213 @@ public static partial class MemoryExtensionsPolyfills
         throw new ArgumentNullException(lowInclusive is null ? nameof(lowInclusive) : nameof(highInclusive));
     }
 #endif
+
+    /// <summary>
+    /// Determines whether two sequences are equal by comparing the elements using IEquatable{T}.Equals(T).
+    /// </summary>
+#if !NET6_0
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static unsafe bool SequenceEqual<T>(Span<T> span, ReadOnlySpan<T> other) where T : IEquatable<T>?
+        => MemoryExtensions.SequenceEqual<T>(span, other);
+#else
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static unsafe bool SequenceEqual<T>(Span<T> span, ReadOnlySpan<T> other) where T : IEquatable<T>? // There should be no this here!
+    {
+        int length = span.Length;
+        int otherLength = other.Length;
+
+        return length == otherLength && SpanHelpersHidden.SequenceEqual(ref MemoryMarshal.GetReference(span), ref MemoryMarshal.GetReference(other), length);
+    }
+#endif
+
+    /// <summary>
+    /// Determines the relative order of the sequences being compared by comparing the elements using IComparable{T}.CompareTo(T).
+    /// </summary>
+#if !NET6_0
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static int SequenceCompareTo<T>(Span<T> span, ReadOnlySpan<T> other) where T : IComparable<T>?
+        => MemoryExtensions.SequenceCompareTo<T>(span, other);
+#else
+    //
+    public static int SequenceCompareTo<T>(Span<T> span, ReadOnlySpan<T> other) where T : IComparable<T>? // There should be no this here!
+    {
+        // Can't use IsBitwiseEquatable<T>() below because that only tells us about
+        // equality checks, not about CompareTo checks.
+
+        if (typeof(T) == typeof(byte))
+            return SpanHelpersHidden.SequenceCompareTo(
+                ref Unsafe.As<T, byte>(ref MemoryMarshal.GetReference(span)),
+                span.Length,
+                ref Unsafe.As<T, byte>(ref MemoryMarshal.GetReference(other)),
+                other.Length);
+
+        if (typeof(T) == typeof(char))
+            return SpanHelpersHidden.SequenceCompareTo(
+                ref Unsafe.As<T, char>(ref MemoryMarshal.GetReference(span)),
+                span.Length,
+                ref Unsafe.As<T, char>(ref MemoryMarshal.GetReference(other)),
+                other.Length);
+
+        return SpanHelpersHidden.SequenceCompareTo(ref MemoryMarshal.GetReference(span), span.Length, ref MemoryMarshal.GetReference(other), other.Length);
+    }
+#endif
+
+    /// <summary>
+    /// Searches for the specified value and returns the index of its first occurrence. If not found, returns -1. Values are compared using IEquatable{T}.Equals(T).
+    /// </summary>
+    /// <param name="span">The span to search.</param>
+    /// <param name="value">The value to search for.</param>
+#if !NET6_0
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static unsafe int IndexOf<T>(ReadOnlySpan<T> span, T value) where T : IEquatable<T>?
+        => MemoryExtensions.IndexOf<T>(span, value);
+#else
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static unsafe int IndexOf<T>(ReadOnlySpan<T> span, T value) where T : IEquatable<T>? // There should be no this here!
+        => SpanHelpersHidden.IndexOf(ref MemoryMarshal.GetReference(span), value, span.Length);
+#endif
+
+    /// <summary>
+    /// Searches for the specified sequence and returns the index of its first occurrence. If not found, returns -1. Values are compared using IEquatable{T}.Equals(T).
+    /// </summary>
+    /// <param name="span">The span to search.</param>
+    /// <param name="value">The sequence to search for.</param>
+#if !NET6_0
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static unsafe int IndexOf<T>(ReadOnlySpan<T> span, ReadOnlySpan<T> value) where T : IEquatable<T>?
+        => MemoryExtensions.IndexOf<T>(span, value);
+#else
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static unsafe int IndexOf<T>(ReadOnlySpan<T> span, ReadOnlySpan<T> value) where T : IEquatable<T>? // There should be no this here!
+        => SpanHelpersHidden.IndexOf(ref MemoryMarshal.GetReference(span), span.Length, ref MemoryMarshal.GetReference(value), value.Length);
+#endif
+
+    /// <summary>
+    /// Searches for the specified value and returns the index of its last occurrence. If not found, returns -1. Values are compared using IEquatable{T}.Equals(T).
+    /// </summary>
+    /// <param name="span">The span to search.</param>
+    /// <param name="value">The value to search for.</param>
+#if !NET6_0
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static unsafe int LastIndexOf<T>(ReadOnlySpan<T> span, T value) where T : IEquatable<T>?
+        => MemoryExtensions.LastIndexOf<T>(span, value);
+#else
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static unsafe int LastIndexOf<T>(ReadOnlySpan<T> span, T value) where T : IEquatable<T>? // There should be no this here!
+        => SpanHelpersHidden.LastIndexOf(ref MemoryMarshal.GetReference(span), value, span.Length);
+#endif
+
+    /// <summary>
+    /// Searches for the specified sequence and returns the index of its last occurrence. If not found, returns -1. Values are compared using IEquatable{T}.Equals(T).
+    /// </summary>
+    /// <param name="span">The span to search.</param>
+    /// <param name="value">The sequence to search for.</param>
+#if !NET6_0
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static unsafe int LastIndexOf<T>(ReadOnlySpan<T> span, ReadOnlySpan<T> value) where T : IEquatable<T>?
+        => MemoryExtensions.LastIndexOf<T>(span, value);
+#else
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static unsafe int LastIndexOf<T>(ReadOnlySpan<T> span, ReadOnlySpan<T> value) where T : IEquatable<T>? // There should be no this here!
+        => SpanHelpersHidden.LastIndexOf(ref MemoryMarshal.GetReference(span), span.Length, ref MemoryMarshal.GetReference(value), value.Length);
+#endif
+
+    /// <summary>
+    /// Searches for the first index of any of the specified values similar to calling IndexOf several times with the logical OR operator. If not found, returns -1.
+    /// </summary>
+    /// <param name="span">The span to search.</param>
+    /// <param name="value0">One of the values to search for.</param>
+    /// <param name="value1">One of the values to search for.</param>
+#if !NET6_0
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static unsafe int IndexOfAny<T>(Span<T> span, T value0, T value1) where T : IEquatable<T>?
+        => MemoryExtensions.IndexOfAny<T>(span, value0, value1);
+#else
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static unsafe int IndexOfAny<T>(Span<T> span, T value0, T value1) where T : IEquatable<T>? // There should be no this here!
+        => SpanHelpersHidden.IndexOfAny(ref MemoryMarshal.GetReference(span), value0, value1, span.Length);
+#endif
+
+    /// <summary>
+    /// Searches for the first index of any of the specified values similar to calling IndexOf several times with the logical OR operator. If not found, returns -1.
+    /// </summary>
+    /// <param name="span">The span to search.</param>
+    /// <param name="value0">One of the values to search for.</param>
+    /// <param name="value1">One of the values to search for.</param>
+    /// <param name="value2">One of the values to search for.</param>
+#if !NET6_0
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static unsafe int IndexOfAny<T>(Span<T> span, T value0, T value1, T value2) where T : IEquatable<T>?
+        => MemoryExtensions.IndexOfAny<T>(span, value0, value1, value2);
+#else
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static unsafe int IndexOfAny<T>(Span<T> span, T value0, T value1, T value2) where T : IEquatable<T>? // There should be no this here!
+        => SpanHelpersHidden.IndexOfAny(ref MemoryMarshal.GetReference(span), value0, value1, value2, span.Length);
+#endif
+
+    /// <summary>
+    /// Searches for the first index of any of the specified values similar to calling IndexOf several times with the logical OR operator. If not found, returns -1.
+    /// </summary>
+    /// <param name="span">The span to search.</param>
+    /// <param name="values">The set of values to search for.</param>
+#if !NET6_0
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static int IndexOfAny<T>(Span<T> span, ReadOnlySpan<T> values) where T : IEquatable<T>?
+        => MemoryExtensions.IndexOfAny<T>(span, values);
+#else
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static int IndexOfAny<T>(Span<T> span, ReadOnlySpan<T> values) where T : IEquatable<T>? // There should be no this here!
+        => MemoryExtensionsPolyfills.IndexOfAny((ReadOnlySpan<T>)span, values);
+#endif
+
+    /// <summary>
+    /// Searches for the first index of any of the specified values similar to calling IndexOf several times with the logical OR operator. If not found, returns -1.
+    /// </summary>
+    /// <param name="span">The span to search.</param>
+    /// <param name="value0">One of the values to search for.</param>
+    /// <param name="value1">One of the values to search for.</param>
+#if !NET6_0
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static unsafe int IndexOfAny<T>(ReadOnlySpan<T> span, T value0, T value1) where T : IEquatable<T>?
+        => MemoryExtensions.IndexOfAny<T>(span, value0, value1);
+#else
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static unsafe int IndexOfAny<T>(ReadOnlySpan<T> span, T value0, T value1) where T : IEquatable<T>? // There should be no this here!
+        => SpanHelpersHidden.IndexOfAny(ref MemoryMarshal.GetReference(span), value0, value1, span.Length);
+#endif
+
+    /// <summary>
+    /// Searches for the first index of any of the specified values similar to calling IndexOf several times with the logical OR operator. If not found, returns -1.
+    /// </summary>
+    /// <param name="span">The span to search.</param>
+    /// <param name="value0">One of the values to search for.</param>
+    /// <param name="value1">One of the values to search for.</param>
+    /// <param name="value2">One of the values to search for.</param>
+#if !NET6_0
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static unsafe int IndexOfAny<T>(ReadOnlySpan<T> span, T value0, T value1, T value2) where T : IEquatable<T>?
+        => MemoryExtensions.IndexOfAny<T>(span, value0, value1, value2);
+#else
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static unsafe int IndexOfAny<T>(ReadOnlySpan<T> span, T value0, T value1, T value2) where T : IEquatable<T>? // There should be no this here!
+        => SpanHelpersHidden.IndexOfAny(ref MemoryMarshal.GetReference(span), value0, value1, value2, span.Length);
+#endif
+
+    /// <summary>
+    /// Searches for the first index of any of the specified values similar to calling IndexOf several times with the logical OR operator. If not found, returns -1.
+    /// </summary>
+    /// <param name="span">The span to search.</param>
+    /// <param name="values">The set of values to search for.</param>
+#if !NET6_0
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static unsafe int IndexOfAny<T>(ReadOnlySpan<T> span, ReadOnlySpan<T> values) where T : IEquatable<T>?
+        => MemoryExtensions.IndexOfAny<T>(span, values);
+#else
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static unsafe int IndexOfAny<T>(ReadOnlySpan<T> span, ReadOnlySpan<T> values) where T : IEquatable<T>? // There should be no this here!
+        => SpanHelpersHidden.IndexOfAny(ref MemoryMarshal.GetReference(span), span.Length, ref MemoryMarshal.GetReference(values), values.Length);
+#endif
+
 }
 
 #endif

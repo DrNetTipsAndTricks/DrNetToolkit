@@ -17,6 +17,74 @@ namespace DrNetToolkit.Polyfills.Hidden;
 
 public static partial class SpanHelpersHidden // .Char
 {
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+
+    public static unsafe int SequenceCompareTo(ref char first, int firstLength, ref char second, int secondLength)
+    {
+        Debug.Assert(firstLength >= 0);
+        Debug.Assert(secondLength >= 0);
+
+        int lengthDelta = firstLength - secondLength;
+
+        if (Unsafe.AreSame(ref first, ref second))
+            goto Equal;
+
+        nuint minLength = (nuint)(((uint)firstLength < (uint)secondLength) ? (uint)firstLength : (uint)secondLength);
+        nuint i = 0; // Use nuint for arithmetic to avoid unnecessary 64->32->64 truncations
+
+        if (minLength >= (nuint)(sizeof(nuint) / sizeof(char)))
+        {
+#if NETSTANDARD2_0_OR_GREATER
+            if (Vector.IsHardwareAccelerated && minLength >= (nuint)Vector<ushort>.Count)
+            {
+                nuint nLength = minLength - (nuint)Vector<ushort>.Count;
+                do
+                {
+                    if (Unsafe.ReadUnaligned<Vector<ushort>>(ref Unsafe.As<char, byte>(ref Unsafe.Add(ref first, (nint)i))) !=
+                        Unsafe.ReadUnaligned<Vector<ushort>>(ref Unsafe.As<char, byte>(ref Unsafe.Add(ref second, (nint)i))))
+                    {
+                        break;
+                    }
+                    i += (nuint)Vector<ushort>.Count;
+                }
+                while (nLength >= i);
+            }
+#endif
+
+            while (minLength >= (i + (nuint)(sizeof(nuint) / sizeof(char))))
+            {
+                if (Unsafe.ReadUnaligned<nuint>(ref Unsafe.As<char, byte>(ref Unsafe.Add(ref first, (nint)i))) !=
+                    Unsafe.ReadUnaligned<nuint>(ref Unsafe.As<char, byte>(ref Unsafe.Add(ref second, (nint)i))))
+                {
+                    break;
+                }
+                i += (nuint)(sizeof(nuint) / sizeof(char));
+            }
+        }
+
+#if TARGET_64BIT
+            if (minLength >= (i + sizeof(int) / sizeof(char)))
+            {
+                if (Unsafe.ReadUnaligned<int>(ref Unsafe.As<char, byte>(ref Unsafe.Add(ref first, (nint)i))) ==
+                    Unsafe.ReadUnaligned<int>(ref Unsafe.As<char, byte>(ref Unsafe.Add(ref second, (nint)i))))
+                {
+                    i += sizeof(int) / sizeof(char);
+                }
+            }
+#endif
+
+        while (i < minLength)
+        {
+            int result = Unsafe.Add(ref first, (nint)i).CompareTo(Unsafe.Add(ref second, (nint)i));
+            if (result != 0)
+                return result;
+            i += 1;
+        }
+
+    Equal:
+        return lengthDelta;
+    }
+
     /// <summary>
     /// IndexOfNullCharacter processes memory in aligned chunks, and thus it won't crash even if it accesses memory
     /// beyond the null terminator.
@@ -394,4 +462,6 @@ public static partial class SpanHelpersHidden // .Char
     private static nint GetCharVector512SpanLength(nint offset, nint length)
         => (length - offset) & ~(Vector512<ushort>.Count - 1);
 #endif
+
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 }
