@@ -9,15 +9,14 @@ using System.Text;
 namespace System;
 
 /// <summary>
-/// <see cref="Array"/> polyfills.
+/// <see cref="Array"/> hidden methods.
 /// </summary>
-public static class ArrayPolyfills
+public static class ArrayHidden
 {
     /// <summary>
     ///  This is the threshold where Introspective sort switches to Insertion sort.
     ///  Empirically, 16 seems to speed up most cases without slowing down others, at least for integers.
     ///  Large value types may benefit from a smaller number.
     /// </summary>
-    internal const int IntrosortSizeThreshold = 16;
-
+    public const int IntrosortSizeThreshold = 16;
 }

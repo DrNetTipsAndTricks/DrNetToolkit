@@ -11,6 +11,18 @@ namespace DrNetToolkit.Polyfills.Internals;
 [StackTraceHidden]
 internal static class ThrowHelper
 {
+    private static ArgumentException GetArgumentException(ExceptionResource resource)
+    {
+        return new ArgumentException(GetResourceString(resource));
+    }
+
+
+    [DoesNotReturn]
+    internal static void ThrowArgumentException(ExceptionResource resource)
+    {
+        throw GetArgumentException(resource);
+    }
+
     [DoesNotReturn]
     internal static void ThrowArgumentException_BadComparer(object? comparer)
     {
@@ -118,8 +130,8 @@ internal static class ThrowHelper
             //    return "count";
             //case ExceptionArgument.action:
             //    return "action";
-            //case ExceptionArgument.comparison:
-            //    return "comparison";
+            case ExceptionArgument.comparison:
+                return "comparison";
             //case ExceptionArgument.exceptions:
             //    return "exceptions";
             //case ExceptionArgument.exception:
@@ -400,8 +412,8 @@ internal static class ThrowHelper
             //    return SR.Rank_MultiDimNotSupported;
             //case ExceptionResource.Arg_TypeNotSupported:
             //    return SR.Arg_TypeNotSupported;
-            //case ExceptionResource.Argument_SpansMustHaveSameLength:
-            //    return SR.Argument_SpansMustHaveSameLength;
+            case ExceptionResource.Argument_SpansMustHaveSameLength:
+                return SR.Argument_SpansMustHaveSameLength;
             //case ExceptionResource.Argument_InvalidFlag:
             //    return SR.Argument_InvalidFlag;
             //case ExceptionResource.CancellationTokenSource_Disposed:
@@ -465,7 +477,7 @@ internal enum ExceptionArgument
     //match,
     //count,
     //action,
-    //comparison,
+    comparison,
     //exceptions,
     //exception,
     //pointer,
@@ -609,7 +621,7 @@ internal enum ExceptionResource
     //NotSupported_FixedSizeCollection,
     //Rank_MultiDimNotSupported,
     //Arg_TypeNotSupported,
-    //Argument_SpansMustHaveSameLength,
+    Argument_SpansMustHaveSameLength,
     //Argument_InvalidFlag,
     //CancellationTokenSource_Disposed,
     //Argument_AlignmentMustBePow2,

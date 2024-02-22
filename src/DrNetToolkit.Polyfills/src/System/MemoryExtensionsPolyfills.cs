@@ -33,7 +33,7 @@ public static partial class MemoryExtensionsPolyfills
         if (array == null)
         {
             if (!startIndex.Equals(Index.Start))
-                ThrowHelper.ThrowArgumentNullException(ThrowHelper.ExceptionArgument.array);
+                ThrowHelper.ThrowArgumentNullException(ExceptionArgument.array);
 
             return default;
         }
@@ -68,7 +68,7 @@ public static partial class MemoryExtensionsPolyfills
             Index endIndex = range.End;
 
             if (!startIndex.Equals(Index.Start) || !endIndex.Equals(Index.Start))
-                ThrowHelper.ThrowArgumentNullException(ThrowHelper.ExceptionArgument.array);
+                ThrowHelper.ThrowArgumentNullException(ExceptionArgument.array);
 
             return default;
         }
@@ -163,7 +163,7 @@ public static partial class MemoryExtensionsPolyfills
         if (text == null)
         {
             if (!startIndex.Equals(Index.Start))
-                ThrowHelper.ThrowArgumentNullException(ThrowHelper.ExceptionArgument.text);
+                ThrowHelper.ThrowArgumentNullException(ExceptionArgument.text);
 
             return default;
         }
@@ -190,7 +190,7 @@ public static partial class MemoryExtensionsPolyfills
             Index endIndex = range.End;
 
             if (!startIndex.Equals(Index.Start) || !endIndex.Equals(Index.Start))
-                ThrowHelper.ThrowArgumentNullException(ThrowHelper.ExceptionArgument.text);
+                ThrowHelper.ThrowArgumentNullException(ExceptionArgument.text);
 
             return default;
         }
@@ -1625,7 +1625,7 @@ public static partial class MemoryExtensionsPolyfills
         if (array == null)
         {
             if (!startIndex.Equals(Index.Start))
-                ThrowHelper.ThrowArgumentNullException(ThrowHelper.ExceptionArgument.array);
+                ThrowHelper.ThrowArgumentNullException(ExceptionArgument.array);
 
             return default;
         }
@@ -1651,7 +1651,7 @@ public static partial class MemoryExtensionsPolyfills
             Index startIndex = range.Start;
             Index endIndex = range.End;
             if (!startIndex.Equals(Index.Start) || !endIndex.Equals(Index.Start))
-                ThrowHelper.ThrowArgumentNullException(ThrowHelper.ExceptionArgument.array);
+                ThrowHelper.ThrowArgumentNullException(ExceptionArgument.array);
 
             return default;
         }
@@ -1675,6 +1675,7 @@ public static partial class MemoryExtensionsPolyfills
     public static void Sort<T>(Span<T> span)
         => MemoryExtensions.Sort(span);
 #else
+    //
     public static void Sort<T>(this Span<T> span)
         => Sort(span, (IComparer<T>?)null);
 #endif
@@ -1701,15 +1702,139 @@ public static partial class MemoryExtensionsPolyfills
     public static void Sort<T, TComparer>(Span<T> span, TComparer comparer) where TComparer : IComparer<T>?
         => MemoryExtensions.Sort(span, comparer);
 #else
+    //
     public static void Sort<T, TComparer>(this Span<T> span, TComparer comparer) where TComparer : IComparer<T>?
     {
         if (span.Length > 1)
         {
-            ArraySortHelperHidden<T>.Default.Sort(span, comparer); // value-type comparer will be boxed
+            if (comparer is null)
+                ArraySortHelperHidden<T>.Sort(span, Comparer<T>.Default.Compare);
+            else 
+                ArraySortHelperHidden<T>.Sort(span, comparer.Compare);
         }
     }
 #endif
 
+    /// <summary>
+    /// Sorts the elements in the entire <see cref="Span{T}" /> using the specified <see cref="Comparison{T}" />.
+    /// </summary>
+    /// <typeparam name="T">The type of the elements of the span.</typeparam>
+    /// <param name="span">The <see cref="Span{T}"/> to sort.</param>
+    /// <param name="comparison">The <see cref="Comparison{T}"/> to use when comparing elements.</param>
+    /// <exception cref="ArgumentNullException"><paramref name="comparison"/> is null.</exception>
+#if NET5_0_OR_GREATER
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static void Sort<T>(this Span<T> span, Comparison<T> comparison)
+        => MemoryExtensions.Sort(span, comparison);
+#else
+    //
+    public static void Sort<T>(this Span<T> span, Comparison<T> comparison)
+    {
+        if (comparison == null)
+            ThrowHelper.ThrowArgumentNullException(ExceptionArgument.comparison);
+
+        if (span.Length > 1)
+        {
+            ArraySortHelperHidden<T>.Sort(span, comparison);
+        }
+    }
+#endif
+
+    /// <summary>
+    /// Sorts a pair of spans (one containing the keys and the other containing the corresponding items)
+    /// based on the keys in the first <see cref="Span{TKey}" /> using the <see cref="IComparable{T}" />
+    /// implementation of each key.
+    /// </summary>
+    /// <typeparam name="TKey">The type of the elements of the key span.</typeparam>
+    /// <typeparam name="TValue">The type of the elements of the items span.</typeparam>
+    /// <param name="keys">The span that contains the keys to sort.</param>
+    /// <param name="items">The span that contains the items that correspond to the keys in <paramref name="keys"/>.</param>
+    /// <exception cref="ArgumentException">
+    /// The length of <paramref name="keys"/> isn't equal to the length of <paramref name="items"/>.
+    /// </exception>
+    /// <exception cref="InvalidOperationException">
+    /// One or more elements in <paramref name="keys"/> do not implement the <see cref="IComparable{T}" /> interface.
+    /// </exception>
+#if NET5_0_OR_GREATER
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static void Sort<TKey, TValue>(this Span<TKey> keys, Span<TValue> items)
+        => MemoryExtensions.Sort(keys, items);
+#else
+    //
+    public static void Sort<TKey, TValue>(this Span<TKey> keys, Span<TValue> items)
+        => Sort(keys, items, (IComparer<TKey>?)null);
+#endif
+
+    /// <summary>
+    /// Sorts a pair of spans (one containing the keys and the other containing the corresponding items)
+    /// based on the keys in the first <see cref="Span{TKey}" /> using the specified comparer.
+    /// </summary>
+    /// <typeparam name="TKey">The type of the elements of the key span.</typeparam>
+    /// <typeparam name="TValue">The type of the elements of the items span.</typeparam>
+    /// <typeparam name="TComparer">The type of the comparer to use to compare elements.</typeparam>
+    /// <param name="keys">The span that contains the keys to sort.</param>
+    /// <param name="items">The span that contains the items that correspond to the keys in <paramref name="keys"/>.</param>
+    /// <param name="comparer">
+    /// The <see cref="IComparer{T}"/> implementation to use when comparing elements, or null to
+    /// use the <see cref="IComparable{T}"/> interface implementation of each element.
+    /// </param>
+    /// <exception cref="ArgumentException">
+    /// The length of <paramref name="keys"/> isn't equal to the length of <paramref name="items"/>.
+    /// </exception>
+    /// <exception cref="InvalidOperationException">
+    /// <paramref name="comparer"/> is null, and one or more elements in <paramref name="keys"/> do not
+    /// implement the <see cref="IComparable{T}" /> interface.
+    /// </exception>
+#if NET5_0_OR_GREATER
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static void Sort<TKey, TValue, TComparer>(this Span<TKey> keys, Span<TValue> items, TComparer comparer) where TComparer : IComparer<TKey>?
+        => MemoryExtensions.Sort(keys, items, comparer);
+#else
+    //
+    public static void Sort<TKey, TValue, TComparer>(this Span<TKey> keys, Span<TValue> items, TComparer comparer) where TComparer : IComparer<TKey>?
+    {
+        if (keys.Length != items.Length)
+            ThrowHelper.ThrowArgumentException(ExceptionResource.Argument_SpansMustHaveSameLength);
+
+        if (keys.Length > 1)
+        {
+            ArraySortHelperHidden<TKey, TValue>.Sort(keys, items, comparer);
+        }
+    }
+#endif
+
+    /// <summary>
+    /// Sorts a pair of spans (one containing the keys and the other containing the corresponding items)
+    /// based on the keys in the first <see cref="Span{TKey}" /> using the specified comparison.
+    /// </summary>
+    /// <typeparam name="TKey">The type of the elements of the key span.</typeparam>
+    /// <typeparam name="TValue">The type of the elements of the items span.</typeparam>
+    /// <param name="keys">The span that contains the keys to sort.</param>
+    /// <param name="items">The span that contains the items that correspond to the keys in <paramref name="keys"/>.</param>
+    /// <param name="comparison">The <see cref="Comparison{T}"/> to use when comparing elements.</param>
+    /// <exception cref="ArgumentNullException"><paramref name="comparison"/> is null.</exception>
+    /// <exception cref="ArgumentException">
+    /// The length of <paramref name="keys"/> isn't equal to the length of <paramref name="items"/>.
+    /// </exception>
+#if NET5_0_OR_GREATER
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static void Sort<TKey, TValue>(this Span<TKey> keys, Span<TValue> items, Comparison<TKey> comparison)
+        => MemoryExtensions.Sort(keys, items, comparison);
+#else
+    //
+    public static void Sort<TKey, TValue>(this Span<TKey> keys, Span<TValue> items, Comparison<TKey> comparison)
+    {
+        if (comparison == null)
+            ThrowHelper.ThrowArgumentNullException(ExceptionArgument.comparison);
+        if (keys.Length != items.Length)
+            ThrowHelper.ThrowArgumentException(ExceptionResource.Argument_SpansMustHaveSameLength);
+
+        if (keys.Length > 1)
+        {
+            ArraySortHelperHidden<TKey, TValue>.Sort(keys, items, new ComparisonComparerHidden<TKey>(comparison));
+        }
+    }
+#endif
 }
 
 #endif

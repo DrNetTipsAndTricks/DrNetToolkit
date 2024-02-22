@@ -17,4 +17,7 @@ internal static partial class SR
 
     /// <summary>Failed to compare two elements in the array.</summary>
     internal static string @InvalidOperation_IComparerFailed => "Failed to compare two elements in the array.";
+
+    /// <summary>Length of items must be same as length of keys.</summary>
+    internal static string @Argument_SpansMustHaveSameLength => "Length of items must be same as length of keys.";
 }
