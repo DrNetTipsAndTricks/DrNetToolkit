@@ -62,7 +62,18 @@ public static partial class SpanHelpersHidden // .Char
             }
         }
 
-#if TARGET_64BIT
+//#if TARGET_64BIT
+//        if (minLength >= (i + sizeof(int) / sizeof(char)))
+//        {
+//            if (Unsafe.ReadUnaligned<int>(ref Unsafe.As<char, byte>(ref Unsafe.Add(ref first, (nint)i))) ==
+//                Unsafe.ReadUnaligned<int>(ref Unsafe.As<char, byte>(ref Unsafe.Add(ref second, (nint)i))))
+//            {
+//                i += sizeof(int) / sizeof(char);
+//            }
+//        }
+//#endif
+        if (sizeof(nuint) == sizeof(ulong))
+        {
             if (minLength >= (i + sizeof(int) / sizeof(char)))
             {
                 if (Unsafe.ReadUnaligned<int>(ref Unsafe.As<char, byte>(ref Unsafe.Add(ref first, (nint)i))) ==
@@ -71,7 +82,8 @@ public static partial class SpanHelpersHidden // .Char
                     i += sizeof(int) / sizeof(char);
                 }
             }
-#endif
+        }
+
 
         while (i < minLength)
         {

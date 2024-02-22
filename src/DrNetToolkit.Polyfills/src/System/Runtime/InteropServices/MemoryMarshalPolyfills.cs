@@ -313,7 +313,7 @@ public static class MemoryMarshalPolyfills
             ThrowHelper.ThrowInvalidTypeWithPointersNotSupported(typeof(T));
 
         if (sizeof(T) > (uint)span.Length)
-            ThrowHelper.ThrowArgumentOutOfRangeException(ThrowHelper.ExceptionArgument.length);
+            ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument.length);
 
         return ref Unsafe.As<byte, T>(ref MemoryMarshal.GetReference(span));
     }
@@ -339,7 +339,7 @@ public static class MemoryMarshalPolyfills
             ThrowHelper.ThrowInvalidTypeWithPointersNotSupported(typeof(T));
 
         if (sizeof(T) > (uint)span.Length)
-            ThrowHelper.ThrowArgumentOutOfRangeException(ThrowHelper.ExceptionArgument.length);
+            ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument.length);
 
         return ref Unsafe.As<byte, T>(ref MemoryMarshal.GetReference(span));
     }

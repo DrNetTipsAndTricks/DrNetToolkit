@@ -99,7 +99,7 @@ public static partial class MemoryExtensionsPolyfills
         {
             if (!startIndex.Equals(Index.Start))
             {
-                ThrowHelper.ThrowArgumentOutOfRangeException(ThrowHelper.ExceptionArgument.startIndex);
+                ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument.startIndex);
             }
 
             return default;
@@ -108,7 +108,7 @@ public static partial class MemoryExtensionsPolyfills
         int actualIndex = startIndex.GetOffset(text.Length);
         if ((uint)actualIndex > (uint)text.Length)
         {
-            ThrowHelper.ThrowArgumentOutOfRangeException(ThrowHelper.ExceptionArgument.startIndex);
+            ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument.startIndex);
         }
 
         return MemoryMarshalPolyfills.CreateSpan(ref Unsafe.Add(ref Unsafe.AsRef(in text.GetPinnableReference()),
@@ -137,7 +137,7 @@ public static partial class MemoryExtensionsPolyfills
 
             if (!startIndex.Equals(Index.Start) || !endIndex.Equals(Index.Start))
             {
-                ThrowHelper.ThrowArgumentNullException(ThrowHelper.ExceptionArgument.text);
+                ThrowHelper.ThrowArgumentNullException(ExceptionArgument.text);
             }
 
             return default;
@@ -1438,7 +1438,7 @@ public static partial class MemoryExtensionsPolyfills
         {
             if (comparer is null || comparer == EqualityComparer<T>.Default)
             {
-                // Otherwise, compare each element using EqualityComparer<T>.Default.Equals in a way that will enable it to devirtualize.
+                // Otherwise, compare each element using EqualityComparer<T>.Default.Equals in a way that will enable it to de virtualize.
                 for (int i = 0; i < span.Length; i++)
                 {
                     if (!EqualityComparer<T>.Default.Equals(span[i], other[i]))
@@ -1474,7 +1474,7 @@ public static partial class MemoryExtensionsPolyfills
         => MemoryExtensions.SequenceCompareTo(span, other);
 #else
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static unsafe int SequenceCompareTo<T>(ReadOnlySpan<T> span, ReadOnlySpan<T> other) where T : IComparable<T>?
+    public static unsafe int SequenceCompareTo<T>(ReadOnlySpan<T> span, ReadOnlySpan<T> other) where T : IComparable<T>? // There should be no this here!
     {
         // Can't use IsBitwiseEquatable<T>() below because that only tells us about
         // equality checks, not about CompareTo checks.
@@ -1494,6 +1494,219 @@ public static partial class MemoryExtensionsPolyfills
                 other.Length);
 
         return SpanHelpersHidden.SequenceCompareTo(ref MemoryMarshal.GetReference(span), span.Length, ref MemoryMarshal.GetReference(other), other.Length);
+    }
+#endif
+
+    /// <summary>
+    /// Determines whether the specified sequence appears at the start of the span.
+    /// </summary>
+#if !NET6_0
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static unsafe bool StartsWith<T>(Span<T> span, ReadOnlySpan<T> value) where T : IEquatable<T>?
+        => MemoryExtensions.StartsWith(span, value);
+#else
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static unsafe bool StartsWith<T>(Span<T> span, ReadOnlySpan<T> value) where T : IEquatable<T>? // There should be no this here!
+    {
+        int valueLength = value.Length;
+        return valueLength <= span.Length && SpanHelpersHidden.SequenceEqual(ref MemoryMarshal.GetReference(span),
+            ref MemoryMarshal.GetReference(value), valueLength);
+    }
+#endif
+
+    /// <summary>
+    /// Determines whether the specified sequence appears at the start of the span.
+    /// </summary>
+#if !NET6_0
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static unsafe bool StartsWith<T>(ReadOnlySpan<T> span, ReadOnlySpan<T> value) where T : IEquatable<T>?
+        => MemoryExtensions.StartsWith(span, value);
+#else
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static unsafe bool StartsWith<T>(ReadOnlySpan<T> span, ReadOnlySpan<T> value) where T : IEquatable<T>? // There should be no this here!
+    {
+        int valueLength = value.Length;
+        return valueLength <= span.Length && SpanHelpersHidden.SequenceEqual(ref MemoryMarshal.GetReference(span),
+            ref MemoryMarshal.GetReference(value), valueLength);
+    }
+#endif
+
+    /// <summary>
+    /// Determines whether the specified sequence appears at the end of the span.
+    /// </summary>
+#if !NET6_0
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static unsafe bool EndsWith<T>(Span<T> span, ReadOnlySpan<T> value) where T : IEquatable<T>?
+        => MemoryExtensions.EndsWith<T>(span, value);
+#else
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static unsafe bool EndsWith<T>(Span<T> span, ReadOnlySpan<T> value) where T : IEquatable<T>? // There should be no this here!
+    {
+        int spanLength = span.Length;
+        int valueLength = value.Length;
+
+        return valueLength <= spanLength &&
+            SpanHelpersHidden.SequenceEqual(
+                ref Unsafe.Add(ref MemoryMarshal.GetReference(span), (nint)(uint)(spanLength - valueLength) /* force zero-extension */),
+                ref MemoryMarshal.GetReference(value),
+                valueLength);
+    }
+#endif
+
+    /// <summary>
+    /// Determines whether the specified sequence appears at the end of the span.
+    /// </summary>
+#if !NET6_0
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static unsafe bool EndsWith<T>(ReadOnlySpan<T> span, ReadOnlySpan<T> value) where T : IEquatable<T>?
+        => MemoryExtensions.EndsWith(span, value);
+#else
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static unsafe bool EndsWith<T>(ReadOnlySpan<T> span, ReadOnlySpan<T> value) where T : IEquatable<T>? // There should be no this here!
+    {
+        int spanLength = span.Length;
+        int valueLength = value.Length;
+
+        return valueLength <= spanLength &&
+            SpanHelpersHidden.SequenceEqual(
+                ref Unsafe.Add(ref MemoryMarshal.GetReference(span), (nint)(uint)(spanLength - valueLength) /* force zero-extension */),
+                ref MemoryMarshal.GetReference(value),
+                valueLength);
+    }
+#endif
+
+    /// <summary>
+    /// Creates a new Span over the portion of the target array beginning
+    /// at 'startIndex' and ending at the end of the segment.
+    /// </summary>
+    /// <param name="segment">The target array.</param>
+    /// <param name="startIndex">The index at which to begin the Span.</param>
+#if NETSTANDARD2_1_OR_GREATER
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Span<T> AsSpan<T>(ArraySegment<T> segment, Index startIndex)
+        => MemoryExtensions.AsSpan(segment, startIndex);
+#else
+    public static Span<T> AsSpan<T>(this ArraySegment<T> segment, Index startIndex)
+    {
+        int actualIndex = startIndex.GetOffset(segment.Count);
+        return MemoryExtensions.AsSpan(segment, actualIndex);
+    }
+#endif
+
+    /// <summary>
+    /// Creates a new Span over the portion of the target array using the range start and end indexes
+    /// </summary>
+    /// <param name="segment">The target array.</param>
+    /// <param name="range">The range which has start and end indexes to use for slicing the array.</param>
+#if NETSTANDARD2_1_OR_GREATER
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Span<T> AsSpan<T>(ArraySegment<T> segment, Range range)
+        => MemoryExtensions.AsSpan(segment, range);
+#else
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Span<T> AsSpan<T>(this ArraySegment<T> segment, Range range)
+    {
+        (int start, int length) = range.GetOffsetAndLength(segment.Count);
+        return new Span<T>(segment.Array, segment.Offset + start, length);
+    }
+#endif
+
+    /// <summary>
+    /// Creates a new memory over the portion of the target array starting from
+    /// 'startIndex' to the end of the array.
+    /// </summary>
+#if NETSTANDARD2_1_OR_GREATER
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Memory<T> AsMemory<T>(T[]? array, Index startIndex)
+        => MemoryExtensions.AsMemory(array, startIndex);
+#else
+    public static Memory<T> AsMemory<T>(this T[]? array, Index startIndex)
+    {
+        if (array == null)
+        {
+            if (!startIndex.Equals(Index.Start))
+                ThrowHelper.ThrowArgumentNullException(ThrowHelper.ExceptionArgument.array);
+
+            return default;
+        }
+
+        int actualIndex = startIndex.GetOffset(array.Length);
+        return MemoryExtensions.AsMemory(array, actualIndex);
+    }
+#endif
+
+    /// <summary>
+    /// Creates a new memory over the portion of the target array beginning at inclusive start index of the range
+    /// and ending at the exclusive end index of the range.
+    /// </summary>
+#if NETSTANDARD2_1_OR_GREATER
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Memory<T> AsMemory<T>(T[]? array, Range range)
+        => MemoryExtensions.AsMemory<T>(array, range);
+#else
+    public static Memory<T> AsMemory<T>(this T[]? array, Range range)
+    {
+        if (array == null)
+        {
+            Index startIndex = range.Start;
+            Index endIndex = range.End;
+            if (!startIndex.Equals(Index.Start) || !endIndex.Equals(Index.Start))
+                ThrowHelper.ThrowArgumentNullException(ThrowHelper.ExceptionArgument.array);
+
+            return default;
+        }
+
+        (int start, int length) = range.GetOffsetAndLength(array.Length);
+        return new Memory<T>(array, start, length);
+    }
+#endif
+
+    /// <summary>
+    /// Sorts the elements in the entire <see cref="Span{T}" /> using the <see cref="IComparable{T}" /> implementation
+    /// of each element of the <see cref= "Span{T}" />
+    /// </summary>
+    /// <typeparam name="T">The type of the elements of the span.</typeparam>
+    /// <param name="span">The <see cref="Span{T}"/> to sort.</param>
+    /// <exception cref="InvalidOperationException">
+    /// One or more elements in <paramref name="span"/> do not implement the <see cref="IComparable{T}" /> interface.
+    /// </exception>
+#if NET5_0_OR_GREATER
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static void Sort<T>(Span<T> span)
+        => MemoryExtensions.Sort(span);
+#else
+    public static void Sort<T>(this Span<T> span)
+        => Sort(span, (IComparer<T>?)null);
+#endif
+
+    /// <summary>
+    /// Sorts the elements in the entire <see cref="Span{T}" /> using the <typeparamref name="TComparer" />.
+    /// </summary>
+    /// <typeparam name="T">The type of the elements of the span.</typeparam>
+    /// <typeparam name="TComparer">The type of the comparer to use to compare elements.</typeparam>
+    /// <param name="span">The <see cref="Span{T}"/> to sort.</param>
+    /// <param name="comparer">
+    /// The <see cref="IComparer{T}"/> implementation to use when comparing elements, or null to
+    /// use the <see cref="IComparable{T}"/> interface implementation of each element.
+    /// </param>
+    /// <exception cref="InvalidOperationException">
+    /// <paramref name="comparer"/> is null, and one or more elements in <paramref name="span"/> do not
+    /// implement the <see cref="IComparable{T}" /> interface.
+    /// </exception>
+    /// <exception cref="ArgumentException">
+    /// The implementation of <paramref name="comparer"/> caused an error during the sort.
+    /// </exception>
+#if NET5_0_OR_GREATER
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static void Sort<T, TComparer>(Span<T> span, TComparer comparer) where TComparer : IComparer<T>?
+        => MemoryExtensions.Sort(span, comparer);
+#else
+    public static void Sort<T, TComparer>(this Span<T> span, TComparer comparer) where TComparer : IComparer<T>?
+    {
+        if (span.Length > 1)
+        {
+            ArraySortHelperHidden<T>.Default.Sort(span, comparer); // value-type comparer will be boxed
+        }
     }
 #endif
 

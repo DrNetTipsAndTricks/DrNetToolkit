@@ -119,27 +119,27 @@ public sealed class RawData
     public byte Data;
 }
 
-/// <summary>
-/// CLR arrays are laid out in memory as follows (multidimensional array bounds are optional):
-/// [ sync block || pMethodTable || num components || MD array bounds || array data .. ]
-///                 ^               ^                 ^                  ^ returned reference
-///                 |               |                 \-- ref Unsafe.As{RawArrayData}(array).Data
-///                 \-- array       \-- ref Unsafe.As{RawData}(array).Data
-/// The BaseSize of an array includes all the fields before the array data, including the sync block and method table.
-/// The reference to RawData.Data points at the number of components, skipping over these two pointer-sized fields.
-/// </summary>
-[CLSCompliant(false)]
-[NonVersionable] // This only applies to field layout
-public sealed class RawArrayData
-{
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-    public uint Length; // Array._numComponents padded to IntPtr
-#if TARGET_64BIT
-    public uint Padding;
-#endif
-    public byte Data;
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
-}
+///// <summary>
+///// CLR arrays are laid out in memory as follows (multidimensional array bounds are optional):
+///// [ sync block || pMethodTable || num components || MD array bounds || array data .. ]
+/////                 ^               ^                 ^                  ^ returned reference
+/////                 |               |                 \-- ref Unsafe.As{RawArrayData}(array).Data
+/////                 \-- array       \-- ref Unsafe.As{RawData}(array).Data
+///// The BaseSize of an array includes all the fields before the array data, including the sync block and method table.
+///// The reference to RawData.Data points at the number of components, skipping over these two pointer-sized fields.
+///// </summary>
+//[CLSCompliant(false)]
+//[NonVersionable] // This only applies to field layout
+//public sealed class RawArrayData
+//{
+//#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+//    public uint Length; // Array._numComponents padded to IntPtr
+//#if TARGET_64BIT
+//    public uint Padding;
+//#endif
+//    public byte Data;
+//#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
+//}
 
 /// <summary>
 /// Subset of src\vm\methodtable.h
@@ -255,13 +255,13 @@ public unsafe struct MethodTable
     private const int ParentMethodTableOffset = 0x10 + DebugClassNamePtr;
 
 #if TARGET_64BIT
-        private const int ElementTypeOffset = 0x30 + DebugClassNamePtr;
+    private const int ElementTypeOffset = 0x30 + DebugClassNamePtr;
 #else
     private const int ElementTypeOffset = 0x20 + DebugClassNamePtr;
 #endif
 
 #if TARGET_64BIT
-        private const int InterfaceMapOffset = 0x38 + DebugClassNamePtr;
+    private const int InterfaceMapOffset = 0x38 + DebugClassNamePtr;
 #else
     private const int InterfaceMapOffset = 0x24 + DebugClassNamePtr;
 #endif
