@@ -752,6 +752,7 @@ public static partial class MemoryExtensionsPolyfills
     public static int LastIndexOfAnyExcept<T>(Span<T> span, T value) where T : IEquatable<T>?
         => MemoryExtensions.LastIndexOfAnyExcept(span, value);
 #else
+    // No [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static int LastIndexOfAnyExcept<T>(this Span<T> span, T value) where T : IEquatable<T>?
         => MemoryExtensionsPolyfills.LastIndexOfAnyExcept<T>((ReadOnlySpan<T>)span, value);
 #endif
@@ -770,6 +771,7 @@ public static partial class MemoryExtensionsPolyfills
     public static int LastIndexOfAnyExcept<T>(Span<T> span, T value0, T value1) where T : IEquatable<T>?
         => MemoryExtensions.LastIndexOfAnyExcept(span, value0, value1);
 #else
+    // No [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static int LastIndexOfAnyExcept<T>(this Span<T> span, T value0, T value1) where T : IEquatable<T>?
         => MemoryExtensionsPolyfills.LastIndexOfAnyExcept((ReadOnlySpan<T>)span, value0, value1);
 #endif
@@ -789,6 +791,7 @@ public static partial class MemoryExtensionsPolyfills
     public static int LastIndexOfAnyExcept<T>(Span<T> span, T value0, T value1, T value2) where T : IEquatable<T>?
         => MemoryExtensions.LastIndexOfAnyExcept(span, value0, value1, value2);
 #else
+    // No [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static int LastIndexOfAnyExcept<T>(this Span<T> span, T value0, T value1, T value2) where T : IEquatable<T>?
         => MemoryExtensionsPolyfills.LastIndexOfAnyExcept((ReadOnlySpan<T>)span, value0, value1, value2);
 #endif
@@ -806,7 +809,7 @@ public static partial class MemoryExtensionsPolyfills
     public static int LastIndexOfAnyExcept<T>(Span<T> span, ReadOnlySpan<T> values) where T : IEquatable<T>?
         => MemoryExtensions.LastIndexOfAnyExcept(span, values);
 #else
-    //
+    // No [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static int LastIndexOfAnyExcept<T>(this Span<T> span, ReadOnlySpan<T> values) where T : IEquatable<T>?
         => MemoryExtensionsPolyfills.LastIndexOfAnyExcept((ReadOnlySpan<T>)span, values);
 #endif
@@ -881,7 +884,7 @@ public static partial class MemoryExtensionsPolyfills
     public static unsafe int LastIndexOfAnyExcept<T>(ReadOnlySpan<T> span, ReadOnlySpan<T> values) where T : IEquatable<T>?
         => MemoryExtensions.LastIndexOfAnyExcept(span, values);
 #else
-    //
+    // No [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static unsafe int LastIndexOfAnyExcept<T>(this ReadOnlySpan<T> span, ReadOnlySpan<T> values) where T : IEquatable<T>?
     {
         switch (values.Length)
@@ -1103,7 +1106,7 @@ public static partial class MemoryExtensionsPolyfills
     public static int SequenceCompareTo<T>(Span<T> span, ReadOnlySpan<T> other) where T : IComparable<T>?
         => MemoryExtensions.SequenceCompareTo<T>(span, other);
 #else
-    //
+    // No [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static int SequenceCompareTo<T>(Span<T> span, ReadOnlySpan<T> other) where T : IComparable<T>? // There should be no this here!
     {
         // Can't use IsBitwiseEquatable<T>() below because that only tells us about
@@ -1425,7 +1428,7 @@ public static partial class MemoryExtensionsPolyfills
     public static unsafe bool SequenceEqual<T>(ReadOnlySpan<T> span, ReadOnlySpan<T> other, IEqualityComparer<T>? comparer = null)
         => MemoryExtensions.SequenceEqual(span, other, comparer);
 #else
-    //
+    // No [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static unsafe bool SequenceEqual<T>(this ReadOnlySpan<T> span, ReadOnlySpan<T> other, IEqualityComparer<T>? comparer = null)
     {
         // If the spans differ in length, they're not equal.
@@ -1586,6 +1589,7 @@ public static partial class MemoryExtensionsPolyfills
     public static Span<T> AsSpan<T>(ArraySegment<T> segment, Index startIndex)
         => MemoryExtensions.AsSpan(segment, startIndex);
 #else
+    // No [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Span<T> AsSpan<T>(this ArraySegment<T> segment, Index startIndex)
     {
         int actualIndex = startIndex.GetOffset(segment.Count);
@@ -1620,6 +1624,7 @@ public static partial class MemoryExtensionsPolyfills
     public static Memory<T> AsMemory<T>(T[]? array, Index startIndex)
         => MemoryExtensions.AsMemory(array, startIndex);
 #else
+    // No [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Memory<T> AsMemory<T>(this T[]? array, Index startIndex)
     {
         if (array == null)
@@ -1644,6 +1649,7 @@ public static partial class MemoryExtensionsPolyfills
     public static Memory<T> AsMemory<T>(T[]? array, Range range)
         => MemoryExtensions.AsMemory<T>(array, range);
 #else
+    // No [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Memory<T> AsMemory<T>(this T[]? array, Range range)
     {
         if (array == null)
@@ -1675,7 +1681,7 @@ public static partial class MemoryExtensionsPolyfills
     public static void Sort<T>(Span<T> span)
         => MemoryExtensions.Sort(span);
 #else
-    //
+    // No [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static void Sort<T>(this Span<T> span)
         => Sort(span, (IComparer<T>?)null);
 #endif
@@ -1702,7 +1708,7 @@ public static partial class MemoryExtensionsPolyfills
     public static void Sort<T, TComparer>(Span<T> span, TComparer comparer) where TComparer : IComparer<T>?
         => MemoryExtensions.Sort(span, comparer);
 #else
-    //
+    // No [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static void Sort<T, TComparer>(this Span<T> span, TComparer comparer) where TComparer : IComparer<T>?
     {
         if (span.Length > 1)
@@ -1724,10 +1730,10 @@ public static partial class MemoryExtensionsPolyfills
     /// <exception cref="ArgumentNullException"><paramref name="comparison"/> is null.</exception>
 #if NET5_0_OR_GREATER
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static void Sort<T>(this Span<T> span, Comparison<T> comparison)
+    public static void Sort<T>(Span<T> span, Comparison<T> comparison)
         => MemoryExtensions.Sort(span, comparison);
 #else
-    //
+    // No [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static void Sort<T>(this Span<T> span, Comparison<T> comparison)
     {
         if (comparison == null)
@@ -1735,7 +1741,7 @@ public static partial class MemoryExtensionsPolyfills
 
         if (span.Length > 1)
         {
-            ArraySortHelperHidden<T>.Sort(span, comparison);
+            ArraySortHelperHidden<T>.Sort(span, comparison!);
         }
     }
 #endif
@@ -1757,10 +1763,10 @@ public static partial class MemoryExtensionsPolyfills
     /// </exception>
 #if NET5_0_OR_GREATER
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static void Sort<TKey, TValue>(this Span<TKey> keys, Span<TValue> items)
+    public static void Sort<TKey, TValue>(Span<TKey> keys, Span<TValue> items)
         => MemoryExtensions.Sort(keys, items);
 #else
-    //
+    // No [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static void Sort<TKey, TValue>(this Span<TKey> keys, Span<TValue> items)
         => Sort(keys, items, (IComparer<TKey>?)null);
 #endif
@@ -1787,10 +1793,10 @@ public static partial class MemoryExtensionsPolyfills
     /// </exception>
 #if NET5_0_OR_GREATER
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static void Sort<TKey, TValue, TComparer>(this Span<TKey> keys, Span<TValue> items, TComparer comparer) where TComparer : IComparer<TKey>?
+    public static void Sort<TKey, TValue, TComparer>(Span<TKey> keys, Span<TValue> items, TComparer comparer) where TComparer : IComparer<TKey>?
         => MemoryExtensions.Sort(keys, items, comparer);
 #else
-    //
+    // No [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static void Sort<TKey, TValue, TComparer>(this Span<TKey> keys, Span<TValue> items, TComparer comparer) where TComparer : IComparer<TKey>?
     {
         if (keys.Length != items.Length)
@@ -1818,10 +1824,10 @@ public static partial class MemoryExtensionsPolyfills
     /// </exception>
 #if NET5_0_OR_GREATER
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static void Sort<TKey, TValue>(this Span<TKey> keys, Span<TValue> items, Comparison<TKey> comparison)
+    public static void Sort<TKey, TValue>(Span<TKey> keys, Span<TValue> items, Comparison<TKey> comparison)
         => MemoryExtensions.Sort(keys, items, comparison);
 #else
-    //
+    // No [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static void Sort<TKey, TValue>(this Span<TKey> keys, Span<TValue> items, Comparison<TKey> comparison)
     {
         if (comparison == null)
@@ -1835,6 +1841,215 @@ public static partial class MemoryExtensionsPolyfills
         }
     }
 #endif
+
+    /// <summary>
+    /// Replaces all occurrences of <paramref name="oldValue"/> with <paramref name="newValue"/>.
+    /// </summary>
+    /// <typeparam name="T">The type of the elements in the span.</typeparam>
+    /// <param name="span">The span in which the elements should be replaced.</param>
+    /// <param name="oldValue">The value to be replaced with <paramref name="newValue"/>.</param>
+    /// <param name="newValue">The value to replace all occurrences of <paramref name="oldValue"/>.</param>
+#if NET8_0_OR_GREATER
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static unsafe void Replace<T>(Span<T> span, T oldValue, T newValue) where T : IEquatable<T>?
+        => MemoryExtensions.Replace(span, oldValue, newValue);
+#else
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static unsafe void Replace<T>(this Span<T> span, T oldValue, T newValue) where T : IEquatable<T>?
+    {
+        ref T src2 = ref MemoryMarshal.GetReference(span);
+        SpanHelpersHidden.Replace(ref src2, ref src2, oldValue, newValue, span.Length);
+    }
+#endif
+
+    /// <summary>
+    /// Copies <paramref name="source"/> to <paramref name="destination"/>, replacing all occurrences of <paramref name="oldValue"/> with <paramref name="newValue"/>.
+    /// </summary>
+    /// <typeparam name="T">The type of the elements in the spans.</typeparam>
+    /// <param name="source">The span to copy.</param>
+    /// <param name="destination">The span into which the copied and replaced values should be written.</param>
+    /// <param name="oldValue">The value to be replaced with <paramref name="newValue"/>.</param>
+    /// <param name="newValue">The value to replace all occurrences of <paramref name="oldValue"/>.</param>
+    /// <exception cref="ArgumentException">The <paramref name="destination"/> span was shorter than the <paramref name="source"/> span.</exception>
+    /// <exception cref="ArgumentException">The <paramref name="source"/> and <paramref name="destination"/> were overlapping but not referring to the same starting location.</exception>
+#if NET8_0_OR_GREATER
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static unsafe void Replace<T>(ReadOnlySpan<T> source, Span<T> destination, T oldValue, T newValue) where T : IEquatable<T>?
+        => MemoryExtensions.Replace(source, destination, oldValue, newValue);
+#else
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static unsafe void Replace<T>(this ReadOnlySpan<T> source, Span<T> destination, T oldValue, T newValue) where T : IEquatable<T>?
+    {
+        int length = source.Length;
+        if (length == 0)
+        {
+            return;
+        }
+
+        if (length > destination.Length)
+        {
+            ThrowHelper.ThrowArgumentException_DestinationTooShort();
+        }
+
+        ref T src = ref MemoryMarshal.GetReference(source);
+        ref T dst = ref MemoryMarshal.GetReference(destination);
+
+        nint byteOffset = Unsafe.ByteOffset(ref src, ref dst);
+#pragma warning disable CS8500 // This takes the address of, gets the size of, or declares a pointer to a managed type
+        if (byteOffset != 0 &&
+            ((nuint)byteOffset < (nuint)((nint)source.Length * sizeof(T)) ||
+             (nuint)byteOffset > (nuint)(-((nint)destination.Length * sizeof(T)))))
+        {
+            ThrowHelper.ThrowArgumentException(ExceptionResource.InvalidOperation_SpanOverlappedOperation);
+        }
+#pragma warning restore CS8500 // This takes the address of, gets the size of, or declares a pointer to a managed type
+
+        SpanHelpersHidden.Replace(ref src, ref dst, oldValue, newValue, length);
+    }
+#endif
+
+    /// <summary>Finds the length of any common prefix shared between <paramref name="span"/> and <paramref name="other"/>.</summary>
+    /// <typeparam name="T">The type of the elements in the spans.</typeparam>
+    /// <param name="span">The first sequence to compare.</param>
+    /// <param name="other">The second sequence to compare.</param>
+    /// <returns>The length of the common prefix shared by the two spans.  If there's no shared prefix, 0 is returned.</returns>
+#if NET7_0_OR_GREATER
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static int CommonPrefixLength<T>(Span<T> span, ReadOnlySpan<T> other)
+        => MemoryExtensions.CommonPrefixLength(span, other);
+#else
+    // No [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static int CommonPrefixLength<T>(this Span<T> span, ReadOnlySpan<T> other)
+        => MemoryExtensionsPolyfills.CommonPrefixLength((ReadOnlySpan<T>)span, other);
+#endif
+
+    /// <summary>Finds the length of any common prefix shared between <paramref name="span"/> and <paramref name="other"/>.</summary>
+    /// <typeparam name="T">The type of the elements in the spans.</typeparam>
+    /// <param name="span">The first sequence to compare.</param>
+    /// <param name="other">The second sequence to compare.</param>
+    /// <param name="comparer">The <see cref="IEqualityComparer{T}"/> implementation to use when comparing elements, or null to use the default <see cref="IEqualityComparer{T}"/> for the type of an element.</param>
+    /// <returns>The length of the common prefix shared by the two spans.  If there's no shared prefix, 0 is returned.</returns>
+#if NET7_0_OR_GREATER
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static int CommonPrefixLength<T>(Span<T> span, ReadOnlySpan<T> other, IEqualityComparer<T>? comparer)
+        => MemoryExtensions.CommonPrefixLength(span, other, comparer);
+#else
+    // No [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static int CommonPrefixLength<T>(this Span<T> span, ReadOnlySpan<T> other, IEqualityComparer<T>? comparer)
+        => MemoryExtensionsPolyfills.CommonPrefixLength((ReadOnlySpan<T>)span, other, comparer);
+#endif
+
+    /// <summary>Finds the length of any common prefix shared between <paramref name="span"/> and <paramref name="other"/>.</summary>
+    /// <typeparam name="T">The type of the elements in the spans.</typeparam>
+    /// <param name="span">The first sequence to compare.</param>
+    /// <param name="other">The second sequence to compare.</param>
+    /// <returns>The length of the common prefix shared by the two spans.  If there's no shared prefix, 0 is returned.</returns>
+#if NET7_0_OR_GREATER
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static unsafe int CommonPrefixLength<T>(ReadOnlySpan<T> span, ReadOnlySpan<T> other)
+        => MemoryExtensions.CommonPrefixLength(span, other);
+#else
+    // No [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static unsafe int CommonPrefixLength<T>(this ReadOnlySpan<T> span, ReadOnlySpan<T> other)
+    {
+        // Shrink one of the spans if necessary to ensure they're both the same length. We can then iterate until
+        // the Length of one of them and at least have bounds checks removed from that one.
+        MemoryExtensionsHidden.SliceLongerSpanToMatchShorterLength(ref span, ref other);
+
+        // Find the first element pairwise that is not equal, and return its index as the length
+        // of the sequence before it that matches.
+        for (int i = 0; i < span.Length; i++)
+        {
+            if (!EqualityComparer<T>.Default.Equals(span[i], other[i]))
+            {
+                return i;
+            }
+        }
+
+        return span.Length;
+    }
+#endif
+
+    /// <summary>Determines the length of any common prefix shared between <paramref name="span"/> and <paramref name="other"/>.</summary>
+    /// <typeparam name="T">The type of the elements in the sequences.</typeparam>
+    /// <param name="span">The first sequence to compare.</param>
+    /// <param name="other">The second sequence to compare.</param>
+    /// <param name="comparer">The <see cref="IEqualityComparer{T}"/> implementation to use when comparing elements, or null to use the default <see cref="IEqualityComparer{T}"/> for the type of an element.</param>
+    /// <returns>The length of the common prefix shared by the two spans.  If there's no shared prefix, 0 is returned.</returns>
+#if NET7_0_OR_GREATER
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static int CommonPrefixLength<T>(ReadOnlySpan<T> span, ReadOnlySpan<T> other, IEqualityComparer<T>? comparer)
+        => MemoryExtensions.CommonPrefixLength(span, other, comparer);
+#else
+    // No [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static int CommonPrefixLength<T>(this ReadOnlySpan<T> span, ReadOnlySpan<T> other, IEqualityComparer<T>? comparer)
+    {
+        // If the comparer is null or the default, and T is a value type, we want to use EqualityComparer<T>.Default.Equals
+        // directly to enable devirtualization.  The non-comparer overload already does so, so just use it.
+        if (typeof(T).IsValueType() && (comparer is null || comparer == EqualityComparer<T>.Default))
+        {
+            return CommonPrefixLength(span, other);
+        }
+
+        // Shrink one of the spans if necessary to ensure they're both the same length. We can then iterate until
+        // the Length of one of them and at least have bounds checks removed from that one.
+        MemoryExtensionsHidden.SliceLongerSpanToMatchShorterLength(ref span, ref other);
+
+        // Ensure we have a comparer, then compare the spans.
+        comparer ??= EqualityComparer<T>.Default;
+        for (int i = 0; i < span.Length; i++)
+        {
+            if (!comparer.Equals(span[i], other[i]))
+            {
+                return i;
+            }
+        }
+
+        return span.Length;
+    }
+#endif
+
+    /// <summary>
+    /// Parses the source <see cref="ReadOnlySpan{Char}"/> for the specified <paramref name="separator"/>, populating the <paramref name="destination"/> span
+    /// with <see cref="Range"/> instances representing the regions between the separators.
+    /// </summary>
+    /// <param name="source">The source span to parse.</param>
+    /// <param name="destination">The destination span into which the resulting ranges are written.</param>
+    /// <param name="separator">A character that delimits the regions in this instance.</param>
+    /// <param name="options">A bitwise combination of the enumeration values that specifies whether to trim whitespace and include empty ranges.</param>
+    /// <returns>The number of ranges written into <paramref name="destination"/>.</returns>
+    /// <remarks>
+    /// <para>
+    /// Delimiter characters are not included in the elements of the returned array.
+    /// </para>
+    /// <para>
+    /// If the <paramref name="destination"/> span is empty, or if the <paramref name="options"/> specifies <see cref="StringSplitOptions.RemoveEmptyEntries"/> and <paramref name="source"/> is empty,
+    /// or if <paramref name="options"/> specifies both <see cref="StringSplitOptions.RemoveEmptyEntries"/> and StringSplitOptions.TrimEntries and the <paramref name="source"/> is
+    /// entirely whitespace, no ranges are written to the destination.
+    /// </para>
+    /// <para>
+    /// If the span does not contain <paramref name="separator"/>, or if <paramref name="destination"/>'s length is 1, a single range will be output containing the entire <paramref name="source"/>,
+    /// subject to the processing implied by <paramref name="options"/>.
+    /// </para>
+    /// <para>
+    /// If there are more regions in <paramref name="source"/> than will fit in <paramref name="destination"/>, the first <paramref name="destination"/> length minus 1 ranges are
+    /// stored in <paramref name="destination"/>, and a range for the remainder of <paramref name="source"/> is stored in <paramref name="destination"/>.
+    /// </para>
+    /// </remarks>
+#if NET8_0_OR_GREATER
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static int Split(ReadOnlySpan<char> source, Span<Range> destination, char separator, StringSplitOptions options = StringSplitOptions.None)
+        => MemoryExtensions.Split(source, destination, separator, options);
+#else
+    // No [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static int Split(this ReadOnlySpan<char> source, Span<Range> destination, char separator, StringSplitOptions options = StringSplitOptions.None)
+    {
+        StringHidden.CheckStringSplitOptions(options);
+
+        return MemoryExtensionsHidden.SplitCore(source, destination, MemoryMarshalPolyfills.CreateReadOnlySpan(ref separator, 1), default, isAny: true, options);
+    }
+#endif
+
 }
 
 #endif

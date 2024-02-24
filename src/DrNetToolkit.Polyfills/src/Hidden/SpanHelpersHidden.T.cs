@@ -2,10 +2,15 @@
 // The "DrNet Tips&Tricks" licenses this file to you under the MIT license.
 // See the License.md file in the project root for more information.
 
-using System.Diagnostics;
-using System.Runtime.CompilerServices;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Numerics;
+using System.Runtime.CompilerServices;
+
+#if NETCOREAPP3_0_OR_GREATER
+using System.Runtime.Intrinsics;
+#endif
 
 namespace DrNetToolkit.Polyfills.Hidden;
 
@@ -1126,6 +1131,188 @@ public static partial class SpanHelpersHidden // .T
         return firstLength.CompareTo(secondLength);
     }
 
+#if NET7_0_OR_GREATER
+    public static bool NonPackedContainsValueType<T>(ref T searchSpace, T value, int length) where T : struct, INumber<T>
+    {
+        Debug.Assert(length >= 0, "Expected non-negative length");
+        Debug.Assert(value is byte or short or int or long, "Expected caller to normalize to one of these types");
+
+        if (!Vector128.IsHardwareAccelerated || length < Vector128<T>.Count)
+        {
+            nuint offset = 0;
+
+            while (length >= 8)
+            {
+                length -= 8;
+
+                if (Unsafe.Add(ref searchSpace, offset) == value
+                 || Unsafe.Add(ref searchSpace, offset + 1) == value
+                 || Unsafe.Add(ref searchSpace, offset + 2) == value
+                 || Unsafe.Add(ref searchSpace, offset + 3) == value
+                 || Unsafe.Add(ref searchSpace, offset + 4) == value
+                 || Unsafe.Add(ref searchSpace, offset + 5) == value
+                 || Unsafe.Add(ref searchSpace, offset + 6) == value
+                 || Unsafe.Add(ref searchSpace, offset + 7) == value)
+                {
+                    return true;
+                }
+
+                offset += 8;
+            }
+
+            if (length >= 4)
+            {
+                length -= 4;
+
+                if (Unsafe.Add(ref searchSpace, offset) == value
+                 || Unsafe.Add(ref searchSpace, offset + 1) == value
+                 || Unsafe.Add(ref searchSpace, offset + 2) == value
+                 || Unsafe.Add(ref searchSpace, offset + 3) == value)
+                {
+                    return true;
+                }
+
+                offset += 4;
+            }
+
+            while (length > 0)
+            {
+                length -= 1;
+
+                if (Unsafe.Add(ref searchSpace, offset) == value) return true;
+
+                offset += 1;
+            }
+        }
+#if NET8_0_OR_GREATER
+        else if (Vector512.IsHardwareAccelerated && length >= Vector512<T>.Count)
+        {
+            Vector512<T> current, values = Vector512.Create(value);
+            ref T currentSearchSpace = ref searchSpace;
+            ref T oneVectorAwayFromEnd = ref Unsafe.Add(ref searchSpace, (uint)(length - Vector512<T>.Count));
+
+            // Loop until either we've finished all elements or there's less than a vector's-worth remaining.
+            do
+            {
+                current = Vector512.LoadUnsafe(ref currentSearchSpace);
+
+                if (Vector512.EqualsAny(values, current))
+                {
+                    return true;
+                }
+
+                currentSearchSpace = ref Unsafe.Add(ref currentSearchSpace, Vector512<T>.Count);
+            }
+            while (!Unsafe.IsAddressGreaterThan(ref currentSearchSpace, ref oneVectorAwayFromEnd));
+
+            // If any elements remain, process the last vector in the search space.
+            if ((uint)length % Vector512<T>.Count != 0)
+            {
+                current = Vector512.LoadUnsafe(ref oneVectorAwayFromEnd);
+
+                if (Vector512.EqualsAny(values, current))
+                {
+                    return true;
+                }
+            }
+        }
+#endif
+        else if (Vector256.IsHardwareAccelerated && length >= Vector256<T>.Count)
+        {
+            Vector256<T> equals, values = Vector256.Create(value);
+            ref T currentSearchSpace = ref searchSpace;
+            ref T oneVectorAwayFromEnd = ref Unsafe.Add(ref searchSpace, (uint)(length - Vector256<T>.Count));
+
+            // Loop until either we've finished all elements or there's less than a vector's-worth remaining.
+            do
+            {
+                equals = Vector256.Equals(values, Vector256.LoadUnsafe(ref currentSearchSpace));
+                if (equals == Vector256<T>.Zero)
+                {
+                    currentSearchSpace = ref Unsafe.Add(ref currentSearchSpace, Vector256<T>.Count);
+                    continue;
+                }
+
+                return true;
+            }
+            while (!Unsafe.IsAddressGreaterThan(ref currentSearchSpace, ref oneVectorAwayFromEnd));
+
+            // If any elements remain, process the last vector in the search space.
+            if ((uint)length % Vector256<T>.Count != 0)
+            {
+                equals = Vector256.Equals(values, Vector256.LoadUnsafe(ref oneVectorAwayFromEnd));
+                if (equals != Vector256<T>.Zero)
+                {
+                    return true;
+                }
+            }
+        }
+        else
+        {
+            Vector128<T> equals, values = Vector128.Create(value);
+            ref T currentSearchSpace = ref searchSpace;
+            ref T oneVectorAwayFromEnd = ref Unsafe.Add(ref searchSpace, (uint)(length - Vector128<T>.Count));
+
+            // Loop until either we've finished all elements or there's less than a vector's-worth remaining.
+            do
+            {
+                equals = Vector128.Equals(values, Vector128.LoadUnsafe(ref currentSearchSpace));
+                if (equals == Vector128<T>.Zero)
+                {
+                    currentSearchSpace = ref Unsafe.Add(ref currentSearchSpace, Vector128<T>.Count);
+                    continue;
+                }
+
+                return true;
+            }
+            while (!Unsafe.IsAddressGreaterThan(ref currentSearchSpace, ref oneVectorAwayFromEnd));
+
+            // If any elements remain, process the first vector in the search space.
+            if ((uint)length % Vector128<T>.Count != 0)
+            {
+                equals = Vector128.Equals(values, Vector128.LoadUnsafe(ref oneVectorAwayFromEnd));
+                if (equals != Vector128<T>.Zero)
+                {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+#endif
+
+        [CLSCompliant(false)]
+    public static void Replace<T>(ref T src, ref T dst, T oldValue, T newValue, int length) where T : IEquatable<T>?
+    {
+        if (default(T) is not null || oldValue is not null)
+        {
+            Debug.Assert(oldValue is not null);
+
+#if NETSTANDARD2_0_OR_GREATER
+            for (nuint idx = 0; idx < (nuint)length; ++idx)
+#else
+            for (int idx = 0; idx < length; ++idx)
+#endif
+            {
+                T original = Unsafe.Add(ref src, idx);
+                Unsafe.Add(ref dst, idx) = oldValue!.Equals(original) ? newValue : original;
+            }
+        }
+        else
+        {
+#if NETSTANDARD2_0_OR_GREATER
+            for (nuint idx = 0; idx < (nuint)length; ++idx)
+#else
+            for (int idx = 0; idx < length; ++idx)
+#endif
+            {
+                T original = Unsafe.Add(ref src, idx);
+                Unsafe.Add(ref dst, idx) = original is null ? newValue : original;
+            }
+        }
+    }
+
     public static int IndexOfAnyInRange<T>(ref T searchSpace, T lowInclusive, T highInclusive, int length)
         where T : IComparable<T>
     {
@@ -1186,5 +1373,83 @@ public static partial class SpanHelpersHidden // .T
         return -1;
     }
 
+#if NET7_0_OR_GREATER
+    [CLSCompliant(false)]
+    public interface INegator<T> where T : struct
+    {
+        static abstract bool NegateIfNeeded(bool equals);
+        static abstract Vector128<T> NegateIfNeeded(Vector128<T> equals);
+        static abstract Vector256<T> NegateIfNeeded(Vector256<T> equals);
+#if NET8_0_OR_GREATER
+        static abstract Vector512<T> NegateIfNeeded(Vector512<T> equals);
+#endif
+
+        // The generic vector APIs assume use for IndexOf where `DontNegate` is
+        // for `IndexOfAny` and `Negate` is for `IndexOfAnyExcept`
+
+        static abstract bool HasMatch<TVector>(TVector left, TVector right)
+            where TVector : struct, ISimdVectorHidden<TVector, T>;
+
+        static abstract TVector GetMatchMask<TVector>(TVector left, TVector right)
+            where TVector : struct, ISimdVectorHidden<TVector, T>;
+    }
+
+    public readonly struct DontNegate<T> : INegator<T>
+        where T : struct
+    {
+        public static bool NegateIfNeeded(bool equals) => equals;
+        public static Vector128<T> NegateIfNeeded(Vector128<T> equals) => equals;
+        public static Vector256<T> NegateIfNeeded(Vector256<T> equals) => equals;
+#if NET8_0_OR_GREATER
+        public static Vector512<T> NegateIfNeeded(Vector512<T> equals) => equals;
+#endif
+
+        // The generic vector APIs assume use for `IndexOfAny` where we
+        // want "HasMatch" to mean any of the two elements match.
+
+        [CLSCompliant(false)]
+        public static bool HasMatch<TVector>(TVector left, TVector right)
+            where TVector : struct, ISimdVectorHidden<TVector, T>
+        {
+            return TVector.EqualsAny(left, right);
+        }
+
+        [CLSCompliant(false)]
+        public static TVector GetMatchMask<TVector>(TVector left, TVector right)
+            where TVector : struct, ISimdVectorHidden<TVector, T>
+        {
+            return TVector.Equals(left, right);
+        }
+    }
+
+    public readonly struct Negate<T> : INegator<T>
+        where T : struct
+    {
+        public static bool NegateIfNeeded(bool equals) => !equals;
+        public static Vector128<T> NegateIfNeeded(Vector128<T> equals) => ~equals;
+        public static Vector256<T> NegateIfNeeded(Vector256<T> equals) => ~equals;
+#if NET8_0_OR_GREATER
+        public static Vector512<T> NegateIfNeeded(Vector512<T> equals) => ~equals;
+#endif
+
+        // The generic vector APIs assume use for `IndexOfAnyExcept` where we
+        // want "HasMatch" to mean any of the two elements don't match
+
+        [CLSCompliant(false)]
+        public static bool HasMatch<TVector>(TVector left, TVector right)
+            where TVector : struct, ISimdVectorHidden<TVector, T>
+        {
+            return !TVector.EqualsAll(left, right);
+        }
+
+        [CLSCompliant(false)]
+        public static TVector GetMatchMask<TVector>(TVector left, TVector right)
+            where TVector : struct, ISimdVectorHidden<TVector, T>
+        {
+            return ~TVector.Equals(left, right);
+        }
+    }
+#endif
+
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
-}
+    }
