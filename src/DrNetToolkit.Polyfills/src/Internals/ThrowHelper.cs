@@ -628,17 +628,17 @@ internal static class ThrowHelper
     //        throw new FormatException(SR.Format_InvalidString);
     //    }
 
-    //    [DoesNotReturn]
-    //    internal static void ThrowFormatInvalidString(int offset, ExceptionResource resource)
-    //    {
-    //        throw new FormatException(SR.Format(SR.Format_InvalidStringWithOffsetAndReason, offset, GetResourceString(resource)));
-    //    }
+    [DoesNotReturn]
+    internal static void ThrowFormatInvalidString(int offset, ExceptionResource resource)
+    {
+        throw new FormatException(string.Format(SR.Format_InvalidStringWithOffsetAndReason, offset, GetResourceString(resource)));
+    }
 
-    //    [DoesNotReturn]
-    //    internal static void ThrowFormatIndexOutOfRange()
-    //    {
-    //        throw new FormatException(SR.Format_IndexOutOfRange);
-    //    }
+    [DoesNotReturn]
+    internal static void ThrowFormatIndexOutOfRange()
+    {
+        throw new FormatException(SR.Format_IndexOutOfRange);
+    }
 
     //    [DoesNotReturn]
     //    internal static void ThrowSynchronizationLockException_LockExit()
@@ -1190,12 +1190,12 @@ internal static class ThrowHelper
             //                return SR.InvalidOperation_TimeProviderNullLocalTimeZone;
             //            case ExceptionResource.InvalidOperation_TimeProviderInvalidTimestampFrequency:
             //                return SR.InvalidOperation_TimeProviderInvalidTimestampFrequency;
-            //            case ExceptionResource.Format_UnexpectedClosingBrace:
-            //                return SR.Format_UnexpectedClosingBrace;
-            //            case ExceptionResource.Format_UnclosedFormatItem:
-            //                return SR.Format_UnclosedFormatItem;
-            //            case ExceptionResource.Format_ExpectedAsciiDigit:
-            //                return SR.Format_ExpectedAsciiDigit;
+            case ExceptionResource.Format_UnexpectedClosingBrace:
+                return SR.Format_UnexpectedClosingBrace;
+            case ExceptionResource.Format_UnclosedFormatItem:
+                return SR.Format_UnclosedFormatItem;
+            case ExceptionResource.Format_ExpectedAsciiDigit:
+                return SR.Format_ExpectedAsciiDigit;
             //            case ExceptionResource.Argument_HasToBeArrayClass:
             //                return SR.Argument_HasToBeArrayClass;
             default:
@@ -1390,8 +1390,8 @@ internal enum ExceptionResource
     InvalidOperation_SpanOverlappedOperation,
     //InvalidOperation_TimeProviderNullLocalTimeZone,
     //InvalidOperation_TimeProviderInvalidTimestampFrequency,
-    //Format_UnexpectedClosingBrace,
-    //Format_UnclosedFormatItem,
-    //Format_ExpectedAsciiDigit,
+    Format_UnexpectedClosingBrace,
+    Format_UnclosedFormatItem,
+    Format_ExpectedAsciiDigit,
     //Argument_HasToBeArrayClass,
 }

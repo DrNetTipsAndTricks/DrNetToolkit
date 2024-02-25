@@ -26,4 +26,27 @@ public static class StringPolyfills
             return ref Unsafe.AsRef<char>(p);
     }
 #endif
+
+#if NETSTANDARD1_1_OR_GREATER
+    /// <summary>Copies the contents of this string into the destination span.</summary>
+    /// <param name="value">The string.</param>
+    /// <param name="destination">The span into which to copy this string's contents.</param>
+    /// <returns>true if the data was copied; false if the destination was too short to fit the contents of the string.</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#if NET6_0_OR_GREATER
+    public static bool TryCopyTo(string value, Span<char> destination)
+        => value.TryCopyTo(destination);
+#else
+    public static bool TryCopyTo(this string value, Span<char> destination)
+    {
+        bool retVal = false;
+        if (value.Length <= destination.Length)
+        {
+            value.AsSpan().CopyTo(destination);
+            retVal = true;
+        }
+        return retVal;
+    }
+#endif
+#endif
 }

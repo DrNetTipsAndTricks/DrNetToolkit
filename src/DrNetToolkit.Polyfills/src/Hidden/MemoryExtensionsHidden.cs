@@ -8,6 +8,7 @@ using System;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using System.Text;
 
 namespace DrNetToolkit.Polyfills.Hidden;
 
@@ -234,6 +235,104 @@ public static partial class MemoryExtensionsHidden
 
         return (startInclusive, endExclusive);
     }
+
+    /// <summary>Writes the specified interpolated string to the character span.</summary>
+    /// <param name="destination">The span to which the interpolated string should be formatted.</param>
+    /// <param name="handler">The interpolated string.</param>
+    /// <param name="charsWritten">The number of characters written to the span.</param>
+    /// <returns>true if the entire interpolated string could be formatted successfully; otherwise, false.</returns>
+    public static bool TryWrite(
+#pragma warning disable IDE0060 // Remove unused parameter
+        Span<char> destination,
+#pragma warning restore IDE0060 // Remove unused parameter
+        [InterpolatedStringHandlerArgument(nameof(destination))] ref MemoryExtensionsPolyfills.TryWriteInterpolatedStringHandler handler, out int charsWritten)
+    {
+        // The span argument isn't used directly in the method; rather, it'll be used by the compiler to create the handler.
+        // We could validate here that span == handler._destination, but that doesn't seem necessary.
+        if (handler._success)
+        {
+            charsWritten = handler._pos;
+            return true;
+        }
+
+        charsWritten = 0;
+        return false;
+    }
+
+    /// <summary>Writes the specified interpolated string to the character span.</summary>
+    /// <param name="destination">The span to which the interpolated string should be formatted.</param>
+    /// <param name="provider">An object that supplies culture-specific formatting information.</param>
+    /// <param name="handler">The interpolated string.</param>
+    /// <param name="charsWritten">The number of characters written to the span.</param>
+    /// <returns>true if the entire interpolated string could be formatted successfully; otherwise, false.</returns>
+    public static bool TryWrite(Span<char> destination,
+#pragma warning disable IDE0060 // Remove unused parameter
+        IFormatProvider? provider,
+#pragma warning restore IDE0060 // Remove unused parameter
+        [InterpolatedStringHandlerArgument(nameof(destination), nameof(provider))] ref MemoryExtensionsPolyfills.TryWriteInterpolatedStringHandler handler, out int charsWritten)
+        // The provider is passed to the handler by the compiler, so the actual implementation of the method
+        // is the same as the non-provider overload.
+        => MemoryExtensionsHidden.TryWrite(destination, ref handler, out charsWritten);
+
+    [CLSCompliant(false)]
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+    public static bool TryWrite<TArg0, TArg1, TArg2>(Span<char> destination, IFormatProvider? provider, CompositeFormatPolyfills format, out int charsWritten, TArg0 arg0, TArg1 arg1, TArg2 arg2, ReadOnlySpan<object?> args)
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
+    {
+        // Create the interpolated string handler.
+#if false && NET6_0_OR_GREATER
+        var handler = new MemoryExtensions.TryWriteInterpolatedStringHandler(format._literalLength, format._formattedCount, destination, provider, out bool shouldAppend);
+#else
+        var handler = new MemoryExtensionsPolyfills.TryWriteInterpolatedStringHandler(format._literalLength, format._formattedCount, destination, provider, out bool shouldAppend);
+#endif
+
+        if (shouldAppend)
+        {
+            // Write each segment.
+#pragma warning disable IDE0042 // Deconstruct variable declaration
+            foreach ((string? Literal, int ArgIndex, int Alignment, string? Format) segment in format._segments)
+            {
+                bool appended;
+                if (segment.Literal is string literal)
+                {
+                    appended = handler.AppendLiteral(literal);
+                }
+                else
+                {
+                    int index = segment.ArgIndex;
+                    switch (index)
+                    {
+                        case 0:
+                            appended = handler.AppendFormatted(arg0, segment.Alignment, segment.Format);
+                            break;
+
+                        case 1:
+                            appended = handler.AppendFormatted(arg1, segment.Alignment, segment.Format);
+                            break;
+
+                        case 2:
+                            appended = handler.AppendFormatted(arg2, segment.Alignment, segment.Format);
+                            break;
+
+                        default:
+                            Debug.Assert(index > 2);
+                            appended = handler.AppendFormatted(args[index], segment.Alignment, segment.Format);
+                            break;
+                    }
+                }
+
+                if (!appended)
+                {
+                    break;
+                }
+            }
+#pragma warning restore IDE0042 // Deconstruct variable declaration
+        }
+
+        // Complete the operation.
+        return MemoryExtensionsHidden.TryWrite(destination, provider, ref handler, out charsWritten);
+    }
+
 }
 
 #endif

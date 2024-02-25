@@ -1519,8 +1519,8 @@ internal static partial class SR
     //internal static string @Format_GuidInvLen => GetResourceString("Format_GuidInvLen");
     ///// <summary>Unrecognized Guid format.</summary>
     //internal static string @Format_GuidUnrecognized => GetResourceString("Format_GuidUnrecognized");
-    ///// <summary>Index (zero based) must be greater than or equal to zero and less than the size of the argument list.</summary>
-    //internal static string @Format_IndexOutOfRange => GetResourceString("Format_IndexOutOfRange");
+    /// <summary>Index (zero based) must be greater than or equal to zero and less than the size of the argument list.</summary>
+    internal static string @Format_IndexOutOfRange => "Index (zero based) must be greater than or equal to zero and less than the size of the argument list.";
     ///// <summary>Format string can be only "G", "g", "X", "x", "F", "f", "D" or "d".</summary>
     //internal static string @Format_InvalidEnumFormatSpecification => GetResourceString("Format_InvalidEnumFormatSpecification");
     ///// <summary>Format string can be only "D", "d", "N", "n", "P", "p", "B", "b", "X" or "x".</summary>
@@ -1529,14 +1529,14 @@ internal static partial class SR
     //internal static string @Format_InvalidString => GetResourceString("Format_InvalidString");
     ///// <summary>The input string '{0}' was not in a correct format.</summary>
     //internal static string @Format_InvalidStringWithValue => GetResourceString("Format_InvalidStringWithValue");
-    ///// <summary>Input string was not in a correct format. Failure to parse near offset {0}. {1}</summary>
-    //internal static string @Format_InvalidStringWithOffsetAndReason => GetResourceString("Format_InvalidStringWithOffsetAndReason");
-    ///// <summary>Unexpected closing brace without a corresponding opening brace.</summary>
-    //internal static string @Format_UnexpectedClosingBrace => GetResourceString("Format_UnexpectedClosingBrace");
-    ///// <summary>Format item ends prematurely.</summary>
-    //internal static string @Format_UnclosedFormatItem => GetResourceString("Format_UnclosedFormatItem");
-    ///// <summary>Expected an ASCII digit.</summary>
-    //internal static string @Format_ExpectedAsciiDigit => GetResourceString("Format_ExpectedAsciiDigit");
+    /// <summary>Input string was not in a correct format. Failure to parse near offset {0}. {1}</summary>
+    internal static string @Format_InvalidStringWithOffsetAndReason => "Input string was not in a correct format. Failure to parse near offset {0}. {1}";
+    /// <summary>Unexpected closing brace without a corresponding opening brace.</summary>
+    internal static string @Format_UnexpectedClosingBrace => "Unexpected closing brace without a corresponding opening brace.";
+    /// <summary>Format item ends prematurely.</summary>
+    internal static string @Format_UnclosedFormatItem => "Format item ends prematurely.";
+    /// <summary>Expected an ASCII digit.</summary>
+    internal static string @Format_ExpectedAsciiDigit => "Expected an ASCII digit.";
     ///// <summary>There must be at least a partial date with a year present in the input string '{0}'.</summary>
     //internal static string @Format_MissingIncompleteDate => GetResourceString("Format_MissingIncompleteDate");
     ///// <summary>String must be exactly one character long.</summary>

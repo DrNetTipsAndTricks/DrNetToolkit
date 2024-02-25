@@ -7,7 +7,7 @@ using DrNetToolkit.Polyfills.Internals;
 namespace System.Runtime.CompilerServices;
 
 /// <summary>
-/// Polyfills of <see cref="RuntimeHelpers"/>.
+/// <see cref="RuntimeHelpers"/> polyfills.
 /// </summary>
 public static class RuntimeHelpersPolyfills
 {

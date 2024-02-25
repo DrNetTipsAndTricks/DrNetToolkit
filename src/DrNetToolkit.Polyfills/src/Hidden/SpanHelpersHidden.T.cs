@@ -1373,6 +1373,39 @@ public static partial class SpanHelpersHidden // .T
         return -1;
     }
 
+    public static int Count<T>(ref T current, T value, int length) where T : IEquatable<T>?
+    {
+        int count = 0;
+
+        ref T end = ref Unsafe.Add(ref current, length);
+        if (value is not null)
+        {
+            while (Unsafe.IsAddressLessThan(ref current, ref end))
+            {
+                if (value.Equals(current))
+                {
+                    count++;
+                }
+
+                current = ref Unsafe.Add(ref current, 1);
+            }
+        }
+        else
+        {
+            while (Unsafe.IsAddressLessThan(ref current, ref end))
+            {
+                if (current is null)
+                {
+                    count++;
+                }
+
+                current = ref Unsafe.Add(ref current, 1);
+            }
+        }
+
+        return count;
+    }
+
 #if NET7_0_OR_GREATER
     [CLSCompliant(false)]
     public interface INegator<T> where T : struct
@@ -1452,4 +1485,4 @@ public static partial class SpanHelpersHidden // .T
 #endif
 
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
-    }
+}
