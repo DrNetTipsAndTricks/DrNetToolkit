@@ -2379,6 +2379,129 @@ public static partial class MemoryExtensionsPolyfills
     }
 #endif
 
+    /// <summary>
+    /// Writes the <see cref="CompositeFormat"/> string to the character span, substituting the format item or items
+    /// with the string representation of the corresponding arguments.
+    /// </summary>
+    /// <typeparam name="TArg0">The type of the first object to format.</typeparam>
+    /// <typeparam name="TArg1">The type of the second object to format.</typeparam>
+    /// <param name="destination">The span to which the string should be formatted.</param>
+    /// <param name="provider">An object that supplies culture-specific formatting information.</param>
+    /// <param name="format">A <see cref="CompositeFormat"/>.</param>
+    /// <param name="charsWritten">The number of characters written to the span.</param>
+    /// <param name="arg0">The first object to format.</param>
+    /// <param name="arg1">The second object to format.</param>
+    /// <returns><see langword="true"/> if the entire interpolated string could be formatted successfully; otherwise, <see langword="false"/>.</returns>
+    /// <exception cref="ArgumentNullException"><paramref name="format"/> is null.</exception>
+    /// <exception cref="FormatException">The index of a format item is greater than or equal to the number of supplied arguments.</exception>
+#if NET8_0_OR_GREATER
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static bool TryWrite<TArg0, TArg1>(Span<char> destination, IFormatProvider? provider, CompositeFormat format, out int charsWritten, TArg0 arg0, TArg1 arg1)
+        => MemoryExtensions.TryWrite(destination, provider, format, out charsWritten, arg0, arg1);
+#else
+    // No [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [CLSCompliant(false)]
+    public static bool TryWrite<TArg0, TArg1>(this Span<char> destination, IFormatProvider? provider, CompositeFormat format, out int charsWritten, TArg0 arg0, TArg1 arg1)
+    {
+        ArgumentNullExceptionPolyfills.ThrowIfNull(format);
+        format.ValidateNumberOfArgs(2);
+        return MemoryExtensionsHidden.TryWrite(destination, provider, format, out charsWritten, arg0, arg1, 0, default);
+    }
+#endif
+
+    /// <summary>
+    /// Writes the <see cref="CompositeFormat"/> string to the character span, substituting the format item or items
+    /// with the string representation of the corresponding arguments.
+    /// </summary>
+    /// <typeparam name="TArg0">The type of the first object to format.</typeparam>
+    /// <typeparam name="TArg1">The type of the second object to format.</typeparam>
+    /// <typeparam name="TArg2">The type of the third object to format.</typeparam>
+    /// <param name="destination">The span to which the string should be formatted.</param>
+    /// <param name="provider">An object that supplies culture-specific formatting information.</param>
+    /// <param name="format">A <see cref="CompositeFormat"/>.</param>
+    /// <param name="charsWritten">The number of characters written to the span.</param>
+    /// <param name="arg0">The first object to format.</param>
+    /// <param name="arg1">The second object to format.</param>
+    /// <param name="arg2">The third object to format.</param>
+    /// <returns><see langword="true"/> if the entire interpolated string could be formatted successfully; otherwise, <see langword="false"/>.</returns>
+    /// <exception cref="ArgumentNullException"><paramref name="format"/> is null.</exception>
+    /// <exception cref="FormatException">The index of a format item is greater than or equal to the number of supplied arguments.</exception>
+#if NET8_0_OR_GREATER
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static bool TryWrite<TArg0, TArg1, TArg2>(Span<char> destination, IFormatProvider? provider, CompositeFormat format, out int charsWritten, TArg0 arg0, TArg1 arg1, TArg2 arg2)
+        => MemoryExtensions.TryWrite(destination, provider, format, out charsWritten, arg0, arg1, arg2);
+#else
+    // No [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [CLSCompliant(false)]
+    public static bool TryWrite<TArg0, TArg1, TArg2>(this Span<char> destination, IFormatProvider? provider, CompositeFormat format, out int charsWritten, TArg0 arg0, TArg1 arg1, TArg2 arg2)
+    {
+        ArgumentNullExceptionPolyfills.ThrowIfNull(format);
+        format.ValidateNumberOfArgs(3);
+        return MemoryExtensionsHidden.TryWrite(destination, provider, format, out charsWritten, arg0, arg1, arg2, default);
+    }
+#endif
+
+    /// <summary>
+    /// Writes the <see cref="CompositeFormat"/> string to the character span, substituting the format item or items
+    /// with the string representation of the corresponding arguments.
+    /// </summary>
+    /// <param name="destination">The span to which the string should be formatted.</param>
+    /// <param name="provider">An object that supplies culture-specific formatting information.</param>
+    /// <param name="format">A <see cref="CompositeFormat"/>.</param>
+    /// <param name="charsWritten">The number of characters written to the span.</param>
+    /// <param name="args">An array of objects to format.</param>
+    /// <returns><see langword="true"/> if the entire interpolated string could be formatted successfully; otherwise, <see langword="false"/>.</returns>
+    /// <exception cref="ArgumentNullException"><paramref name="format"/> is null.</exception>
+    /// <exception cref="ArgumentNullException"><paramref name="args"/> is null.</exception>
+    /// <exception cref="FormatException">The index of a format item is greater than or equal to the number of supplied arguments.</exception>
+#if NET8_0_OR_GREATER
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static bool TryWrite(Span<char> destination, IFormatProvider? provider, CompositeFormat format, out int charsWritten, params object?[] args)
+        => MemoryExtensions.TryWrite(destination, provider, format, out charsWritten, args);
+#else
+    // No [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [CLSCompliant(false)]
+    public static bool TryWrite(this Span<char> destination, IFormatProvider? provider, CompositeFormat format, out int charsWritten, params object?[] args)
+    {
+        ArgumentNullExceptionPolyfills.ThrowIfNull(format);
+        ArgumentNullExceptionPolyfills.ThrowIfNull(args);
+        return MemoryExtensionsPolyfills.TryWrite(destination, provider, format, out charsWritten, (ReadOnlySpan<object?>)args);
+    }
+#endif
+
+    /// <summary>
+    /// Writes the <see cref="CompositeFormat"/> string to the character span, substituting the format item or items
+    /// with the string representation of the corresponding arguments.
+    /// </summary>
+    /// <param name="destination">The span to which the string should be formatted.</param>
+    /// <param name="provider">An object that supplies culture-specific formatting information.</param>
+    /// <param name="format">A <see cref="CompositeFormat"/>.</param>
+    /// <param name="charsWritten">The number of characters written to the span.</param>
+    /// <param name="args">A span of objects to format.</param>
+    /// <returns><see langword="true"/> if the entire interpolated string could be formatted successfully; otherwise, <see langword="false"/>.</returns>
+    /// <exception cref="ArgumentNullException"><paramref name="format"/> is null.</exception>
+    /// <exception cref="FormatException">The index of a format item is greater than or equal to the number of supplied arguments.</exception>
+#if NET8_0_OR_GREATER
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static bool TryWrite(Span<char> destination, IFormatProvider? provider, CompositeFormat format, out int charsWritten, ReadOnlySpan<object?> args)
+        => MemoryExtensions.TryWrite(destination, provider, format, out charsWritten, args);
+#else
+    // No [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [CLSCompliant(false)]
+    public static bool TryWrite(this Span<char> destination, IFormatProvider? provider, CompositeFormat format, out int charsWritten, ReadOnlySpan<object?> args)
+    {
+        ArgumentNullExceptionPolyfills.ThrowIfNull(format);
+        format.ValidateNumberOfArgs(args.Length);
+        return args.Length switch
+        {
+            0 => MemoryExtensionsHidden.TryWrite(destination, provider, format, out charsWritten, 0, 0, 0, args),
+            1 => MemoryExtensionsHidden.TryWrite(destination, provider, format, out charsWritten, args[0], 0, 0, args),
+            2 => MemoryExtensionsHidden.TryWrite(destination, provider, format, out charsWritten, args[0], args[1], 0, args),
+            _ => MemoryExtensionsHidden.TryWrite(destination, provider, format, out charsWritten, args[0], args[1], args[2], args),
+        };
+    }
+#endif
+
     /// <summary>Provides a handler used by the language compiler to format interpolated strings into character spans.</summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
     [InterpolatedStringHandler]
