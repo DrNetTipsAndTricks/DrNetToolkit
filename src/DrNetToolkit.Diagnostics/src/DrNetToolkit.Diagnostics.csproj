@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;netstandard2.1;net7.0</TargetFrameworks>
-    <!--<TargetFrameworks>netstandard2.0;netstandard2.1;net6.0;net7.0;net8.0</TargetFrameworks>-->
+    <!--<TargetFrameworks>netstandard2.0;netstandard2.1;net6.0;net7.0;net8.0;net9.0</TargetFrameworks>-->
   </PropertyGroup>
 
   <PropertyGroup>
@@ -15,13 +15,8 @@
     <PackageTags>Diagnostics;Guard;ThrowHelper;Extensions;Helpers</PackageTags>
   </PropertyGroup>
 
-  <!-- Necessary polyfills -->
-  <PropertyGroup>
-    <PolySharpIncludeGeneratedTypes>
-      System.Diagnostics.CodeAnalysis.DoesNotReturnAttribute;
-      System.Diagnostics.StackTraceHiddenAttribute;
-      System.Runtime.CompilerServices.SkipLocalsInitAttribute;
-    </PolySharpIncludeGeneratedTypes>
-  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\DrNetToolkit.Polyfills\src\DrNetToolkit.Polyfills.csproj" />
+  </ItemGroup>
 
 </Project>

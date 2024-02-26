@@ -42,12 +42,9 @@
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
   </PropertyGroup>
 
-  <!-- Include PolySharp to generate polyfills for all projects (on their .NET Standard 2.x targets) -->
-  <ItemGroup>
-    <PackageReference Include="PolySharp" Version="1.*">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>build; analyzers</IncludeAssets>
-    </PackageReference>
+  <ItemGroup Condition="'$(IsCoreProject)' == 'true'">
+    <AssemblyAttribute Include="System.CLSCompliantAttribute">
+      <_Parameter1>true</_Parameter1>
+    </AssemblyAttribute>
   </ItemGroup>
-
 </Project>

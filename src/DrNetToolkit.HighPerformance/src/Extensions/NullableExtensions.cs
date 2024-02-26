@@ -27,7 +27,7 @@ public static class NullableExtensions
     /// instance's <see cref="Nullable{T}.HasValue"/> is false, the current value at that location may be the default
     /// value.
     /// </returns>
-    /// <seealso cref="Nullable.GetValueRefOrDefaultRef{T}(in T?)"/>
+    /// <seealso cref="Nullable.GetValueRefOrDefaultRef{T}"/>
 #if !NET7_0_OR_GREATER
 #pragma warning restore CS1574 // XML comment has cref attribute that could not be resolved
 #endif
@@ -53,7 +53,7 @@ public static class NullableExtensions
     /// A reference to the location where the instance's <see cref="Nullable{T}.Value"/> is stored. If the instance's
     /// <see cref="Nullable{T}.HasValue"/> is false, the current value at that location may be the default value.
     /// </returns>
-    /// <seealso cref="Nullable.GetValueRefOrDefaultRef{T}(in T?)"/>
+    /// <seealso cref="Nullable.GetValueRefOrDefaultRef{T}"/>
 #if !NET7_0_OR_GREATER
 #pragma warning restore CS1574 // XML comment has cref attribute that could not be resolved
 #endif
