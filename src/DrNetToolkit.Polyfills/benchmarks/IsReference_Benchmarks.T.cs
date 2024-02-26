@@ -5,8 +5,9 @@
 using BenchmarkDotNet.Attributes;
 using System.Runtime.CompilerServices;
 using System.Diagnostics.CodeAnalysis;
-using DrNetToolkit.Polyfills.Impls;
-using DrNetToolkit.Polyfills.Impls.Hidden;
+using DrNetToolkit.Polyfills;
+using DrNetToolkit.Polyfills.Hidden;
+
 
 
 #if NETSTANDARD2_1_OR_GREATER
@@ -40,21 +41,21 @@ public class IsReference_Benchmarks<T>
     }
 
     [Benchmark]
-    public void RuntimeHelpersImpls_T()
+    public void RuntimeHelpersPolyfills_T()
     {
         for (int i = 0; i < Count; i++)
         {
-            _value = RuntimeHelpersImpls.IsReferenceOrContainsReferences<T>();
+            _value = RuntimeHelpersPolyfills.IsReferenceOrContainsReferences<T>();
         }
     }
 
     [Benchmark]
     [RequiresUnreferencedCode("This functionality is not compatible with trimming.")]
-    public void RuntimeHelpersImplsHidden_Type()
+    public void RuntimeHelpersHidden_TypeOf()
     {
         for (int i = 0; i < Count; i++)
         {
-            _value = RuntimeHelpersImplsHidden.IsReferenceOrContainsReferences(s_type);
+            _value = RuntimeHelpersHidden.IsReferenceOrContainsReferences(s_type);
         }
     }
 }

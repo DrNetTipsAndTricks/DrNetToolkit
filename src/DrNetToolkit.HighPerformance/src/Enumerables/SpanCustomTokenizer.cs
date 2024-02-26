@@ -255,11 +255,11 @@ public static class SpanCustomTokenizer
 #pragma warning disable CS8631 // The type cannot be used as type parameter in the generic type or method. Nullability of type argument doesn't match constraint type.
 #endif
 
-        int start = span.IndexOfAnyExcept(default!);
+        int start = span.IndexOfAnyExcept(default(T)!);
         if (start < 0)
             return (span.Length, span.Length);
 
-        int end = span.LastIndexOfAnyExcept(default!);
+        int end = span.LastIndexOfAnyExcept(default(T)!);
         return (start, end + 1);
 
 #if NET6_0

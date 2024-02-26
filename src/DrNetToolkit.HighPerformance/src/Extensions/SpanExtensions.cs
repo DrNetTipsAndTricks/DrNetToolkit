@@ -5,7 +5,7 @@
 using System;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using DrNetToolkit.Polyfills.Impls;
+using DrNetToolkit.Polyfills;
 
 namespace DrNetToolkit.HighPerformance;
 
@@ -32,7 +32,7 @@ public static partial class SpanExtensions
     /// <param name="span">The readonly span to cast to a <see cref="Span{T}"/>.</param>
     /// <returns>A <see cref="Span{T}"/> that corresponds to specified readonly <paramref name="span"/>.</returns>
     public static Span<T> DangerousAsSpan<T>(this ReadOnlySpan<T> span)
-        => MemoryMarshalImpls.CreateSpan(ref MemoryMarshal.GetReference(span), span.Length);
+        => MemoryMarshalPolyfills.CreateSpan(ref MemoryMarshal.GetReference(span), span.Length);
 
     #endregion
 
@@ -49,7 +49,7 @@ public static partial class SpanExtensions
     /// the end of the <paramref name="span"/>.
     /// </returns>
     public static Span<T> DangerousSlice<T>(this Span<T> span, int start)
-        => MemoryMarshalImpls.CreateSpan(ref Unsafe.Add(ref MemoryMarshal.GetReference(span), start), span.Length - start);
+        => MemoryMarshalPolyfills.CreateSpan(ref Unsafe.Add(ref MemoryMarshal.GetReference(span), start), span.Length - start);
 
     /// <summary>
     /// Forms a slice out of the current readonly span that begins at a specified index.
@@ -62,7 +62,7 @@ public static partial class SpanExtensions
     /// <paramref name="start"/> to the end of the <paramref name="span"/>.
     /// </returns>
     public static ReadOnlySpan<T> DangerousSlice<T>(this ReadOnlySpan<T> span, int start)
-        => MemoryMarshalImpls.CreateReadOnlySpan(ref Unsafe.Add(ref MemoryMarshal.GetReference(span), start),
+        => MemoryMarshalPolyfills.CreateReadOnlySpan(ref Unsafe.Add(ref MemoryMarshal.GetReference(span), start),
             span.Length - start);
 
     /// <summary>
@@ -77,7 +77,7 @@ public static partial class SpanExtensions
     /// <paramref name="start"/>.
     /// </returns>
     public static Span<T> DangerousSlice<T>(this Span<T> span, int start, int length)
-        => MemoryMarshalImpls.CreateSpan(ref Unsafe.Add(ref MemoryMarshal.GetReference(span), start), length);
+        => MemoryMarshalPolyfills.CreateSpan(ref Unsafe.Add(ref MemoryMarshal.GetReference(span), start), length);
 
     /// <summary>
     /// Forms a slice out of the current readonly span starting at a specified index for a specified length.
@@ -91,7 +91,7 @@ public static partial class SpanExtensions
     /// <paramref name="span"/> starting at <paramref name="start"/>.
     /// </returns>
     public static ReadOnlySpan<T> DangerousSlice<T>(this ReadOnlySpan<T> span, int start, int length)
-        => MemoryMarshalImpls.CreateReadOnlySpan(ref Unsafe.Add(ref MemoryMarshal.GetReference(span), start), length);
+        => MemoryMarshalPolyfills.CreateReadOnlySpan(ref Unsafe.Add(ref MemoryMarshal.GetReference(span), start), length);
 
     #endregion
 }

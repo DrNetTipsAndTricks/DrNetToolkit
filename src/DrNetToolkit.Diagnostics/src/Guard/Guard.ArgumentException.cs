@@ -5,7 +5,7 @@
 using System;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
-using DrNetToolkit.Polyfills.Impls;
+using DrNetToolkit.Polyfills;
 
 namespace DrNetToolkit.Diagnostics;
 
@@ -23,7 +23,7 @@ public static partial class Guard
     [StackTraceHidden]
     public static void IsNotReferenceAndNotContainsReferences<T>(string name = "")
     {
-        if (RuntimeHelpersImpls.IsReferenceOrContainsReferences<T>())
+        if (RuntimeHelpersPolyfills.IsReferenceOrContainsReferences<T>())
             ThrowHelper.ThrowInvalidTypeWithPointersNotSupported(typeof(T), name);
     }
 }

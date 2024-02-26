@@ -13,10 +13,11 @@ using System.Runtime.InteropServices;
 using DrNetToolkit.Polyfills.Hidden;
 using DrNetToolkit.Polyfills.Internals;
 
+
 #if NET8_0_OR_GREATER
     using CompositeFormat = System.Text.CompositeFormat;
 #else
-    using CompositeFormat = System.Text.CompositeFormatPolyfills;
+using CompositeFormat = System.Text.CompositeFormatPolyfills;
 #endif
 
 namespace System;

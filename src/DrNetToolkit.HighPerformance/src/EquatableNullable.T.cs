@@ -4,7 +4,8 @@
 
 using System;
 using System.Runtime.CompilerServices;
-using DrNetToolkit.Polyfills.Impls;
+using System.Runtime.InteropServices;
+using DrNetToolkit.Polyfills;
 
 namespace DrNetToolkit.HighPerformance;
 
@@ -322,7 +323,7 @@ public static partial class SpanExtensions
     /// </returns>
     public static Span<EquatableNullable<T>> AsEquatable<T>(this Span<T?> source)
         where T : struct
-        => MemoryMarshalImpls.Cast<T?, EquatableNullable<T>>(source);
+        => MemoryMarshalPolyfills.Cast<T?, EquatableNullable<T>>(source);
 
     /// <summary>
     /// Creates a <see cref="ReadOnlySpan{T}"/> with <see cref="EquatableNullable{T}"/> elements that support the 
@@ -337,7 +338,7 @@ public static partial class SpanExtensions
     /// </returns>
     public static ReadOnlySpan<EquatableNullable<T>> AsEquatable<T>(this ReadOnlySpan<T?> source)
         where T : struct
-        => MemoryMarshalImpls.Cast<T?, EquatableNullable<T>>(source);
+        => MemoryMarshalPolyfills.Cast<T?, EquatableNullable<T>>(source);
 
     /// <summary>
     /// Creates a <see cref="Span{T}"/> with <see cref="EquatableNullable{T}"/> elements that support the 
@@ -352,7 +353,7 @@ public static partial class SpanExtensions
     /// </returns>
     public static Span<T?> AsNullable<T>(this Span<EquatableNullable<T>> source)
         where T : struct
-        => MemoryMarshalImpls.Cast<EquatableNullable<T>, T?>(source);
+        => MemoryMarshalPolyfills.Cast<EquatableNullable<T>, T?>(source);
 
 
     /// <summary>
@@ -368,5 +369,5 @@ public static partial class SpanExtensions
     /// </returns>
     public static ReadOnlySpan<T?> AsNullable<T>(this ReadOnlySpan<EquatableNullable<T>> source)
         where T : struct
-        => MemoryMarshalImpls.Cast<EquatableNullable<T>, T?>(source);
+        => MemoryMarshalPolyfills.Cast<EquatableNullable<T>, T?>(source);
 }
